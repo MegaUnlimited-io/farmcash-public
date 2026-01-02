@@ -56,25 +56,33 @@
     </div>
 
     <script>
-        // Get URL parameters from both search params and hash (Supabase uses hash for errors)
+        // Get URL parameters from both search params and hash (Supabase uses hash for errors AND success)
         const urlParams = new URLSearchParams(window.location.search);
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         
-        const token = urlParams.get('token');
-        const type = urlParams.get('type');
+        // Check for successful verification (access_token means success)
+        const accessToken = hashParams.get('access_token');
+        const tokenType = hashParams.get('token_type');
+        const type = hashParams.get('type') || urlParams.get('type');
         
-        // Check for error conditions in hash
+        // Check for error conditions
         const error = hashParams.get('error');
         const errorCode = hashParams.get('error_code');
         const errorDescription = hashParams.get('error_description');
 
         if (error) {
             handleError(error, errorCode, errorDescription);
-        } else if (!token) {
-            document.getElementById('status').innerHTML = '<div class="error">❌ No verification token found</div>';
-            document.getElementById('message').innerHTML = '<p>Please check your email for a new verification link.</p>';
+        } else if (accessToken && tokenType === 'bearer') {
+            handleSuccess(type);
         } else {
-            verifyEmail(token, type);
+            // Check for original token format (direct verification)
+            const originalToken = urlParams.get('token');
+            if (originalToken) {
+                verifyEmail(originalToken, type);
+            } else {
+                document.getElementById('status').innerHTML = '<div class="error">❌ No verification token found</div>';
+                document.getElementById('message').innerHTML = '<p>Please check your email for a new verification link.</p>';
+            }
         }
 
         function handleError(error, errorCode, errorDescription) {
@@ -97,6 +105,14 @@
 
             document.getElementById('status').innerHTML = `<div class="error">${statusText}</div>`;
             document.getElementById('message').innerHTML = message;
+        }
+
+        function handleSuccess(type) {
+            const typeText = type === 'email_change' ? 'Email change' : 'Email verification';
+            document.getElementById('status').innerHTML = '<div class="success">✅ Email verified successfully!</div>';
+            document.getElementById('message').innerHTML = `<p>${typeText} completed! You can now return to the FarmCash app.</p>`;
+            // Trigger confetti animation
+            createConfetti();
         }
 
         async function verifyEmail(token, type) {

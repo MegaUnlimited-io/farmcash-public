@@ -5,7 +5,7 @@ exports.handler = async (event, context) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'apikey': process.env.SUPABASE_ANON_KEY // Server-side only
+      'apikey': process.env.sb_publishable_ZNm9BWAUZkAV29iYMkOlHg_gIc6NVGM // Server-side only
     },
     body: JSON.stringify({ token, type })
   });
