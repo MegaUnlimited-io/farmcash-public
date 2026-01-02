@@ -11,29 +11,76 @@
             margin: 50px auto; 
             padding: 20px; 
             text-align: center;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .loading { color: #666; }
-        .success { color: #28a745; }
-        .error { color: #dc3545; }
+        .success { color: #28a745; font-weight: bold; }
+        .error { color: #dc3545; font-weight: bold; }
         .logo { font-size: 2em; margin-bottom: 20px; }
+        .message { margin-top: 20px; line-height: 1.6; }
+        .retry-link { 
+            margin-top: 20px; 
+            color: #007bff; 
+            text-decoration: underline; 
+        }
     </style>
 </head>
 <body>
-    <div class="logo">🌱 FarmCash</div>
-    <h1>Email Verification</h1>
-    <div id="status" class="loading">Verifying your email...</div>
-    <div id="message"></div>
+    <div class="container">
+        <div class="logo">🌱 FarmCash</div>
+        <h1>Email Verification</h1>
+        <div id="status" class="loading">Verifying your email...</div>
+        <div id="message" class="message"></div>
+    </div>
 
     <script>
-        // Get URL parameters
+        // Get URL parameters from both search params and hash (Supabase uses hash for errors)
         const urlParams = new URLSearchParams(window.location.search);
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        
         const token = urlParams.get('token');
         const type = urlParams.get('type');
+        
+        // Check for error conditions in hash
+        const error = hashParams.get('error');
+        const errorCode = hashParams.get('error_code');
+        const errorDescription = hashParams.get('error_description');
 
-        if (!token) {
+        if (error) {
+            handleError(error, errorCode, errorDescription);
+        } else if (!token) {
             document.getElementById('status').innerHTML = '<div class="error">❌ No verification token found</div>';
+            document.getElementById('message').innerHTML = '<p>Please check your email for a new verification link.</p>';
         } else {
             verifyEmail(token, type);
+        }
+
+        function handleError(error, errorCode, errorDescription) {
+            let message = '';
+            let statusText = '';
+
+            switch (errorCode) {
+                case 'otp_expired':
+                    statusText = '⏰ Verification link expired';
+                    message = '<p>This verification link has expired. Please request a new email verification in the FarmCash app.</p>';
+                    break;
+                case 'otp_invalid':
+                    statusText = '❌ Invalid verification link';
+                    message = '<p>This verification link is invalid. Please request a new email verification in the FarmCash app.</p>';
+                    break;
+                default:
+                    statusText = '❌ Verification error';
+                    message = `<p>Error: ${decodeURIComponent(errorDescription || error)}</p><p>Please try requesting a new verification email in the FarmCash app.</p>`;
+            }
+
+            document.getElementById('status').innerHTML = `<div class="error">${statusText}</div>`;
+            document.getElementById('message').innerHTML = message;
         }
 
         async function verifyEmail(token, type) {
@@ -42,7 +89,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'apikey': 'sb_publishable_ZNm9BWAUZkAV29iYMkOlHg_gIc6NVGM' // We'll add this
+                        'apikey': 'YOUR_SUPABASE_ANON_KEY' // Replace with actual key
                     },
                     body: JSON.stringify({ 
                         token: token,
@@ -52,13 +99,15 @@
 
                 if (response.ok) {
                     document.getElementById('status').innerHTML = '<div class="success">✅ Email verified successfully!</div>';
-                    document.getElementById('message').innerHTML = '<p>You can now return to the FarmCash app.</p>';
+                    document.getElementById('message').innerHTML = '<p>You can now return to the FarmCash app. Your email change has been confirmed.</p>';
                 } else {
-                    throw new Error('Verification failed');
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || 'Verification failed');
                 }
             } catch (error) {
                 document.getElementById('status').innerHTML = '<div class="error">❌ Verification failed</div>';
-                document.getElementById('message').innerHTML = '<p>Please try again or contact support.</p>';
+                document.getElementById('message').innerHTML = '<p>Unable to verify your email. Please try requesting a new verification link in the FarmCash app.</p>';
+                console.error('Verification error:', error);
             }
         }
     </script>
