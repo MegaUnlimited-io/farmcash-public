@@ -29,6 +29,22 @@
             color: #007bff; 
             text-decoration: underline; 
         }
+        
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            animation: confetti-fall 3s linear infinite;
+            z-index: 1000;
+        }
+        
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
@@ -100,6 +116,8 @@
                 if (response.ok) {
                     document.getElementById('status').innerHTML = '<div class="success">✅ Email verified successfully!</div>';
                     document.getElementById('message').innerHTML = '<p>You can now return to the FarmCash app. Your email change has been confirmed.</p>';
+                    // Trigger confetti animation
+                    createConfetti();
                 } else {
                     const errorData = await response.json().catch(() => ({}));
                     throw new Error(errorData.message || 'Verification failed');
@@ -108,6 +126,29 @@
                 document.getElementById('status').innerHTML = '<div class="error">❌ Verification failed</div>';
                 document.getElementById('message').innerHTML = '<p>Unable to verify your email. Please try requesting a new verification link in the FarmCash app.</p>';
                 console.error('Verification error:', error);
+            }
+        }
+
+        // Confetti Animation Function
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    confetti.style.animationDuration = Math.random() * 2 + 3 + 's';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 6000);
+                }, i * 50);
             }
         }
     </script>
