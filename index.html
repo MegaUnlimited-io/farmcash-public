@@ -33,16 +33,18 @@
         /* Confetti Animation */
         .confetti {
             position: fixed;
+            top: -10px;  /* Start above the visible area */
             width: 10px;
             height: 10px;
             background: #f0f;
             animation: confetti-fall 3s linear infinite;
             z-index: 1000;
+            pointer-events: none;  /* Don't block clicks */
         }
         
         @keyframes confetti-fall {
             to {
-                transform: translateY(100vh) rotate(360deg);
+                transform: translateY(calc(100vh + 20px)) rotate(360deg);
             }
         }
     </style>
