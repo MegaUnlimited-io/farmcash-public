@@ -144,6 +144,83 @@
             line-height: 1.6;
         }
 
+        .user-id-control {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-id-control h3 {
+            color: #1a202c;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .input-group input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: monospace;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+
+        .input-group button {
+            padding: 12px 24px;
+            background: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .input-group button:hover {
+            background: #3182ce;
+        }
+
+        .input-group button:active {
+            transform: scale(0.98);
+        }
+
+        .current-uid {
+            background: #f7fafc;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+        }
+
+        .current-uid strong {
+            color: #2f855a;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .current-uid code {
+            background: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #2d3748;
+            word-break: break-all;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -156,6 +233,14 @@
             iframe {
                 height: 500px;
             }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .input-group input {
+                min-width: 100%;
+            }
         }
     </style>
 </head>
@@ -166,13 +251,14 @@
             <p>Complete offers below to test the postback integration with signature validation.</p>
             
             <div class="info-box">
-                <strong>Test User ID:</strong>
+                <strong>Default Test User ID:</strong>
                 <code>7736fa04-1267-40c5-9643-008630cf8de4</code>
             </div>
 
             <div class="instructions">
                 <h3>📋 Testing Instructions</h3>
                 <ol>
+                    <li><strong>Use custom user ID</strong> if testing multiple times (avoids deduplication)</li>
                     <li><strong>Complete an offer</strong> from the wall below (Pierre enabled a test CPC offer)</li>
                     <li><strong>Wait 5-10 seconds</strong> for RevU to send the postback</li>
                     <li><strong>Check the database</strong> using the SQL queries below</li>
@@ -181,10 +267,31 @@
             </div>
         </div>
 
+        <div class="user-id-control">
+            <h3>👤 User ID Configuration</h3>
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="userIdInput" 
+                    placeholder="Enter custom user ID (UUID format)" 
+                    value="7736fa04-1267-40c5-9643-008630cf8de4"
+                />
+                <button onclick="updateUserId()">🔄 Update Offer Wall</button>
+            </div>
+            <div class="current-uid">
+                <strong>Currently Testing With:</strong>
+                <code id="currentUid">7736fa04-1267-40c5-9643-008630cf8de4</code>
+            </div>
+            <p style="color: #718096; font-size: 14px; margin-top: 12px;">
+                💡 <strong>Tip:</strong> Generate a test UUID or use a different existing user ID to bypass RevU's deduplication when testing the same offer multiple times.
+            </p>
+        </div>
+
         <div class="wall-container">
             <h2>💰 Available Offers</h2>
             <div class="iframe-wrapper">
                 <iframe 
+                    id="revuWall"
                     src="https://publishers.revenueuniverse.com/wallresp/1519/offers?uid=7736fa04-1267-40c5-9643-008630cf8de4" 
                     scrolling="yes" 
                     frameborder="0"
@@ -195,9 +302,9 @@
 
         <div class="status-check">
             <h3>🔍 Verification Queries</h3>
-            <p style="color: #4a5568; margin-bottom: 12px;">Run these in Supabase SQL Editor after completing an offer:</p>
+            <p style="color: #4a5568; margin-bottom: 12px;">Run these in Supabase SQL Editor after completing an offer (update USER_ID):</p>
             
-            <pre>-- 1. Check if postback was received (should show 200 response_code)
+            <pre id="sqlQueries">-- 1. Check if postback was received (should show 200 response_code)
 SELECT 
     action_id, 
     currency_amount, 
@@ -206,19 +313,19 @@ SELECT
     processed_at,
     raw_params->>'secret' as signature_received
 FROM postback_log 
-WHERE user_id = '7736fa04-1267-40c5-9643-008630cf8de4'
+WHERE user_id = '<span id="sqlUid1">7736fa04-1267-40c5-9643-008630cf8de4</span>'
 ORDER BY processed_at DESC 
 LIMIT 3;
 
 -- 2. Check user balance (should increase by currency_amount)
 SELECT seeds_balance 
 FROM public.users 
-WHERE id = '7736fa04-1267-40c5-9643-008630cf8de4';
+WHERE id = '<span id="sqlUid2">7736fa04-1267-40c5-9643-008630cf8de4</span>';
 
 -- 3. Check for fraud events (should be EMPTY if signature valid)
 SELECT event_type, severity, created_at, details
 FROM fraud_events 
-WHERE user_id = '7736fa04-1267-40c5-9643-008630cf8de4'
+WHERE user_id = '<span id="sqlUid3">7736fa04-1267-40c5-9643-008630cf8de4</span>'
 AND event_type IN ('invalid_signature', 'missing_signature')
 ORDER BY created_at DESC 
 LIMIT 5;</pre>
@@ -234,5 +341,55 @@ LIMIT 5;</pre>
             </ul>
         </div>
     </div>
+
+    <script>
+        function updateUserId() {
+            const userIdInput = document.getElementById('userIdInput');
+            const newUserId = userIdInput.value.trim();
+            
+            // Basic UUID validation
+            const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+            
+            if (!newUserId) {
+                alert('❌ Please enter a user ID');
+                return;
+            }
+            
+            if (!uuidRegex.test(newUserId)) {
+                alert('⚠️ Warning: This doesn\'t look like a valid UUID format. Continue anyway?');
+                // Allow non-UUID formats in case they want to test with other IDs
+            }
+            
+            // Update iframe src
+            const iframe = document.getElementById('revuWall');
+            iframe.src = `https://publishers.revenueuniverse.com/wallresp/1519/offers?uid=${encodeURIComponent(newUserId)}`;
+            
+            // Update current UID display
+            document.getElementById('currentUid').textContent = newUserId;
+            
+            // Update SQL queries
+            document.getElementById('sqlUid1').textContent = newUserId;
+            document.getElementById('sqlUid2').textContent = newUserId;
+            document.getElementById('sqlUid3').textContent = newUserId;
+            
+            // Visual feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '✅ Updated!';
+            button.style.background = '#48bb78';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '#4299e1';
+            }, 2000);
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('userIdInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                updateUserId();
+            }
+        });
+    </script>
 </body>
 </html>
