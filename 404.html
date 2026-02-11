@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXWH94NT6C"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-GXWH94NT6C');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | FarmCash</title>
+    
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: url('assets/lp_background_2.png') center center / cover no-repeat fixed;
+            background-color: #87CEEB;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        /* Blur overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: inherit;
+            filter: blur(12px);
+            z-index: 0;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 60px 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            max-width: 180px;
+            height: auto;
+        }
+        
+        .error-code {
+            font-size: 96px;
+            font-weight: 800;
+            color: #E8A628;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #2D6B4F;
+            margin-bottom: 16px;
+        }
+        
+        p {
+            font-size: 18px;
+            color: #6B4739;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        
+        .emoji {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+        
+        .btn-home {
+            display: inline-block;
+            padding: 18px 36px;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E8A628 0%, #D69520 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            box-shadow: 0 6px 0 #C87651;
+            transition: all 0.15s ease;
+        }
+        
+        .btn-home:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #C87651;
+        }
+        
+        .helpful-links {
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .helpful-links p {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2D6B4F;
+            margin-bottom: 16px;
+        }
+        
+        .link-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .link-list a {
+            font-size: 16px;
+            color: #1e6b4f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .link-list a:hover {
+            color: #145040;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 30px;
+            }
+            
+            .error-code {
+                font-size: 72px;
+            }
+            
+            h1 {
+                font-size: 26px;
+            }
+            
+            p {
+                font-size: 16px;
+            }
+            
+            .emoji {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="assets/FarmCash_Logo_v1.png" alt="FarmCash">
+        </div>
+        
+        <div class="error-code">404</div>
+        
+        <div class="emoji">🌾</div>
+        
+        <h1>Oops! Page Not Found</h1>
+        
+        <p>Looks like this crop didn't grow. The page you're looking for doesn't exist or has been moved.</p>
+        
+        <a href="index.html" class="btn-home">Go Back Home 🏡</a>
+        
+        <div class="helpful-links">
+            <p>Helpful Links:</p>
+            <div class="link-list">
+                <a href="index.html">Join Waitlist</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
