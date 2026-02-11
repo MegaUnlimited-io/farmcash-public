@@ -584,5 +584,13 @@
         // Initialize
         loadUserData();
     </script>
+    <div id="footer-placeholder"></div>
+<script>
+    fetch('includes/footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer-placeholder').innerHTML = data;
+        });
+</script>
 </body>
 </html>
