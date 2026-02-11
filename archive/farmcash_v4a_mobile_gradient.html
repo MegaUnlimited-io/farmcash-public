@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmCash - Join the Waitlist 🌱</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(180deg, 
+                #87CEEB 0%, 
+                #B8E6C9 40%, 
+                #A3C644 100%
+            );
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Coin container */
+        #coin-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .coin-fall {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+            }
+        }
+        
+        /* Logo card */
+        .logo-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 16px;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .logo-card img {
+            max-width: 180px;
+            height: auto;
+        }
+        
+        /* Main card */
+        .main-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2D6B4F;
+            text-align: center;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        
+        .subheading {
+            font-size: 16px;
+            color: #6B4739;
+            text-align: center;
+            margin-bottom: 28px;
+            opacity: 0.8;
+        }
+        
+        /* Visual progress bar */
+        .progress-visual {
+            background: #F5F1E8;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+        
+        .progress-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2D6B4F;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .progress-bar {
+            background: #E0E0E0;
+            height: 12px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #A3C644 0%, #E8A628 100%);
+            height: 100%;
+            width: 30%;
+            border-radius: 8px;
+            transition: width 0.3s ease;
+        }
+        
+        .milestones {
+            display: grid;
+            gap: 8px;
+        }
+        
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #6B4739;
+            padding: 8px 0;
+        }
+        
+        .milestone-item .label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .milestone-item .icon {
+            font-size: 16px;
+        }
+        
+        .milestone-item .reward {
+            font-weight: 700;
+            color: #E8A628;
+        }
+        
+        /* Form - mobile optimized */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2D6B4F;
+            margin-bottom: 8px;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            background: #F8F8F8;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            color: #333;
+            transition: all 0.2s ease;
+            /* Prevent zoom on iOS */
+            touch-action: manipulation;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            background: white;
+            border-color: #A3C644;
+            box-shadow: 0 0 0 3px rgba(163, 198, 68, 0.1);
+        }
+        
+        /* App-style button (like V3b cozy) */
+        .btn-submit {
+            width: 100%;
+            padding: 18px 24px;
+            font-size: 17px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E8A628 0%, #D69520 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 6px 0 #C87651;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            letter-spacing: 0.3px;
+            /* Better tap target */
+            min-height: 56px;
+        }
+        
+        .btn-submit:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #C87651;
+        }
+        
+        /* Message */
+        #message {
+            margin-top: 20px;
+            padding: 16px;
+            font-size: 14px;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        #message.success {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        
+        #message.error {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+        
+        /* Desktop adjustments */
+        @media (min-width: 600px) {
+            .logo-card, .main-card {
+                max-width: 440px;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            .subheading {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Coin rain container -->
+    <div id="coin-container"></div>
+    
+    <!-- Logo card -->
+    <div class="logo-card">
+        <img src="assets/FarmCash_Logo_v1.png" alt="FarmCash">
+    </div>
+    
+    <!-- Main card -->
+    <div class="main-card">
+        <h1>Join the Waitlist</h1>
+        <p class="subheading">Plant seeds, harvest real cash 🌱</p>
+        
+        <!-- Visual progress -->
+        <div class="progress-visual">
+            <div class="progress-header">🎁 Earn up to 500 seeds</div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="milestones">
+                <div class="milestone-item">
+                    <span class="label">
+                        <span class="icon">✓</span>
+                        <span>Sign up</span>
+                    </span>
+                    <span class="reward">+100</span>
+                </div>
+                <div class="milestone-item">
+                    <span class="label">
+                        <span class="icon">🔗</span>
+                        <span>Get link</span>
+                    </span>
+                    <span class="reward">+50</span>
+                </div>
+                <div class="milestone-item">
+                    <span class="label">
+                        <span class="icon">👤</span>
+                        <span>1st referral</span>
+                    </span>
+                    <span class="reward">+200</span>
+                </div>
+                <div class="milestone-item">
+                    <span class="label">
+                        <span class="icon">👥</span>
+                        <span>2nd referral</span>
+                    </span>
+                    <span class="reward">+100</span>
+                </div>
+                <div class="milestone-item">
+                    <span class="label">
+                        <span class="icon">⭐</span>
+                        <span>3rd referral</span>
+                    </span>
+                    <span class="reward">+50</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Signup form -->
+        <form id="signup-form">
+            <div class="form-group">
+                <label for="game-type">Favorite mobile game type?</label>
+                <select id="game-type" required>
+                    <option value="">Choose one...</option>
+                    <option value="puzzle">🧩 Puzzle</option>
+                    <option value="strategy">⚔️ Strategy</option>
+                    <option value="casual">🚜 Casual</option>
+                    <option value="action">🎮 Action</option>
+                    <option value="rpg">🗡️ RPG</option>
+                    <option value="other">❓ Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="app-usage">Daily app usage?</label>
+                <select id="app-usage" required>
+                    <option value="">Choose one...</option>
+                    <option value="1-2">1-2 hours</option>
+                    <option value="3-4">3-4 hours</option>
+                    <option value="5+">5+ hours</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="you@example.com" required>
+            </div>
+            
+            <button type="submit" class="btn-submit">Join Waitlist</button>
+        </form>
+        
+        <div id="message"></div>
+    </div>
+    
+    <script type="module">
+        const form = document.getElementById('signup-form');
+        const messageEl = document.getElementById('message');
+        
+        function createCoin() {
+            const coin = document.createElement('video');
+            coin.src = 'assets/3d-coin.webm';
+            coin.autoplay = true;
+            coin.loop = true;
+            coin.muted = true;
+            coin.className = 'coin-fall';
+            coin.style.left = Math.random() * 100 + 'vw';
+            coin.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            
+            document.getElementById('coin-container').appendChild(coin);
+            setTimeout(() => coin.remove(), 4000);
+        }
+        
+        function coinRain(count = 30) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => createCoin(), i * 50);
+            }
+        }
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            messageEl.textContent = 'Creating account...';
+            messageEl.className = '';
+            
+            // TODO: Supabase logic
+            setTimeout(() => {
+                messageEl.textContent = '✅ Check your email!';
+                messageEl.className = 'success';
+                form.reset();
+                coinRain(30);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmCash - Join the Waitlist 🌱</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700;800&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: url('assets/lp_background_1.png') center bottom / cover no-repeat fixed;
+            background-color: #87CEEB;
+        }
+        
+        /* Coin container */
+        #coin-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .coin-fall {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+            }
+        }
+        
+        /* Sticky header */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 16px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            z-index: 100;
+            border-bottom: 3px solid #A3C644;
+        }
+        
+        header img {
+            max-width: 140px;
+            height: auto;
+        }
+        
+        /* Sections */
+        section {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        /* Hero section */
+        .hero {
+            min-height: 70vh;
+            background: linear-gradient(180deg, rgba(135, 206, 235, 0.4) 0%, rgba(135, 206, 235, 0) 100%);
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 3px 3px 0 rgba(45, 107, 79, 0.3);
+        }
+        
+        .hero .tagline {
+            font-size: 26px;
+            color: white;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+        }
+        
+        .hero .cta-preview {
+            display: inline-block;
+            padding: 16px 36px;
+            background: rgba(232, 166, 40, 0.95);
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* How it works */
+        .how-it-works {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .how-it-works h2 {
+            font-size: 38px;
+            font-weight: 800;
+            color: #2D6B4F;
+            margin-bottom: 50px;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .step {
+            text-align: center;
+            background: linear-gradient(135deg, #FFF8F0 0%, #F5F1E8 100%);
+            padding: 32px 24px;
+            border-radius: 20px;
+            border: 3px solid #C4A661;
+            transition: transform 0.2s ease;
+        }
+        
+        .step:hover {
+            transform: translateY(-4px);
+        }
+        
+        .step .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .step h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2D6B4F;
+            margin-bottom: 12px;
+        }
+        
+        .step p {
+            font-size: 17px;
+            color: #6B4739;
+            line-height: 1.6;
+        }
+        
+        /* Rewards section */
+        .rewards {
+            background: linear-gradient(135deg, rgba(163, 198, 68, 0.2) 0%, rgba(232, 166, 40, 0.2) 100%);
+        }
+        
+        .rewards h2 {
+            font-size: 38px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 40px;
+            text-shadow: 3px 3px 0 rgba(45, 107, 79, 0.5);
+        }
+        
+        .reward-list {
+            max-width: 520px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        
+        .reward-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid #E8A628;
+            transition: transform 0.2s ease;
+        }
+        
+        .reward-item:hover {
+            transform: translateX(8px);
+        }
+        
+        .reward-item .label {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 19px;
+            color: #6B4739;
+            font-weight: 700;
+        }
+        
+        .reward-item .icon {
+            font-size: 30px;
+        }
+        
+        .reward-item .amount {
+            font-size: 26px;
+            font-weight: 800;
+            color: #E8A628;
+        }
+        
+        /* Form section */
+        .form-section {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .form-section h2 {
+            font-size: 38px;
+            font-weight: 800;
+            color: #2D6B4F;
+            margin-bottom: 40px;
+        }
+        
+        .signup-form {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+            background: linear-gradient(135deg, #FFF8F0 0%, #F5F1E8 100%);
+            padding: 40px;
+            border-radius: 24px;
+            border: 3px solid #C4A661;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        label {
+            display: block;
+            font-size: 16px;
+            font-weight: 700;
+            color: #2D6B4F;
+            margin-bottom: 10px;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 16px;
+            font-size: 17px;
+            font-family: 'Quicksand', sans-serif;
+            background: white;
+            border: 2px solid #C4A661;
+            border-radius: 12px;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #E8A628;
+            box-shadow: 0 0 0 4px rgba(232, 166, 40, 0.15);
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 18px 24px;
+            font-size: 19px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E8A628 0%, #D69520 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 6px 0 #C87651;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-submit:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #C87651;
+        }
+        
+        #message {
+            margin-top: 20px;
+            padding: 18px;
+            font-size: 16px;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+        
+        #message.success {
+            background: #A3C644;
+            color: white;
+        }
+        
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero .tagline {
+                font-size: 22px;
+            }
+            
+            .how-it-works h2,
+            .rewards h2,
+            .form-section h2 {
+                font-size: 30px;
+            }
+            
+            .steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .signup-form {
+                padding: 30px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Coin rain container -->
+    <div id="coin-container"></div>
+    
+    <!-- Sticky header -->
+    <header>
+        <img src="assets/FarmCash_Logo_v1.png" alt="FarmCash">
+    </header>
+    
+    <!-- Hero section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Earn Real Cash<br>Playing Games 🎮</h1>
+            <p class="tagline">Plant seeds, harvest money 🌱💰</p>
+            <div class="cta-preview">Join the Waitlist Today!</div>
+        </div>
+    </section>
+    
+    <!-- How it works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="icon">📱</div>
+                    <h3>Complete Offers</h3>
+                    <p>Play games, take surveys, try new apps</p>
+                </div>
+                <div class="step">
+                    <div class="icon">🌱</div>
+                    <h3>Plant Seeds</h3>
+                    <p>Turn earnings into virtual crops that grow</p>
+                </div>
+                <div class="step">
+                    <div class="icon">💰</div>
+                    <h3>Harvest Cash</h3>
+                    <p>Convert grown crops to real money</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Rewards -->
+    <section class="rewards">
+        <div class="container">
+            <h2>🎁 Early Adopter Rewards</h2>
+            <div class="reward-list">
+                <div class="reward-item">
+                    <span class="label">
+                        <span class="icon">✨</span>
+                        <span>Sign up</span>
+                    </span>
+                    <span class="amount">+100</span>
+                </div>
+                <div class="reward-item">
+                    <span class="label">
+                        <span class="icon">🔗</span>
+                        <span>Get your link</span>
+                    </span>
+                    <span class="amount">+50</span>
+                </div>
+                <div class="reward-item">
+                    <span class="label">
+                        <span class="icon">🎉</span>
+                        <span>1st referral</span>
+                    </span>
+                    <span class="amount">+200</span>
+                </div>
+                <div class="reward-item">
+                    <span class="label">
+                        <span class="icon">💫</span>
+                        <span>2nd referral</span>
+                    </span>
+                    <span class="amount">+100</span>
+                </div>
+                <div class="reward-item">
+                    <span class="label">
+                        <span class="icon">⭐</span>
+                        <span>3rd referral</span>
+                    </span>
+                    <span class="amount">+50</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Form section -->
+    <section class="form-section">
+        <div class="container">
+            <h2>Join the Waitlist 🚀</h2>
+            <form id="signup-form" class="signup-form">
+                <div class="form-group">
+                    <label for="game-type">What's your favorite type of mobile game?</label>
+                    <select id="game-type" required>
+                        <option value="">Pick one...</option>
+                        <option value="puzzle">🧩 Puzzle Games</option>
+                        <option value="strategy">⚔️ Strategy Games</option>
+                        <option value="casual">🚜 Casual & Farming</option>
+                        <option value="action">🎮 Action Games</option>
+                        <option value="rpg">🗡️ RPG Games</option>
+                        <option value="other">❓ Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="app-usage">How much time do you spend on mobile apps daily?</label>
+                    <select id="app-usage" required>
+                        <option value="">Pick one...</option>
+                        <option value="1-2">1-2 hours</option>
+                        <option value="3-4">3-4 hours</option>
+                        <option value="5+">5+ hours</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Your Email Address</label>
+                    <input type="email" id="email" placeholder="your@email.com" required>
+                </div>
+                
+                <button type="submit" class="btn-submit">Join Now! 🌱</button>
+                
+                <div id="message"></div>
+            </form>
+        </div>
+    </section>
+    
+    <script type="module">
+        const form = document.getElementById('signup-form');
+        const messageEl = document.getElementById('message');
+        
+        function createCoin() {
+            const coin = document.createElement('video');
+            coin.src = 'assets/3d-coin.webm';
+            coin.autoplay = true;
+            coin.loop = true;
+            coin.muted = true;
+            coin.className = 'coin-fall';
+            coin.style.left = Math.random() * 100 + 'vw';
+            coin.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            
+            document.getElementById('coin-container').appendChild(coin);
+            setTimeout(() => coin.remove(), 4000);
+        }
+        
+        function coinRain(count = 40) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => createCoin(), i * 50);
+            }
+        }
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            messageEl.textContent = '🌱 Creating your account...';
+            messageEl.className = '';
+            
+            // TODO: Supabase logic
+            setTimeout(() => {
+                messageEl.textContent = '🎉 Success! Check your email!';
+                messageEl.className = 'success';
+                form.reset();
+                coinRain(40);
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

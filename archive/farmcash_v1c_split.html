@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmCash - Join the Waitlist 🌱</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            min-height: 100vh;
+            background: url('assets/lp_background_1.png') center bottom / cover no-repeat;
+            background-color: #87CEEB;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+        
+        /* Coin container */
+        #coin-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .coin-fall {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+            }
+        }
+        
+        /* Split layout */
+        .wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        /* Left side - Hero */
+        .hero {
+            text-align: center;
+        }
+        
+        .hero img {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(6px 6px 0 rgba(0, 0, 0, 0.3));
+        }
+        
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 32px;
+            color: white;
+            text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.4);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .subheading {
+            font-size: 36px;
+            color: #E8A628;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+            margin-bottom: 30px;
+        }
+        
+        .app-icons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .app-icons img {
+            height: 50px;
+            width: auto;
+            filter: drop-shadow(3px 3px 0 rgba(0, 0, 0, 0.2));
+        }
+        
+        /* Right side - Form */
+        .form-card {
+            background: rgba(255, 255, 255, 0.98);
+            border: 6px solid #6B4739;
+            box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.3);
+            padding: 40px 35px;
+        }
+        
+        .form-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: #2D6B4F;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        /* Progress preview */
+        .progress-box {
+            background: linear-gradient(135deg, #F5F1E8 0%, #E8DCC8 100%);
+            border: 3px solid #C4A661;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .progress-item {
+            font-size: 20px;
+            color: #6B4739;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-item .icon {
+            font-size: 24px;
+        }
+        
+        .progress-item strong {
+            color: #E8A628;
+        }
+        
+        /* Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-size: 22px;
+            color: #2D6B4F;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 20px;
+            font-family: 'VT323', monospace;
+            background: white;
+            border: 3px solid #6B4739;
+            color: #6B4739;
+            transition: all 0.2s;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #A3C644;
+            box-shadow: 0 0 0 3px rgba(163, 198, 68, 0.2);
+        }
+        
+        /* Modern rounded button (contrasts with pixelart) */
+        .btn-submit {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 24px;
+            font-family: 'Press Start 2P', cursive;
+            background: #A3C644;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 6px 0 #6B4739;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-transform: uppercase;
+        }
+        
+        .btn-submit:hover {
+            background: #8BB435;
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 #6B4739;
+        }
+        
+        .btn-submit:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #6B4739;
+        }
+        
+        /* Message */
+        #message {
+            margin-top: 20px;
+            padding: 16px;
+            font-size: 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        #message.success {
+            background: #A3C644;
+            color: white;
+        }
+        
+        #message.error {
+            background: #C87651;
+            color: white;
+        }
+        
+        /* Mobile - stack vertically */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .subheading {
+                font-size: 28px;
+            }
+            
+            .hero img {
+                max-width: 200px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .form-card {
+                padding: 25px 20px;
+            }
+            
+            .form-title {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Coin rain container -->
+    <div id="coin-container"></div>
+    
+    <div class="wrapper">
+        <div class="container">
+            <!-- Left: Hero -->
+            <div class="hero">
+                <img src="assets/FarmCash_Logo_v1.png" alt="FarmCash">
+                <h1>Join the<br>Waitlist!</h1>
+                <p class="subheading">Plant seeds 🌱<br>Harvest cash 💰</p>
+                
+                <div class="app-icons">
+                    <img src="assets/google_playstore_download.png" alt="Get it on Google Play">
+                    <img src="assets/apple_app_store_download.png" alt="Download on App Store">
+                </div>
+            </div>
+            
+            <!-- Right: Form -->
+            <div class="form-card">
+                <div class="form-title">Get Early Access</div>
+                
+                <!-- Progress preview -->
+                <div class="progress-box">
+                    <div class="progress-item">
+                        <span class="icon">✓</span>
+                        <span>Sign up - <strong>100 seeds</strong></span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="icon">✓</span>
+                        <span>Get link - <strong>50 seeds</strong></span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="icon">👥</span>
+                        <span>1st referral - <strong>200 seeds</strong></span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="icon">👥</span>
+                        <span>2nd referral - <strong>100 seeds</strong></span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="icon">👥</span>
+                        <span>3rd referral - <strong>50 seeds</strong></span>
+                    </div>
+                </div>
+                
+                <!-- Signup form -->
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="game-type">Favorite game type?</label>
+                        <select id="game-type" required>
+                            <option value="">Select...</option>
+                            <option value="puzzle">🧩 Puzzle</option>
+                            <option value="strategy">⚔️ Strategy</option>
+                            <option value="casual">🚜 Casual</option>
+                            <option value="action">🎮 Action</option>
+                            <option value="rpg">🗡️ RPG</option>
+                            <option value="other">❓ Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="app-usage">Daily app usage?</label>
+                        <select id="app-usage" required>
+                            <option value="">Select...</option>
+                            <option value="1-2">1-2 hours</option>
+                            <option value="3-4">3-4 hours</option>
+                            <option value="5+">5+ hours</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="you@example.com" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">Join Now! 🌱</button>
+                </form>
+                
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+        const form = document.getElementById('signup-form');
+        const messageEl = document.getElementById('message');
+        
+        function createCoin() {
+            const coin = document.createElement('video');
+            coin.src = 'assets/3d-coin.webm';
+            coin.autoplay = true;
+            coin.loop = true;
+            coin.muted = true;
+            coin.className = 'coin-fall';
+            coin.style.left = Math.random() * 100 + 'vw';
+            coin.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            
+            document.getElementById('coin-container').appendChild(coin);
+            setTimeout(() => coin.remove(), 4000);
+        }
+        
+        function coinRain(count = 30) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => createCoin(), i * 50);
+            }
+        }
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            messageEl.textContent = 'Creating account...';
+            messageEl.className = '';
+            
+            // TODO: Supabase logic
+            setTimeout(() => {
+                messageEl.textContent = '✅ Check your email!';
+                messageEl.className = 'success';
+                form.reset();
+                coinRain(30);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

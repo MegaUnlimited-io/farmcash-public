@@ -8,14 +8,13 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
         
         html {
@@ -23,32 +22,9 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: url('assets/lp_background_2.png') center center / cover no-repeat fixed;
-            background-color: #87CEEB;
-            position: relative;
-        }
-        
-        /* Blur overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: inherit;
-            filter: blur(12px);
-            z-index: 0;
-        }
-        
-        /* Top section */
-        .top-section {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            font-family: 'Quicksand', sans-serif;
+            background: url('assets/website_background_3_pastel_painting.png') center center / cover no-repeat fixed;
+            background-color: #E8F4F8;
         }
         
         /* Coin container */
@@ -61,8 +37,8 @@
         
         .coin-fall {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             animation: fall linear forwards;
         }
         
@@ -72,95 +48,98 @@
             }
         }
         
-        /* Logo card */
-        .logo-card {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-            margin-bottom: 16px;
-            max-width: 400px;
-            width: 100%;
+        /* Top section */
+        .top-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
         }
         
-        .logo-card img {
-            max-width: 180px;
+        /* Main container */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 32px;
+            box-shadow: 0 8px 32px rgba(107, 71, 57, 0.12);
+            max-width: 540px;
+            width: 100%;
+            padding: 45px 40px;
+            border: 3px solid rgba(196, 166, 97, 0.2);
+        }
+        
+        /* Logo */
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .logo img {
+            max-width: 200px;
             height: auto;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08));
+        }
+        
+        /* Heading */
+        h1 {
+            font-size: 38px;
+            font-weight: 700;
+            color: #2D6B4F;
+            text-align: center;
+            margin-bottom: 10px;
+            line-height: 1.3;
         }
         
         .tagline {
-            font-size: 18px;
+            font-size: 20px;
+            color: #C87651;
+            text-align: center;
+            margin-bottom: 35px;
             font-weight: 600;
-            color: #6B4739;
-            margin-top: 12px;
         }
         
-        /* Main card */
-        .main-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 32px 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-            max-width: 400px;
-            width: 100%;
+        /* Progress preview with checkboxes */
+        .progress-box {
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFEFD5 100%);
+            border-radius: 20px;
+            padding: 26px 24px;
+            margin-bottom: 35px;
+            border: 2px solid #E8A628;
+            box-shadow: 0 4px 12px rgba(232, 166, 40, 0.1);
         }
         
-        h1 {
-            font-size: 28px;
-            font-weight: 800;
-            color: #2D6B4F;
-            text-align: center;
-            margin-bottom: 28px;
-            line-height: 1.2;
-        }
-        
-        /* Progress with checkboxes */
-        .progress-visual {
-            background: linear-gradient(135deg, #FFF8F0 0%, #F5F1E8 100%);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 28px;
-            border: 2px solid rgba(232, 166, 40, 0.2);
-        }
-        
-        .progress-header {
-            font-size: 14px;
+        .progress-title {
+            font-size: 16px;
             font-weight: 700;
-            color: #2D6B4F;
-            margin-bottom: 16px;
+            color: #6B4739;
+            margin-bottom: 18px;
             text-align: center;
         }
         
-        .milestone-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 14px;
+        .milestone {
+            font-size: 17px;
             color: #6B4739;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(196, 166, 97, 0.2);
-        }
-        
-        .milestone-item:last-child {
-            border-bottom: none;
-        }
-        
-        .milestone-item .label {
+            margin: 12px 0;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            transition: transform 0.2s ease;
+        }
+        
+        .milestone:hover {
+            transform: translateX(4px);
         }
         
         /* Animated checkbox */
         .checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #6B4739;
+            width: 22px;
+            height: 22px;
+            border: 3px solid #6B4739;
             border-radius: 4px;
             background: white;
             position: relative;
@@ -174,10 +153,11 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: #A3C644;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
         }
         
+        /* Pulsing checkbox for signup */
         .checkbox.pulse {
             animation: pulse 2s ease-in-out infinite;
         }
@@ -187,7 +167,7 @@
                 box-shadow: 0 0 0 0 rgba(163, 198, 68, 0.7);
             }
             50% { 
-                box-shadow: 0 0 0 6px rgba(163, 198, 68, 0);
+                box-shadow: 0 0 0 8px rgba(163, 198, 68, 0);
             }
         }
         
@@ -200,180 +180,182 @@
             60% { opacity: 0; }
         }
         
-        .milestone-item .reward {
-            font-weight: 700;
+        .milestone strong {
             color: #E8A628;
+            font-weight: 700;
         }
         
         /* Form */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         
         label {
             display: block;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 15px;
             color: #2D6B4F;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
         
         select, input {
             width: 100%;
-            padding: 16px;
+            padding: 15px 18px;
             font-size: 16px;
-            font-family: 'Inter', sans-serif;
-            background: #F8F8F8;
-            border: 2px solid #E0E0E0;
-            border-radius: 12px;
+            font-family: 'Quicksand', sans-serif;
+            background: white;
+            border: 2px solid #C4A661;
+            border-radius: 14px;
             color: #333;
             transition: all 0.2s ease;
-            touch-action: manipulation;
         }
         
         select:focus, input:focus {
             outline: none;
-            background: white;
-            border-color: #A3C644;
-            box-shadow: 0 0 0 3px rgba(163, 198, 68, 0.1);
+            border-color: #E8A628;
+            box-shadow: 0 0 0 4px rgba(232, 166, 40, 0.15);
+            transform: translateY(-2px);
         }
         
+        /* Warm, inviting button */
         .btn-submit {
             width: 100%;
             padding: 18px 24px;
-            font-size: 17px;
-            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-family: 'Quicksand', sans-serif;
             font-weight: 700;
             background: linear-gradient(135deg, #E8A628 0%, #D69520 100%);
             color: white;
             border: none;
             border-radius: 16px;
-            box-shadow: 0 6px 0 #C87651;
+            box-shadow: 0 6px 0 #C87651, 0 8px 16px rgba(200, 118, 81, 0.3);
             cursor: pointer;
             transition: all 0.15s ease;
-            letter-spacing: 0.3px;
-            min-height: 56px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 9px 0 #C87651, 0 12px 24px rgba(200, 118, 81, 0.4);
         }
         
         .btn-submit:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #C87651;
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 #C87651, 0 6px 12px rgba(200, 118, 81, 0.3);
         }
         
+        /* Message */
         #message {
-            margin-top: 20px;
-            padding: 16px;
-            font-size: 14px;
+            margin-top: 22px;
+            padding: 18px;
+            font-size: 15px;
             text-align: center;
             border-radius: 12px;
             font-weight: 600;
         }
         
         #message.success {
-            background: #E8F5E9;
-            color: #2E7D32;
+            background: linear-gradient(135deg, #D4EDDA 0%, #C3E6CB 100%);
+            color: #155724;
+            border: 2px solid #A3C644;
         }
         
         /* Scroll indicator */
         .scroll-indicator {
-            position: relative;
-            z-index: 1;
             text-align: center;
-            padding: 30px 20px;
+            padding: 40px 20px;
         }
         
         .scroll-indicator a {
             display: inline-block;
-            font-size: 20px;
-            font-weight: 700;
-            color: white;
+            font-size: 24px;
+            color: #6B4739;
             text-decoration: none;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
             animation: bounce 2s ease-in-out infinite;
         }
         
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-10px); }
         }
         
         /* Info sections */
         .info-section {
-            position: relative;
-            z-index: 1;
             padding: 80px 20px;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.35);
         }
         
         .info-section.alt {
-            background: linear-gradient(135deg, rgba(163, 198, 68, 0.2) 0%, rgba(232, 166, 40, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(163, 198, 68, 0.15) 0%, rgba(232, 166, 40, 0.15) 100%);
         }
         
         .info-section h2 {
-            font-size: 28px;
-            font-weight: 800;
+            font-size: 32px;
+            font-weight: 700;
             color: #2D6B4F;
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
         
         .steps {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
         }
         
         .step {
             text-align: center;
-            padding: 30px 20px;
+            padding: 35px 25px;
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 20px;
+            border: 2px solid #C4A661;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
         
         .step .icon {
-            font-size: 56px;
-            margin-bottom: 16px;
+            font-size: 64px;
+            margin-bottom: 20px;
         }
         
         .step h3 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             color: #2D6B4F;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         
         .step p {
-            font-size: 16px;
+            font-size: 17px;
             color: #6B4739;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         
         .app-icons {
             display: flex;
             gap: 20px;
             justify-content: center;
-            margin-top: 40px;
+            margin-top: 50px;
         }
         
         .app-icons img {
-            height: 48px;
+            height: 50px;
             width: auto;
         }
         
         .cta-bottom {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 60px;
         }
         
         .btn-cta {
             display: inline-block;
-            padding: 18px 36px;
-            font-size: 18px;
+            padding: 18px 40px;
+            font-size: 20px;
+            font-family: 'Quicksand', sans-serif;
             font-weight: 700;
             background: linear-gradient(135deg, #E8A628 0%, #D69520 100%);
             color: white;
@@ -381,6 +363,13 @@
             border-radius: 16px;
             box-shadow: 0 6px 0 #C87651;
             transition: all 0.15s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #C87651;
         }
         
         .btn-cta:active {
@@ -388,86 +377,92 @@
             box-shadow: 0 2px 0 #C87651;
         }
         
-        @media (min-width: 600px) {
-            .logo-card, .main-card {
-                max-width: 440px;
+        /* Mobile */
+        @media (max-width: 600px) {
+            .container {
+                padding: 35px 28px;
             }
             
             h1 {
-                font-size: 32px;
+                font-size: 30px;
+            }
+            
+            .tagline {
+                font-size: 18px;
+            }
+            
+            .progress-box {
+                padding: 22px 20px;
+            }
+            
+            .milestone {
+                font-size: 16px;
+            }
+            
+            .info-section h2 {
+                font-size: 26px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Coin rain container -->
     <div id="coin-container"></div>
     
+    <!-- Top section -->
     <div class="top-section" id="top">
-        <div class="logo-card">
-            <img src="assets/FarmCash_Logo_v1.png" alt="FarmCash">
-            <p class="tagline">Plant seeds, harvest cash 🌱💰</p>
-        </div>
-        
-        <div class="main-card">
-            <h1>Join the Waitlist</h1>
+        <div class="container">
+            <div class="logo">
+                <img src="assets/FarmCash_Logo_v1.png" alt="FarmCash">
+            </div>
             
-            <div class="progress-visual">
-                <div class="progress-header">🎁 Earn up to 500 seeds</div>
-                <div class="milestone-item">
-                    <span class="label">
-                        <div class="checkbox checked pulse"></div>
-                        <span>Sign up</span>
-                    </span>
-                    <span class="reward">+100</span>
+            <h1>Join Our Waitlist! 🌱</h1>
+            <p class="tagline">Plant seeds, harvest cash 💰</p>
+            
+            <!-- Progress preview with checkboxes -->
+            <div class="progress-box">
+                <div class="progress-title">🎁 Earn up to 500 seeds by sharing!</div>
+                <div class="milestone">
+                    <div class="checkbox checked pulse"></div>
+                    <span>Sign up — <strong>100 seeds</strong></span>
                 </div>
-                <div class="milestone-item">
-                    <span class="label">
-                        <div class="checkbox"></div>
-                        <span>Get link</span>
-                    </span>
-                    <span class="reward">+50</span>
+                <div class="milestone">
+                    <div class="checkbox"></div>
+                    <span>Get your link — <strong>50 seeds</strong></span>
                 </div>
-                <div class="milestone-item">
-                    <span class="label">
-                        <div class="checkbox"></div>
-                        <span>1st referral</span>
-                    </span>
-                    <span class="reward">+200</span>
+                <div class="milestone">
+                    <div class="checkbox"></div>
+                    <span>1st referral — <strong>200 seeds</strong></span>
                 </div>
-                <div class="milestone-item">
-                    <span class="label">
-                        <div class="checkbox"></div>
-                        <span>2nd referral</span>
-                    </span>
-                    <span class="reward">+100</span>
+                <div class="milestone">
+                    <div class="checkbox"></div>
+                    <span>2nd referral — <strong>100 seeds</strong></span>
                 </div>
-                <div class="milestone-item">
-                    <span class="label">
-                        <div class="checkbox"></div>
-                        <span>3rd referral</span>
-                    </span>
-                    <span class="reward">+50</span>
+                <div class="milestone">
+                    <div class="checkbox"></div>
+                    <span>3rd referral — <strong>50 seeds</strong></span>
                 </div>
             </div>
             
+            <!-- Signup form -->
             <form id="signup-form">
                 <div class="form-group">
-                    <label for="game-type">Favorite mobile game type?</label>
+                    <label for="game-type">What's your favorite type of mobile game?</label>
                     <select id="game-type" required>
-                        <option value="">Choose one...</option>
-                        <option value="puzzle">🧩 Puzzle</option>
-                        <option value="strategy">⚔️ Strategy</option>
-                        <option value="casual">🚜 Casual</option>
-                        <option value="action">🎮 Action</option>
-                        <option value="rpg">🗡️ RPG</option>
+                        <option value="">Pick one...</option>
+                        <option value="puzzle">🧩 Puzzle Games</option>
+                        <option value="strategy">⚔️ Strategy Games</option>
+                        <option value="casual">🚜 Casual & Farming</option>
+                        <option value="action">🎮 Action Games</option>
+                        <option value="rpg">🗡️ RPG Games</option>
                         <option value="other">❓ Other</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="app-usage">Daily app usage?</label>
+                    <label for="app-usage">How much time do you spend on mobile apps daily?</label>
                     <select id="app-usage" required>
-                        <option value="">Choose one...</option>
+                        <option value="">Pick one...</option>
                         <option value="1-2">1-2 hours</option>
                         <option value="3-4">3-4 hours</option>
                         <option value="5+">5+ hours</option>
@@ -475,38 +470,40 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="you@example.com" required>
+                    <label for="email">Your email address</label>
+                    <input type="email" id="email" placeholder="your@email.com" required>
                 </div>
                 
-                <button type="submit" class="btn-submit">Join Waitlist</button>
+                <button type="submit" class="btn-submit">Join Now! 🌱</button>
             </form>
             
             <div id="message"></div>
         </div>
     </div>
     
+    <!-- Scroll indicator -->
     <div class="scroll-indicator">
         <a href="#learn-more">Learn More ↓</a>
     </div>
     
+    <!-- How It Works -->
     <section class="info-section" id="learn-more">
         <h2>How It Works</h2>
         <div class="steps">
             <div class="step">
                 <div class="icon">📱</div>
                 <h3>Complete Offers</h3>
-                <p>Play games, take surveys, try apps</p>
+                <p>Play games, take surveys, try new apps</p>
             </div>
             <div class="step">
                 <div class="icon">🌱</div>
                 <h3>Plant Seeds</h3>
-                <p>Grow crops over time</p>
+                <p>Turn earnings into crops that grow over time</p>
             </div>
             <div class="step">
                 <div class="icon">💰</div>
                 <h3>Harvest Cash</h3>
-                <p>Convert to real money</p>
+                <p>Convert grown crops to real money</p>
             </div>
         </div>
         
@@ -516,23 +513,24 @@
         </div>
     </section>
     
+    <!-- Why FarmCash -->
     <section class="info-section alt">
         <h2>Why FarmCash?</h2>
         <div class="steps">
             <div class="step">
                 <div class="icon">🎮</div>
-                <h3>Gamified</h3>
-                <p>Fun, not boring</p>
+                <h3>Gamified Experience</h3>
+                <p>Earning money is fun, not boring</p>
             </div>
             <div class="step">
                 <div class="icon">✅</div>
                 <h3>Transparent</h3>
-                <p>See when you'll get paid</p>
+                <p>See exactly when you'll get paid</p>
             </div>
             <div class="step">
                 <div class="icon">🎁</div>
-                <h3>Early Access</h3>
-                <p>Earn bonus seeds</p>
+                <h3>Early Adopter Rewards</h3>
+                <p>Join now and earn bonus seeds</p>
             </div>
         </div>
         
@@ -568,11 +566,12 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            messageEl.textContent = 'Creating account...';
+            messageEl.textContent = '🌱 Creating your account...';
             messageEl.className = '';
             
+            // TODO: Supabase logic
             setTimeout(() => {
-                messageEl.textContent = '✅ Check your email!';
+                messageEl.textContent = '🎉 Success! Check your email to verify your account!';
                 messageEl.className = 'success';
                 form.reset();
                 coinRain(30);
