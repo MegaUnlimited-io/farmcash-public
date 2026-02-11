@@ -192,15 +192,18 @@
         <p>Looks like this crop didn't grow. The page you're looking for doesn't exist or has been moved.</p>
         
         <a href="index.html" class="btn-home">Go Back Home 🏡</a>
-        
-        <div class="helpful-links">
-            <p>Helpful Links:</p>
-            <div class="link-list">
-                <a href="index.html">Join Waitlist</a>
-                <a href="privacy.html">Privacy Policy</a>
-                <a href="terms.html">Terms of Service</a>
-            </div>
-        </div>
     </div>
+<!-- Footer -->
+<div id="footer-placeholder"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/includes/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Footer error:', error));
+    });
+</script>
 </body>
 </html>

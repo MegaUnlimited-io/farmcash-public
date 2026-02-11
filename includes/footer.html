@@ -1,0 +1,148 @@
+<footer class="site-footer">
+    <div class="footer-content">
+        <!-- Main Links -->
+        <nav class="footer-nav">
+            <a href="index.html" class="footer-link">Join Waitlist</a>
+            <a href="privacy.html" class="footer-link">Privacy Policy</a>
+            <a href="terms.html" class="footer-link">Terms of Service</a>
+        </nav>
+        
+        <!-- Social Links (commented out for now) -->
+        <!--
+        <div class="footer-social">
+            <a href="https://twitter.com/farmcash" class="social-link" target="_blank" rel="noopener">
+                <span>🐦 Twitter</span>
+            </a>
+            <a href="https://instagram.com/farmcash" class="social-link" target="_blank" rel="noopener">
+                <span>📸 Instagram</span>
+            </a>
+            <a href="https://discord.gg/farmcash" class="social-link" target="_blank" rel="noopener">
+                <span>💬 Discord</span>
+            </a>
+        </div>
+        -->
+        
+        <!-- Copyright -->
+        <div class="footer-copyright">
+            <p>&copy; 2026 <a href="https://megaunlimited.io" target="_blank" rel="noopener">Mega Unlimited LTD</a>. All rights reserved.</p>
+            <p class="footer-tagline">Plant seeds, harvest cash 🌱💰</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .site-footer {
+        position: relative;
+        z-index: 1;
+        margin-top: 60px;
+        padding: 40px 20px 30px;
+    }
+    
+    .footer-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    /* Navigation Links */
+    .footer-nav {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .footer-link {
+        font-size: 15px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        padding: 8px 12px;
+        border-radius: 8px;
+    }
+    
+    .footer-link:hover {
+        color: #E8A628;
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Social Links (for when you uncomment) */
+    .footer-social {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .social-link {
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .social-link:hover {
+        color: white;
+        background: rgba(232, 166, 40, 0.3);
+        transform: translateY(-2px);
+    }
+    
+    /* Copyright */
+    .footer-copyright {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.6;
+    }
+    
+    .footer-copyright p {
+        margin-bottom: 8px;
+    }
+    
+    .footer-copyright a {
+        color: #E8A628;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .footer-copyright a:hover {
+        text-decoration: underline;
+    }
+    
+    .footer-tagline {
+        font-size: 13px;
+        font-style: italic;
+        opacity: 0.7;
+    }
+    
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+        .site-footer {
+            margin-top: 40px;
+            padding: 30px 20px 20px;
+        }
+        
+        .footer-nav {
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .footer-link {
+            display: block;
+        }
+        
+        .footer-social {
+            gap: 12px;
+        }
+    }
+</style>
