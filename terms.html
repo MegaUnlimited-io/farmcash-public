@@ -1173,21 +1173,20 @@
             
             <p>For customer support regarding your Account, offers, or withdrawals, please use the in-app support feature or email <a href="mailto:support@megaunlimited.io">support@megaunlimited.io</a>.</p>
         </section>
-        
-        <!-- Document Footer -->
-        <footer class="document-footer">
-            <p>— End of Terms of Service —</p>
-            <p>© 2025 Mega Unlimited LTD. All rights reserved.</p>
-        </footer>
+
         
     </div>
-    <div id="footer-placeholder"></div>
+<!-- Footer -->
+<div id="footer-placeholder"></div>
 <script>
-    fetch('includes/footer.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('footer-placeholder').innerHTML = data;
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/includes/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Footer error:', error));
+    });
 </script>
 </body>
 </html>
