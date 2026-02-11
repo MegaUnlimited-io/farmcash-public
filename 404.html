@@ -32,17 +32,18 @@
             box-sizing: border-box;
         }
         
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: url('assets/lp_background_2.png') center center / cover no-repeat fixed;
-            background-color: #87CEEB;
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: url('assets/lp_background_2.png') center center / cover no-repeat fixed;
+    background-color: #87CEEB;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;  /* ← ADDED THIS */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
         
         /* Blur overlay */
         body::before {
@@ -54,19 +55,20 @@
             z-index: 0;
         }
         
-        .container {
-            position: relative;
-            z-index: 1;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 60px 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-        }
+.container {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 60px 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: auto;  /* ← ADDED THIS - pushes footer down */
+}
         
         .logo {
             margin-bottom: 30px;
