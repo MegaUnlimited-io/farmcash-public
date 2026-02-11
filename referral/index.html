@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXWH94NT6C"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-GXWH94NT6C');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmCash - Dashboard 🌱</title>
+    
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: url('../assets/lp_background_2.png') center center / cover no-repeat fixed;
+            background-color: #87CEEB;
+            position: relative;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Blur overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: inherit;
+            filter: blur(12px);
+            z-index: 0;
+        }
+        
+        /* Coin container */
+        #coin-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .coin-fall {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+            }
+        }
+        
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Logo header */
+        .logo-header {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            margin-bottom: 20px;
+        }
+        
+        .logo-header img {
+            max-width: 160px;
+            height: auto;
+        }
+        
+        /* Card styling */
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px 28px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            margin-bottom: 20px;
+        }
+        
+        /* Welcome card */
+        .welcome-card h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2D6B4F;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        
+        .user-info {
+            font-size: 15px;
+            color: #6B4739;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .user-info .label {
+            font-weight: 600;
+            color: #2D6B4F;
+        }
+        
+        .seeds-display {
+            background: linear-gradient(135deg, #FFF8F0 0%, #F5F1E8 100%);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            border: 2px solid rgba(232, 166, 40, 0.2);
+        }
+        
+        .seeds-count {
+            font-size: 48px;
+            font-weight: 800;
+            color: #E8A628;
+            margin-bottom: 8px;
+        }
+        
+        .seeds-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6B4739;
+        }
+        
+        /* Referral card */
+        .referral-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2D6B4F;
+            margin-bottom: 16px;
+        }
+        
+        .referral-link-box {
+            background: #F8F8F8;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            word-break: break-all;
+            font-size: 14px;
+            color: #333;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+        
+        .btn-copy {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E8A628 0%, #D69520 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 6px 0 #C87651;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            margin-bottom: 20px;
+        }
+        
+        .btn-copy:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #C87651;
+        }
+        
+        .btn-copy.copied {
+            background: linear-gradient(135deg, #A3C644 0%, #8BB435 100%);
+            box-shadow: 0 6px 0 #6B8F2A;
+        }
+        
+        .btn-copy.copied:active {
+            box-shadow: 0 2px 0 #6B8F2A;
+        }
+        
+        /* Social share buttons */
+        .share-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6B4739;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        
+        .social-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .btn-social {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid #E0E0E0;
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .btn-social:hover {
+            border-color: #A3C644;
+            background: #F8FFF8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-social:active {
+            transform: translateY(0);
+        }
+        
+        /* Progress card */
+        .progress-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2D6B4F;
+            margin-bottom: 20px;
+        }
+        
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 15px;
+            color: #6B4739;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(196, 166, 97, 0.2);
+        }
+        
+        .milestone-item:last-child {
+            border-bottom: none;
+        }
+        
+        .milestone-item .label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* Checkbox */
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #6B4739;
+            border-radius: 4px;
+            background: white;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .checkbox.checked {
+            background: #A3C644;
+            border-color: #A3C644;
+        }
+        
+        .checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .milestone-item .reward {
+            font-weight: 700;
+            color: #E8A628;
+        }
+        
+        /* Next steps card */
+        .next-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2D6B4F;
+            margin-bottom: 20px;
+        }
+        
+        .next-steps {
+            list-style: none;
+        }
+        
+        .next-steps li {
+            font-size: 16px;
+            color: #6B4739;
+            line-height: 1.8;
+            padding-left: 28px;
+            position: relative;
+            margin-bottom: 12px;
+        }
+        
+        .next-steps li::before {
+            content: '🌱';
+            position: absolute;
+            left: 0;
+            font-size: 18px;
+        }
+        
+        /* Mobile adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 0;
+            }
+            
+            .card {
+                padding: 28px 24px;
+            }
+            
+            .welcome-card h1 {
+                font-size: 24px;
+            }
+            
+            .seeds-count {
+                font-size: 40px;
+            }
+            
+            .social-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-social {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="coin-container"></div>
+    
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo-header">
+            <img src="../assets/FarmCash_Logo_v1.png" alt="FarmCash">
+        </div>
+        
+        <!-- Welcome Card -->
+        <div class="card welcome-card">
+            <h1>Welcome to FarmCash! 🎉</h1>
+            
+            <div class="user-info">
+                <div><span class="label">Email:</span> <span id="user-email">user@example.com</span></div>
+                <div><span class="label">Joined:</span> <span id="account-created">January 1, 2026</span></div>
+            </div>
+            
+            <div class="seeds-display">
+                <div class="seeds-count" id="seeds-count">100</div>
+                <div class="seeds-label">Seeds Earned (out of 500 possible)</div>
+            </div>
+        </div>
+        
+        <!-- Referral Card -->
+        <div class="card referral-card">
+            <h2>Your Referral Link 🔗</h2>
+            
+            <div class="referral-link-box" id="referral-link">
+                farmcash.app?ref=USER123
+            </div>
+            
+            <button class="btn-copy" id="copy-btn">
+                Copy Link
+            </button>
+            
+            <div class="share-label">Share with friends:</div>
+            <div class="social-buttons">
+                <a href="#" class="btn-social" id="share-twitter" target="_blank">
+                    <span>🐦</span>
+                    <span>Twitter</span>
+                </a>
+                <a href="#" class="btn-social" id="share-whatsapp" target="_blank">
+                    <span>💬</span>
+                    <span>WhatsApp</span>
+                </a>
+                <a href="#" class="btn-social" id="share-email">
+                    <span>✉️</span>
+                    <span>Email</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Progress Card -->
+        <div class="card progress-card">
+            <h2>Your Progress 📊</h2>
+            
+            <div class="milestone-item">
+                <span class="label">
+                    <div class="checkbox checked"></div>
+                    <span>Sign up</span>
+                </span>
+                <span class="reward">+100</span>
+            </div>
+            <div class="milestone-item">
+                <span class="label">
+                    <div class="checkbox checked"></div>
+                    <span>Get referral link</span>
+                </span>
+                <span class="reward">+50</span>
+            </div>
+            <div class="milestone-item">
+                <span class="label">
+                    <div class="checkbox" id="ref-1"></div>
+                    <span>1st referral</span>
+                </span>
+                <span class="reward">+200</span>
+            </div>
+            <div class="milestone-item">
+                <span class="label">
+                    <div class="checkbox" id="ref-2"></div>
+                    <span>2nd referral</span>
+                </span>
+                <span class="reward">+100</span>
+            </div>
+            <div class="milestone-item">
+                <span class="label">
+                    <div class="checkbox" id="ref-3"></div>
+                    <span>3rd referral</span>
+                </span>
+                <span class="reward">+50</span>
+            </div>
+        </div>
+        
+        <!-- Next Steps Card -->
+        <div class="card next-card">
+            <h2>What's Next? 🚀</h2>
+            <ul class="next-steps">
+                <li>We'll email you when the app launches</li>
+                <li>Your seeds will be waiting in your account</li>
+                <li>Invite friends now to earn more seeds!</li>
+                <li>The more you share, the more you earn</li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+        // Initialize Supabase
+        const supabase = createClient(
+            'https://soljnhiswixveasbjur.supabase.co',
+            'YOUR_SUPABASE_ANON_KEY' // TODO: Replace with actual anon key
+        )
+
+        // Coin rain function
+        function createCoin() {
+            const coin = document.createElement('video');
+            coin.src = '../assets/3d-coin.webm';
+            coin.autoplay = true;
+            coin.loop = true;
+            coin.muted = true;
+            coin.className = 'coin-fall';
+            coin.style.left = Math.random() * 100 + 'vw';
+            coin.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            
+            document.getElementById('coin-container').appendChild(coin);
+            setTimeout(() => coin.remove(), 4000);
+        }
+        
+        function coinRain(count = 10) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => createCoin(), i * 50);
+            }
+        }
+
+        // Load user data
+        async function loadUserData() {
+            const { data: { user } } = await supabase.auth.getUser();
+            
+            if (!user) {
+                // Redirect to home if not logged in
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Display user email
+            document.getElementById('user-email').textContent = user.email;
+            
+            // Display account created date
+            const createdDate = new Date(user.created_at);
+            document.getElementById('account-created').textContent = createdDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // TODO: Fetch actual user data from database
+            // For now, using defaults:
+            // - Seeds: 100 (signup) + 50 (got link) = 150
+            // - Referral link: farmcash.app?ref=USER_ID
+            
+            const userId = user.id;
+            const referralLink = `https://farmcash.app?ref=${userId}`;
+            
+            document.getElementById('referral-link').textContent = referralLink;
+            
+            // Update seeds count (default 150 = signup + got link)
+            document.getElementById('seeds-count').textContent = '150';
+            
+            // Setup share links
+            setupShareLinks(referralLink);
+        }
+
+        // Setup social share links
+        function setupShareLinks(referralLink) {
+            const shareText = encodeURIComponent('Join me on FarmCash! Plant seeds, harvest real cash 🌱💰');
+            const shareUrl = encodeURIComponent(referralLink);
+            
+            // Twitter
+            document.getElementById('share-twitter').href = 
+                `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
+            
+            // WhatsApp
+            document.getElementById('share-whatsapp').href = 
+                `https://wa.me/?text=${shareText}%20${shareUrl}`;
+            
+            // Email
+            document.getElementById('share-email').href = 
+                `mailto:?subject=${encodeURIComponent('Join FarmCash!')}&body=${shareText}%20${shareUrl}`;
+        }
+
+        // Copy link functionality
+        const copyBtn = document.getElementById('copy-btn');
+        const referralLinkEl = document.getElementById('referral-link');
+        
+        copyBtn.addEventListener('click', async () => {
+            const link = referralLinkEl.textContent;
+            
+            try {
+                await navigator.clipboard.writeText(link);
+                
+                // Change button state
+                copyBtn.textContent = '✓ Copied!';
+                copyBtn.classList.add('copied');
+                
+                // Trigger coin rain
+                coinRain(10);
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy Link';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+                
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                alert('Failed to copy link. Please copy manually.');
+            }
+        });
+
+        // Initialize
+        loadUserData();
+    </script>
+</body>
+</html>
