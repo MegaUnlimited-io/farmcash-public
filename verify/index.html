@@ -321,11 +321,13 @@ async function verifyEmail() {
         }
 
         const referrerId = userData?.referred_by || null;
-        const isFirstTimeVerification = !userData?.email_confirmed_at || userData?.seeds_balance === 0;
+        // Use seeds_balance as the source of truth - if they have seeds, they've already signed up
+        const isFirstTimeVerification = userData?.seeds_balance === 0;
         
         console.log('Referrer ID:', referrerId);
         console.log('Is first-time verification:', isFirstTimeVerification);
         console.log('Current seeds balance:', userData?.seeds_balance);
+        console.log('Email confirmed at:', userData?.email_confirmed_at);
         
         // Only process seed awarding for first-time verification
         if (isFirstTimeVerification) {
