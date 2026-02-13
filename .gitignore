@@ -4,9 +4,11 @@
 test-supabase.html
 TEST-README.md
 SETUP-SUPABASE.md
+MERGE-SUMMARY.md
 start-test-server.bat
 start-test-server.ps1
 _dev-menu.html
+index-working-backup.html
 
 # Node modules (if added later)
 node_modules/

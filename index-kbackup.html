@@ -551,134 +551,10 @@
     transition: all 0.15s ease;
 }
 
-        .btn-login:active {
-            transform: translateY(4px);
-        }
-        
-        /* Scroll indicator */
-        .scroll-indicator {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 30px 20px;
-        }
-        
-        .scroll-indicator a {
-            display: inline-block;
-            font-size: 20px;
-            font-weight: 700;
-            color: white;
-            text-decoration: none;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            animation: bounce 2s ease-in-out infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        
-        /* Info sections */
-        .info-section {
-            position: relative;
-            z-index: 1;
-            padding: 80px 20px;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        
-        .info-section.alt {
-            background: linear-gradient(135deg, rgba(163, 198, 68, 0.2) 0%, rgba(232, 166, 40, 0.2) 100%);
-        }
-        
-        .info-section h2 {
-            font-size: 28px;
-            font-weight: 800;
-            color: #2D6B4F;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .steps {
-            max-width: 800px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 30px;
-        }
-        
-        .step {
-            text-align: center;
-            padding: 30px 20px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        
-        .step .icon {
-            font-size: 56px;
-            margin-bottom: 16px;
-        }
-        
-        .step h3 {
-            font-size: 20px;
-            font-weight: 700;
-            color: #2D6B4F;
-            margin-bottom: 10px;
-        }
-        
-        .step p {
-            font-size: 16px;
-            color: #6B4739;
-            line-height: 1.5;
-        }
-        
-        .app-icons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 40px;
-        }
-        
-        .app-icons img {
-            height: 48px;
-            width: auto;
-        }
-        
-        .cta-bottom {
-            text-align: center;
-            margin-top: 50px;
-        }
-        
-        .btn-cta {
-            display: inline-block;
-            padding: 18px 36px;
-            font-size: 18px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #E8A628 0%, #D69520 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 16px;
-            box-shadow: 0 6px 0 #C87651;
-            transition: all 0.15s;
-        }
-        
-        .btn-cta:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #C87651;
-        }
-        
-        @media (min-width: 600px) {
-            .logo-card, .main-card {
-                max-width: 440px;
-            }
-            
-            h1 {
-                font-size: 32px;
-            }
-        }
-    </style>
+.btn-login:active {
+    transform: translateY(4px);
+}
+</style>
 </head>
 <body>
 
@@ -686,11 +562,11 @@
 <div id="coin-container"></div>
 
 <!-- Top Section -->
-<div class="top-section" id="top">
+<div class="top-section">
     <!-- Logo Card -->
     <div class="logo-card">
-        <img src="assets/FarmCash_Logo_v1.png" alt="FarmCash">
-        <p class="tagline">Plant seeds, harvest cash 🌱💰</p>
+        <img src="assets/FarmCash_Logo_v1.png" alt="FarmCash Logo">
+        <div class="tagline">Plant Seeds, Harvest Real Cash 🌱💰</div>
     </div>
     
     <!-- Main Card -->
@@ -699,111 +575,90 @@
         
         <!-- Progress Visual -->
         <div class="progress-visual">
-            <div class="progress-header">🎁 Earn up to 500 seeds</div>
+            <div class="progress-header">Earn Seeds by Completing Milestones</div>
             
             <div class="milestone-item">
                 <span class="label">
-                    <div class="checkbox checked pulse"></div>
+                    <div class="checkbox pulse checked"></div>
                     <span>Sign up</span>
                 </span>
-                <span class="reward">+100</span>
+                <span class="reward">+100 🌱</span>
             </div>
             <div class="milestone-item">
                 <span class="label">
-                    <div class="checkbox"></div>
-                    <span>Get link</span>
+                    <div class="checkbox pulse checked"></div>
+                    <span>Get referral link</span>
                 </span>
-                <span class="reward">+50</span>
+                <span class="reward">+50 🌱</span>
             </div>
             <div class="milestone-item">
                 <span class="label">
                     <div class="checkbox"></div>
                     <span>1st referral</span>
                 </span>
-                <span class="reward">+200</span>
+                <span class="reward">+200 🌱</span>
             </div>
             <div class="milestone-item">
                 <span class="label">
                     <div class="checkbox"></div>
                     <span>2nd referral</span>
                 </span>
-                <span class="reward">+100</span>
+                <span class="reward">+100 🌱</span>
             </div>
             <div class="milestone-item">
                 <span class="label">
                     <div class="checkbox"></div>
                     <span>3rd referral</span>
                 </span>
-                <span class="reward">+50</span>
+                <span class="reward">+50 🌱</span>
             </div>
         </div>
         
         <!-- Signup Form -->
         <form id="signup-form">
-            <!-- Question 1: Game Type -->
             <div class="form-group">
-                <label for="game-type">Favorite mobile game type?</label>
+                <label for="game-type">What type of games do you enjoy?</label>
                 <select id="game-type" required>
-                    <option value="">Choose one...</option>
-                    <option value="puzzle">🧩 Puzzle</option>
-                    <option value="strategy">⚔️ Strategy</option>
-                    <option value="casual">🚜 Casual</option>
-                    <option value="action">🎮 Action</option>
-                    <option value="rpg">🗡️ RPG</option>
-                    <option value="other">❓ Other</option>
+                    <option value="">Select one...</option>
+                    <option value="casual">Casual (Candy Crush, Solitaire)</option>
+                    <option value="strategy">Strategy (Clash of Clans, Age of Empires)</option>
+                    <option value="action">Action (PUBG, Call of Duty)</option>
+                    <option value="puzzle">Puzzle (Sudoku, Brain Games)</option>
+                    <option value="simulation">Simulation (Sims, Farming Simulator)</option>
+                    <option value="other">Other</option>
                 </select>
             </div>
             
-            <!-- Question 2: Rewarded Apps -->
+            <div class="form-divider">Have you used rewarded apps before?</div>
+            
             <div class="form-group">
-                <label>Which rewarded apps have you used? (Select all that apply)</label>
                 <div class="checkbox-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" name="rewarded-apps" value="freecash">
-                        <span class="checkbox-custom"></span>
-                        <span class="checkbox-text">FreeCash</span>
+                        <input type="checkbox" name="rewarded-apps" value="yes-currently">
+                        <div class="checkbox-custom"></div>
+                        <span class="checkbox-text">Yes, I currently use them</span>
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="rewarded-apps" value="mistplay">
-                        <span class="checkbox-custom"></span>
-                        <span class="checkbox-text">Mistplay</span>
+                        <input type="checkbox" name="rewarded-apps" value="yes-past">
+                        <div class="checkbox-custom"></div>
+                        <span class="checkbox-text">Yes, I've used them in the past</span>
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" name="rewarded-apps" value="swagbucks">
-                        <span class="checkbox-custom"></span>
-                        <span class="checkbox-text">Swagbucks</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="rewarded-apps" value="inboxdollars">
-                        <span class="checkbox-custom"></span>
-                        <span class="checkbox-text">InboxDollars</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="rewarded-apps" value="none">
-                        <span class="checkbox-custom"></span>
-                        <span class="checkbox-text">None (I'm new to this!)</span>
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="rewarded-apps" value="other">
-                        <span class="checkbox-custom"></span>
-                        <span class="checkbox-text">Other</span>
+                        <input type="checkbox" name="rewarded-apps" value="no">
+                        <div class="checkbox-custom"></div>
+                        <span class="checkbox-text">No, this is new to me</span>
                     </label>
                 </div>
             </div>
             
-            <!-- Form Divider -->
-            <div class="form-divider">
-                <span>Almost there! 📧</span>
-            </div>
-
-            <!-- Question 3: Device Type -->
+            <div class="form-divider">Which devices do you use?</div>
+            
             <div class="form-group">
-                <label>What device will you use? (Select all that apply)</label>
                 <div class="device-options">
                     <label class="device-option">
                         <input type="checkbox" name="device" value="android">
                         <div class="device-card">
-                            <div class="device-icon">🤖</div>
+                            <div class="device-icon">📱</div>
                             <div class="device-name">Android</div>
                         </div>
                     </label>
@@ -811,87 +666,28 @@
                         <input type="checkbox" name="device" value="ios">
                         <div class="device-card">
                             <div class="device-icon">🍎</div>
-                            <div class="device-name">Apple</div>
+                            <div class="device-name">iPhone/iPad</div>
                         </div>
                     </label>
                 </div>
             </div>
             
-            <!-- Question 4: Email -->
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="you@example.com" required>
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="your@email.com" required>
             </div>
             
-            <button type="submit" class="btn-submit">Join Waitlist</button>
+            <button type="submit" class="btn-submit">Join Waitlist 🚀</button>
             
             <div id="message"></div>
         </form>
         
         <!-- Login Prompt -->
         <div class="login-prompt">
-            <p>Already signed up? <a href="#" id="login-link">Log in to dashboard →</a></p>
+            <p>Already have an account? <a href="#" id="login-link">Log in</a></p>
         </div>
     </div>
 </div>
-
-<!-- Scroll Indicator -->
-<div class="scroll-indicator">
-    <a href="#learn-more">Learn More ↓</a>
-</div>
-
-<!-- Info Section: How It Works -->
-<section class="info-section" id="learn-more">
-    <h2>How It Works</h2>
-    <div class="steps">
-        <div class="step">
-            <div class="icon">📱</div>
-            <h3>Complete Offers</h3>
-            <p>Play games, take surveys, try apps</p>
-        </div>
-        <div class="step">
-            <div class="icon">🌱</div>
-            <h3>Plant Seeds</h3>
-            <p>Grow crops over time</p>
-        </div>
-        <div class="step">
-            <div class="icon">💰</div>
-            <h3>Harvest Cash</h3>
-            <p>Convert to real money</p>
-        </div>
-    </div>
-    
-    <div class="app-icons">
-        <img src="assets/google_playstore_download.png" alt="Get it on Google Play">
-        <img src="assets/apple_app_store_download.png" alt="Download on App Store">
-    </div>
-</section>
-
-<!-- Info Section: Why FarmCash -->
-<section class="info-section alt">
-    <h2>Why FarmCash?</h2>
-    <div class="steps">
-        <div class="step">
-            <div class="icon">🎮</div>
-            <h3>Gamified</h3>
-            <p>Fun, not boring</p>
-        </div>
-        <div class="step">
-            <div class="icon">✅</div>
-            <h3>Transparent</h3>
-            <p>See when you'll get paid</p>
-        </div>
-        <div class="step">
-            <div class="icon">🎁</div>
-            <h3>Early Access</h3>
-            <p>Earn bonus seeds</p>
-        </div>
-    </div>
-    
-    <div class="cta-bottom">
-        <a href="#top" class="btn-cta">Join Waitlist</a>
-    </div>
-</section>
 
 <!-- Footer Placeholder -->
 <div id="footer-placeholder"></div>
