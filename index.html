@@ -16,6 +16,9 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>FarmCash - Join the Waitlist 🌱</title>
     
 <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
@@ -904,15 +907,37 @@ window.addEventListener('DOMContentLoaded', async () => {
     // AUTO-REDIRECT IF AUTHENTICATED
     // ============================================================================
     
-    // Check if user is already logged in
-    const { session } = await checkAuth();
-    
-    if (session) {
-        // User is authenticated, redirect to dashboard
-        console.log('User already authenticated, redirecting to dashboard...');
-        window.location.href = '/referral/';
-        return; // Stop executing the rest of the script
+    try {
+        // Check if user is already logged in
+        const { session } = await checkAuth();
+        
+        if (session) {
+            // User is authenticated, redirect to dashboard
+            console.log('User already authenticated, redirecting to dashboard...');
+            
+            // Use replace instead of href to prevent back button issues
+            window.location.replace('/referral/');
+            return; // Stop executing the rest of the script
+        }
+        
+        console.log('No active session, showing signup form');
+    } catch (error) {
+        console.error('Error checking auth:', error);
+        // Continue to show signup form if there's an error
     }
+    
+    // Fallback check after a delay (for slow mobile connections)
+    setTimeout(async () => {
+        try {
+            const { session } = await checkAuth();
+            if (session && window.location.pathname === '/') {
+                console.log('Delayed auth check: redirecting to dashboard...');
+                window.location.replace('/referral/');
+            }
+        } catch (error) {
+            console.error('Delayed auth check error:', error);
+        }
+    }, 1000);
     
     // ============================================================================
     // COIN RAIN ANIMATION
@@ -1092,14 +1117,26 @@ window.addEventListener('DOMContentLoaded', async () => {
     loginLink.addEventListener('click', async (e) => {
         e.preventDefault();
         
-        // Check if user is already logged in
-        const { session } = await checkAuth();
+        console.log('Login link clicked');
         
-        if (session) {
-            // Already logged in, just redirect to dashboard
-            window.location.href = '/referral/';
-        } else {
-            // Not logged in, show magic link modal
+        try {
+            // Check if user is already logged in
+            const { session } = await checkAuth();
+            
+            console.log('Session check result:', !!session);
+            
+            if (session) {
+                // Already logged in, just redirect to dashboard
+                console.log('Already authenticated, redirecting...');
+                window.location.href = '/referral/';
+            } else {
+                // Not logged in, show magic link modal
+                console.log('Not authenticated, showing modal');
+                loginModal.classList.add('active');
+            }
+        } catch (error) {
+            console.error('Error in login link handler:', error);
+            // Fallback: show modal if there's an error
             loginModal.classList.add('active');
         }
     });
