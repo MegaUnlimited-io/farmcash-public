@@ -256,6 +256,9 @@ async function verifyEmail() {
         statusEl.innerHTML = '<div class="spinner"></div>Verifying your email...';
         statusEl.className = 'loading';
         
+        console.log('Full URL:', window.location.href);
+        console.log('Hash:', window.location.hash);
+        
         // Get hash from URL (contains tokens)
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const access_token = hashParams.get('access_token');
@@ -263,11 +266,13 @@ async function verifyEmail() {
         const type = hashParams.get('type');
         
         console.log('Verification type:', type);
-        console.log('Has tokens:', !!access_token, !!refresh_token);
+        console.log('Has access_token:', !!access_token);
+        console.log('Has refresh_token:', !!refresh_token);
+        console.log('Access token length:', access_token?.length);
         
         // Check if this is an email verification or magic link
         if (!access_token || !type) {
-            throw new Error('Invalid verification link. Please check your email for the correct link.');
+            throw new Error('Invalid verification link. Missing tokens in URL hash. Please check your email for the correct link.');
         }
         
         // Handle both 'signup' and 'magiclink' types (Supabase sends 'magiclink' for email verification)
@@ -367,16 +372,13 @@ const referrerId = userData?.referred_by || null;
     }
 }
 
-// Dashboard button click
-if (dashboardBtn) {
-    dashboardBtn.addEventListener('click', () => {
-        window.location.href = '/referral/';
-    });
-}
-
 // Auto-start verification on page load
 window.addEventListener('DOMContentLoaded', () => {
-    verifyEmail();
+    // Wait a moment for hash to be populated after redirect
+    setTimeout(() => {
+        console.log('Starting verification...');
+        verifyEmail();
+    }, 100);
 });
     </script>
 <!-- Footer -->
