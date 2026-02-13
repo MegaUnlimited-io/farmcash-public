@@ -2,12 +2,15 @@
 
 # Testing files (do not publish)
 test-supabase.html
+test-referral.html
 TEST-README.md
 SETUP-SUPABASE.md
 MERGE-SUMMARY.md
 DEBUG-AUTH-FLOW.md
 AUTH-UX-IMPROVEMENTS.md
 MOBILE-DEBUG-GUIDE.md
+REFERRAL-DEBUG-GUIDE.md
+email-templates.md
 start-test-server.bat
 start-test-server.ps1
 _dev-menu.html
