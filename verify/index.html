@@ -39,10 +39,16 @@
             background-color: #87CEEB;
             position: relative;
             min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Page wrapper for centering */
+        .page-wrapper {
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
         }
         
         /* Blur overlay */
@@ -201,20 +207,25 @@
 <body>
     <div id="coin-container"></div>
     
-    <div class="container">
-        <div class="logo">
-            <img src="../assets/FarmCash_Logo_v1.png" alt="FarmCash">
+    <div class="page-wrapper">
+        <div class="container">
+            <div class="logo">
+                <img src="../assets/FarmCash_Logo_v1.png" alt="FarmCash">
+            </div>
+            
+            <h1>Email Verification</h1>
+            
+            <div id="status" class="loading">
+                <div class="spinner"></div>
+                Verifying your email...
+            </div>
+            
+            <div id="message" class="message"></div>
         </div>
-        
-        <h1>Email Verification</h1>
-        
-        <div id="status" class="loading">
-            <div class="spinner"></div>
-            Verifying your email...
-        </div>
-        
-        <div id="message" class="message"></div>
     </div>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
 
     <script>
 // ============================================================================
@@ -297,50 +308,63 @@ async function verifyEmail() {
         console.log('User verified successfully:', userId);
         console.log('User email:', sessionData.user.email);
         
-// Get referrer from user record (already stored during signup)
-const { data: userData, error: userFetchError } = await supabaseClient
-    .from('users')
-    .select('referred_by')
-    .eq('id', userId)
-    .single();
+        // Check if this is first-time verification or magic link login
+        // by checking if user already has seeds
+        const { data: userData, error: userFetchError } = await supabaseClient
+            .from('users')
+            .select('referred_by, seeds_balance, email_confirmed_at')
+            .eq('id', userId)
+            .single();
 
-if (userFetchError) {
-    console.error('Error fetching user data:', userFetchError);
-}
+        if (userFetchError) {
+            console.error('Error fetching user data:', userFetchError);
+        }
 
-const referrerId = userData?.referred_by || null;
+        const referrerId = userData?.referred_by || null;
+        const isFirstTimeVerification = !userData?.email_confirmed_at || userData?.seeds_balance === 0;
         
         console.log('Referrer ID:', referrerId);
+        console.log('Is first-time verification:', isFirstTimeVerification);
+        console.log('Current seeds balance:', userData?.seeds_balance);
         
-        // Process email verification (awards seeds if first time)
-        statusEl.innerHTML = '<div class="spinner"></div>Awarding your seeds...';
-        
-        // Process verification
-        const { success, data, error: verifyError } = await processEmailVerification(userId, referrerId);
+        // Only process seed awarding for first-time verification
+        if (isFirstTimeVerification) {
+            // Process email verification (awards seeds if first time)
+            statusEl.innerHTML = '<div class="spinner"></div>Awarding your seeds...';
+            
+            // Process verification
+            const { success, data, error: verifyError } = await processEmailVerification(userId, referrerId);
 
-        console.log('Verification processing result:', { success, data, error: verifyError });
+            console.log('Verification processing result:', { success, data, error: verifyError });
 
-        if (success) {
-            // Clear referral code only on success
-            clearStoredReferralCode(); 
+            if (success) {
+                // Clear referral code only on success
+                clearStoredReferralCode(); 
+            }
+            
+            if (!success) {
+                console.error('Verification processing error:', verifyError);
+                // Continue anyway - user is verified, just seeds might not be awarded
+            }
+            
+            console.log('Verification result:', data);
+            
+            // Show success state with seed reward
+            statusEl.innerHTML = '<div class="success">✅ Email Verified!</div>';
+            
+            // Update message with seeds earned
+            const totalSeeds = data?.total_seeds_awarded || 150;
+            messageEl.innerHTML = `<p>You received <strong>${totalSeeds} seeds</strong>! 🌱</p><p>Redirecting to your dashboard...</p>`;
+            
+            // Trigger coin rain!
+            coinRain(50);
+        } else {
+            // Magic link login - no seed awarding
+            console.log('Magic link login detected, skipping seed award');
+            
+            statusEl.innerHTML = '<div class="success">✅ Welcome Back!</div>';
+            messageEl.innerHTML = `<p>You're logged in successfully.</p><p>Redirecting to your dashboard...</p>`;
         }
-        
-        if (!success) {
-            console.error('Verification processing error:', verifyError);
-            // Continue anyway - user is verified, just seeds might not be awarded
-        }
-        
-        console.log('Verification result:', data);
-        
-        // Show success state
-        statusEl.innerHTML = '<div class="success">✅ Email Verified!</div>';
-        
-        // Update message with seeds earned
-        const totalSeeds = data?.total_seeds_awarded || 150;
-        messageEl.innerHTML = `<p>You received <strong>${totalSeeds} seeds</strong>! 🌱</p><p>Redirecting to your dashboard...</p>`;
-        
-        // Trigger coin rain!
-        coinRain(50);
         
         // Redirect to dashboard after 3 seconds
         setTimeout(() => {
@@ -381,8 +405,8 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 100);
 });
     </script>
+
 <!-- Footer -->
-<div id="footer-placeholder"></div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         fetch('/includes/footer.html')

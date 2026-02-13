@@ -96,7 +96,7 @@
         }
         
         .logo-header img {
-            max-width: 160px;
+            max-width: 280px;
             height: auto;
         }
         
@@ -145,6 +145,25 @@
             font-weight: 800;
             color: #E8A628;
             margin-bottom: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .seeds-count.animating {
+            animation: seedsPulse 1.5s ease-out;
+        }
+        
+        @keyframes seedsPulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
         
         .seeds-label {
@@ -474,6 +493,31 @@
     <script>
         // Functions are loaded from farmcash-auth.js (loaded in <head>)
         
+        // Animate number counting up
+        function animateCount(element, start, end, duration = 1500) {
+            const startTime = performance.now();
+            const range = end - start;
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function for smooth animation (ease-out)
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(start + (range * easeOut));
+                
+                element.textContent = current;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    element.textContent = end; // Ensure we end at exact value
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
         // Coin rain function
         function createCoin() {
             const coin = document.createElement('video');
@@ -529,8 +573,20 @@
                     day: 'numeric'
                 });
 
-                // Display seeds balance
-                document.getElementById('seeds-count').textContent = userData.seeds_balance || 0;
+                // Display seeds balance with animation
+                const seedsElement = document.getElementById('seeds-count');
+                const seedsBalance = userData.seeds_balance || 0;
+                
+                // Add animation class
+                seedsElement.classList.add('animating');
+                
+                // Animate the count
+                animateCount(seedsElement, 0, seedsBalance, 1500);
+                
+                // Remove animation class after it completes
+                setTimeout(() => {
+                    seedsElement.classList.remove('animating');
+                }, 1500);
                 
                 // Build referral link using referral_code (not user ID!)
                 const referralLink = `https://farmcash.app?ref=${userData.referral_code}`;
