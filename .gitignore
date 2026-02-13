@@ -5,6 +5,7 @@ test-supabase.html
 TEST-README.md
 SETUP-SUPABASE.md
 MERGE-SUMMARY.md
+DEBUG-AUTH-FLOW.md
 start-test-server.bat
 start-test-server.ps1
 _dev-menu.html

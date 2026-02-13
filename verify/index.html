@@ -226,10 +226,6 @@
 // Elements
 const statusEl = document.getElementById('status');
 const messageEl = document.getElementById('message');
-const loaderEl = document.getElementById('loader');
-const successEl = document.getElementById('success');
-const errorEl = document.getElementById('error');
-const dashboardBtn = document.getElementById('dashboard-btn');
 const coinContainer = document.getElementById('coin-container');
 
 // Coin rain function
@@ -257,9 +253,8 @@ function coinRain(count = 50) {
 async function verifyEmail() {
     try {
         // Show loading state
-        loaderEl.style.display = 'block';
-        successEl.style.display = 'none';
-        errorEl.style.display = 'none';
+        statusEl.innerHTML = '<div class="spinner"></div>Verifying your email...';
+        statusEl.className = 'loading';
         
         // Get hash from URL (contains tokens)
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
@@ -273,6 +268,11 @@ async function verifyEmail() {
         // Check if this is an email verification or magic link
         if (!access_token || !type) {
             throw new Error('Invalid verification link. Please check your email for the correct link.');
+        }
+        
+        // Handle both 'signup' and 'magiclink' types (Supabase sends 'magiclink' for email verification)
+        if (type !== 'signup' && type !== 'magiclink') {
+            throw new Error('Invalid verification type. Expected signup or magiclink.');
         }
         
         // Set session with tokens
@@ -289,20 +289,31 @@ async function verifyEmail() {
         
         const userId = sessionData.user.id;
         
+        console.log('User verified successfully:', userId);
+        console.log('User email:', sessionData.user.email);
+        
 // Get referrer from user record (already stored during signup)
-const { data: userData } = await supabaseClient
+const { data: userData, error: userFetchError } = await supabaseClient
     .from('users')
     .select('referred_by')
     .eq('id', userId)
     .single();
 
+if (userFetchError) {
+    console.error('Error fetching user data:', userFetchError);
+}
+
 const referrerId = userData?.referred_by || null;
+        
+        console.log('Referrer ID:', referrerId);
         
         // Process email verification (awards seeds if first time)
         statusEl.innerHTML = '<div class="spinner"></div>Awarding your seeds...';
         
         // Process verification
         const { success, data, error: verifyError } = await processEmailVerification(userId, referrerId);
+
+        console.log('Verification processing result:', { success, data, error: verifyError });
 
         if (success) {
             // Clear referral code only on success

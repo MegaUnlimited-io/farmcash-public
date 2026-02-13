@@ -1043,8 +1043,13 @@ window.addEventListener('DOMContentLoaded', async () => {
             referrerId
         );
         
+        console.log('Waitlist creation result:', { success: waitlistSuccess, error: waitlistError });
+        
         if (!waitlistSuccess) {
             console.error('Waitlist creation error:', waitlistError);
+            console.error('Survey data:', surveyData);
+            console.error('Fingerprint data:', fingerprintData);
+            console.error('Referrer ID:', referrerId);
             messageEl.textContent = '⚠️ Account created but there was an issue. Please check your email to verify.';
             messageEl.className = 'warning';
         } else {
