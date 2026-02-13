@@ -10,6 +10,7 @@
       gtag('config', 'G-GXWH94NT6C');
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/farmcash-auth.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FarmCash - Email Verification 🌱</title>
@@ -215,14 +216,12 @@
         <div id="message" class="message"></div>
     </div>
 
-    <script type="module">
+    <script>
 // ============================================================================
 // VERIFY PAGE JAVASCRIPT (verify/index.html)
-// Place this inside <script type="module"> tag at bottom of verify/index.html
 // ============================================================================
 
-// Import Supabase client from parent directory
-import { supabaseClient, processEmailVerification, clearStoredReferralCode } from '../js/farmcash-auth.js';
+// Functions are loaded from farmcash-auth.js (loaded in <head>)
 
 // Elements
 const statusEl = document.getElementById('status');

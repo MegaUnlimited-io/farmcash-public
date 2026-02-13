@@ -10,6 +10,7 @@
       gtag('config', 'G-GXWH94NT6C');
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/farmcash-auth.js"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -467,15 +468,9 @@
         </div>
     </div>
 
-    <script type="module">
-        // Import from shared auth module
-        import { 
-            supabaseClient, 
-            checkAuth, 
-            getUserDashboardData,
-            signOut 
-        } from '../js/farmcash-auth.js';
-
+    <script>
+        // Functions are loaded from farmcash-auth.js (loaded in <head>)
+        
         // Coin rain function
         function createCoin() {
             const coin = document.createElement('video');

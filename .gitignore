@@ -3,6 +3,10 @@
 # Testing files (do not publish)
 test-supabase.html
 TEST-README.md
+SETUP-SUPABASE.md
+start-test-server.bat
+start-test-server.ps1
+_dev-menu.html
 
 # Node modules (if added later)
 node_modules/

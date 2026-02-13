@@ -4,8 +4,8 @@
 // ============================================================================
 
 // Initialize Supabase client
-const SUPABASE_URL = 'https://soljnhiswixveasbjur.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvbGpuaGlzd2l4dmVhc2JqdXIiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTczNjU0NTU0NywiZXhwIjoyMDUyMTIxNTQ3fQ.Ij-Ks-Yz-Ks-Yz-Ks-Yz-Ks-Yz-Ks-Yz-Ks-Yz-Ks-Yz'; // TODO: Replace with your actual anon key
+const SUPABASE_URL = 'https://sqljnhjsrwixyeasbjur.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_ZNm9BWAUZkAV29iYMkOlHg_gIc6NVGM'; 
 
 // Import Supabase (already done in HTML via CDN)
 const { createClient } = supabase;
@@ -329,22 +329,8 @@ function clearStoredReferralCode() {
 }
 
 // ============================================================================
-// EXPORT (for ES6 modules)
+// GLOBAL SCOPE (for non-module scripts like index.html)
+// Functions are already available globally since this is loaded as a regular script
 // ============================================================================
 
-export {
-    supabaseClient,
-    checkAuth,
-    signUpUser,
-    sendMagicLink,
-    signOut,
-    createWaitlistUser,
-    processEmailVerification,
-    getUserDashboardData,
-    getReferralCode,
-    getUserIdFromReferralCode,
-    storeReferralCode,
-    getStoredReferralCode,
-    clearStoredReferralCode,
-    getQuickFingerprint
-};
+// For ES6 modules (verify/referral pages), we'll create a separate export file
