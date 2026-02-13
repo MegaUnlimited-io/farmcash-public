@@ -1,0 +1,33 @@
+# FarmCash - Git Ignore File
+
+# Testing files (do not publish)
+test-supabase.html
+TEST-README.md
+
+# Node modules (if added later)
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs (if added later)
+dist/
+build/
