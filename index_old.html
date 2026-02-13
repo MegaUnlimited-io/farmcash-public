@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GXWH94NT6C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GXWH94NT6C');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmCash - Join the Waitlist 🌱</title>
+    
+<link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+<link rel="manifest" href="site.webmanifest" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: url('assets/lp_background_2.png') center center / cover no-repeat fixed;
+            background-color: #87CEEB;
+            position: relative;
+        }
+        
+        /* Blur overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: inherit;
+            filter: blur(12px);
+            z-index: 0;
+        }
+        
+        /* Top section */
+        .top-section {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Coin container */
+        #coin-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .coin-fall {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+            }
+        }
+        
+        /* Logo card */
+        .logo-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            margin-bottom: 16px;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .logo-card img {
+            max-width: 280px;
+            height: auto;
+        }
+        
+        .tagline {
+            font-size: 18px;
+            font-weight: 600;
+            color: #6B4739;
+            margin-top: 12px;
+        }
+        
+        /* Main card */
+        .main-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2D6B4F;
+            text-align: center;
+            margin-bottom: 28px;
+            line-height: 1.2;
+        }
+        
+        /* Progress with checkboxes */
+        .progress-visual {
+            background: linear-gradient(135deg, #FFF8F0 0%, #F5F1E8 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 28px;
+            border: 2px solid rgba(232, 166, 40, 0.2);
+        }
+        
+        .progress-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2D6B4F;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #6B4739;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(196, 166, 97, 0.2);
+        }
+        
+        .milestone-item:last-child {
+            border-bottom: none;
+        }
+        
+        .milestone-item .label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Animated checkbox */
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #6B4739;
+            border-radius: 4px;
+            background: white;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #A3C644;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .checkbox.pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 rgba(163, 198, 68, 0.7);
+            }
+            50% { 
+                box-shadow: 0 0 0 6px rgba(163, 198, 68, 0);
+            }
+        }
+        
+        .checkbox.pulse::after {
+            animation: checkFade 2s ease-in-out infinite;
+        }
+        
+        @keyframes checkFade {
+            0%, 40%, 100% { opacity: 1; }
+            60% { opacity: 0; }
+        }
+        
+        .milestone-item .reward {
+            font-weight: 700;
+            color: #E8A628;
+        }
+        
+        /* Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2D6B4F;
+            margin-bottom: 8px;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            background: #F8F8F8;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            color: #333;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            background: white;
+            border-color: #A3C644;
+            box-shadow: 0 0 0 3px rgba(163, 198, 68, 0.1);
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 18px 24px;
+            font-size: 17px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E8A628 0%, #D69520 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 6px 0 #C87651;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            letter-spacing: 0.3px;
+            min-height: 56px;
+        }
+        
+        .btn-submit:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #C87651;
+        }
+        
+        #message {
+            margin-top: 20px;
+            padding: 16px;
+            font-size: 14px;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        #message.success {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        /* Checkbox Group */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.checkbox-label:hover {
+    background: rgba(163, 198, 68, 0.05);
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #6B4739;
+    border-radius: 4px;
+    background: white;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+    background: #A3C644;
+    border-color: #A3C644;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.checkbox-text {
+    font-size: 15px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-divider {
+    text-align: center;
+    margin: 24px 0;
+    padding: 12px;
+    background: linear-gradient(135deg, #FFF8F0 0%, #F5F1E8 100%);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #E8A628;
+}
+
+/* Device Options */
+.device-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.device-option {
+    cursor: pointer;
+}
+
+.device-option input[type="checkbox"] {
+    display: none;
+}
+
+.device-card {
+    background: #F8F8F8;
+    border: 2px solid #E0E0E0;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.device-option:hover .device-card {
+    background: white;
+    border-color: #A3C644;
+}
+
+.device-option input[type="checkbox"]:checked + .device-card {
+    background: linear-gradient(135deg, #FFF8F0 0%, #F5F1E8 100%);
+    border: 2px solid #A3C644;
+    box-shadow: 0 4px 12px rgba(163, 198, 68, 0.2);
+}
+
+.device-icon {
+    font-size: 48px;
+    margin-bottom: 8px;
+}
+
+.device-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2D6B4F;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+    .device-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .device-card {
+        padding: 16px;
+    }
+    
+    .device-icon {
+        font-size: 40px;
+    }
+}
+        
+/* Login prompt */
+.login-prompt {
+    margin-top: 20px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(224, 224, 224, 0.5);
+}
+
+.login-prompt p {
+    font-size: 14px;
+    color: #6B4739;
+    margin: 0;
+}
+
+.login-prompt a {
+    color: #1e6b4f;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.login-prompt a:hover {
+    color: #A3C644;
+    text-decoration: underline;
+}
+
+/* Login Modal */
+.login-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-modal.active {
+    display: flex;
+}
+
+.login-modal-content {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 40px 32px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.login-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #6B4739;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+}
+
+.login-close:hover {
+    color: #2D6B4F;
+}
+
+.login-modal h2 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #2D6B4F;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.login-modal .subtitle {
+    font-size: 14px;
+    color: #6B4739;
+    text-align: center;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+}
+
+.login-form input[type="email"] {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    background: #F8F8F8;
+    border: 2px solid #E0E0E0;
+    border-radius: 12px;
+    color: #333;
+    transition: all 0.2s ease;
+}
+
+.login-form input[type="email"]:focus {
+    outline: none;
+    background: white;
+    border-color: #A3C644;
+    box-shadow: 0 0 0 3px rgba(163, 198, 68, 0.1);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    background: linear-gradient(135deg, #2D6B4F 0%, #1e6b4f 100%);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 6px 0 #145040;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-login:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #145040;
+}
+
+.login-message {
+    margin-top: 16px;
+    padding: 12px;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.login-message.success {
+    background: #E8F5E9;
+    color: #2E7D32;
+}
+
+.login-message.error {
+    background: #FFEBEE;
+    color: #C62828;
+}
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .scroll-indicator a {
+            display: inline-block;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        /* Info sections */
+        .info-section {
+            position: relative;
+            z-index: 1;
+            padding: 80px 20px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .info-section.alt {
+            background: linear-gradient(135deg, rgba(163, 198, 68, 0.2) 0%, rgba(232, 166, 40, 0.2) 100%);
+        }
+        
+        .info-section h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2D6B4F;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .steps {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+        
+        .step {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .step .icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+        }
+        
+        .step h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2D6B4F;
+            margin-bottom: 10px;
+        }
+        
+        .step p {
+            font-size: 16px;
+            color: #6B4739;
+            line-height: 1.5;
+        }
+        
+        .app-icons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .app-icons img {
+            height: 48px;
+            width: auto;
+        }
+        
+        .cta-bottom {
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .btn-cta {
+            display: inline-block;
+            padding: 18px 36px;
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E8A628 0%, #D69520 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 16px;
+            box-shadow: 0 6px 0 #C87651;
+            transition: all 0.15s;
+        }
+        
+        .btn-cta:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #C87651;
+        }
+        
+        @media (min-width: 600px) {
+            .logo-card, .main-card {
+                max-width: 440px;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="coin-container"></div>
+    
+    <div class="top-section" id="top">
+        <div class="logo-card">
+            <img src="assets/FarmCash_Logo_v1.png" alt="FarmCash">
+            <p class="tagline">Plant seeds, harvest cash 🌱💰</p>
+        </div>
+        
+        <div class="main-card">
+            <h1>Join the Waitlist</h1>
+            
+            <div class="progress-visual">
+                <div class="progress-header">🎁 Earn up to 500 seeds</div>
+                <div class="milestone-item">
+                    <span class="label">
+                        <div class="checkbox checked pulse"></div>
+                        <span>Sign up</span>
+                    </span>
+                    <span class="reward">+100</span>
+                </div>
+                <div class="milestone-item">
+                    <span class="label">
+                        <div class="checkbox"></div>
+                        <span>Get link</span>
+                    </span>
+                    <span class="reward">+50</span>
+                </div>
+                <div class="milestone-item">
+                    <span class="label">
+                        <div class="checkbox"></div>
+                        <span>1st referral</span>
+                    </span>
+                    <span class="reward">+200</span>
+                </div>
+                <div class="milestone-item">
+                    <span class="label">
+                        <div class="checkbox"></div>
+                        <span>2nd referral</span>
+                    </span>
+                    <span class="reward">+100</span>
+                </div>
+                <div class="milestone-item">
+                    <span class="label">
+                        <div class="checkbox"></div>
+                        <span>3rd referral</span>
+                    </span>
+                    <span class="reward">+50</span>
+                </div>
+            </div>
+            
+            <form id="signup-form">
+    <!-- Question 1: Game Type -->
+    <div class="form-group">
+        <label for="game-type">Favorite mobile game type?</label>
+        <select id="game-type" required>
+            <option value="">Choose one...</option>
+            <option value="puzzle">🧩 Puzzle</option>
+            <option value="strategy">⚔️ Strategy</option>
+            <option value="casual">🚜 Casual</option>
+            <option value="action">🎮 Action</option>
+            <option value="rpg">🗡️ RPG</option>
+            <option value="other">❓ Other</option>
+        </select>
+    </div>
+    
+    <!-- Question 2: Rewarded Apps (NEW) -->
+    <div class="form-group">
+        <label>Which rewarded apps have you used? (Select all that apply)</label>
+        <div class="checkbox-group">
+            <label class="checkbox-label">
+                <input type="checkbox" name="rewarded-apps" value="freecash">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">FreeCash</span>
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="rewarded-apps" value="mistplay">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Mistplay</span>
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="rewarded-apps" value="swagbucks">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Swagbucks</span>
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="rewarded-apps" value="inboxdollars">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">InboxDollars</span>
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="rewarded-apps" value="none">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">None (I'm new to this!)</span>
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="rewarded-apps" value="other">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">Other</span>
+            </label>
+        </div>
+    </div>
+    
+<!-- After Question 2 -->
+<div class="form-divider">
+    <span>Almost there! 📧</span>
+</div>
+
+    <!-- Question 3: Device Type (NEW) -->
+    <div class="form-group">
+        <label>What device will you use? (Select all that apply)</label>
+        <div class="device-options">
+            <label class="device-option">
+                <input type="checkbox" name="device" value="android" required>
+                <div class="device-card">
+                    <div class="device-icon">🤖</div>
+                    <div class="device-name">Android</div>
+                </div>
+            </label>
+            <label class="device-option">
+                <input type="checkbox" name="device" value="ios" required>
+                <div class="device-card">
+                    <div class="device-icon">🍎</div>
+                    <div class="device-name">Apple</div>
+                </div>
+            </label>
+        </div>
+    </div>
+    
+    <!-- Question 4: Email -->
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+    </div>
+    
+    <button type="submit" class="btn-submit">Join Waitlist</button>
+</form>
+
+<div id="message"></div>
+
+<!-- Login Link -->
+<div class="login-prompt">
+    <p>Already signed up? <a href="#" id="login-link">Log in to dashboard →</a></p>
+</div>
+        </div>
+    </div>
+    
+    <div class="scroll-indicator">
+        <a href="#learn-more">Learn More ↓</a>
+    </div>
+    
+    <section class="info-section" id="learn-more">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="icon">📱</div>
+                <h3>Complete Offers</h3>
+                <p>Play games, take surveys, try apps</p>
+            </div>
+            <div class="step">
+                <div class="icon">🌱</div>
+                <h3>Plant Seeds</h3>
+                <p>Grow crops over time</p>
+            </div>
+            <div class="step">
+                <div class="icon">💰</div>
+                <h3>Harvest Cash</h3>
+                <p>Convert to real money</p>
+            </div>
+        </div>
+        
+        <div class="app-icons">
+            <img src="assets/google_playstore_download.png" alt="Get it on Google Play">
+            <img src="assets/apple_app_store_download.png" alt="Download on App Store">
+        </div>
+    </section>
+    
+    <section class="info-section alt">
+        <h2>Why FarmCash?</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="icon">🎮</div>
+                <h3>Gamified</h3>
+                <p>Fun, not boring</p>
+            </div>
+            <div class="step">
+                <div class="icon">✅</div>
+                <h3>Transparent</h3>
+                <p>See when you'll get paid</p>
+            </div>
+            <div class="step">
+                <div class="icon">🎁</div>
+                <h3>Early Access</h3>
+                <p>Earn bonus seeds</p>
+            </div>
+        </div>
+        
+        <div class="cta-bottom">
+            <a href="#top" class="btn-cta">Join Waitlist</a>
+        </div>
+    </section>
+    
+    <script>
+        const form = document.getElementById('signup-form');
+        const messageEl = document.getElementById('message');
+        
+        function createCoin() {
+            const coin = document.createElement('video');
+            coin.src = 'assets/3d-coin.webm';
+            coin.autoplay = true;
+            coin.loop = true;
+            coin.muted = true;
+            coin.className = 'coin-fall';
+            coin.style.left = Math.random() * 100 + 'vw';
+            coin.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            
+            document.getElementById('coin-container').appendChild(coin);
+            setTimeout(() => coin.remove(), 4000);
+        }
+        
+        function coinRain(count = 30) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => createCoin(), i * 50);
+            }
+        }
+        
+// ============================================================================
+// SIGNUP FORM HANDLER (index.html)
+// Replace existing form.addEventListener('submit') with this code
+// ============================================================================
+
+const form = document.getElementById('signup-form');
+const messageEl = document.getElementById('message');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // === COLLECT FORM DATA ===
+    
+    const gameType = document.getElementById('game-type').value;
+    const email = document.getElementById('email').value;
+    
+    const rewardedApps = Array.from(document.querySelectorAll('input[name="rewarded-apps"]:checked'))
+        .map(cb => cb.value);
+    
+    const devices = Array.from(document.querySelectorAll('input[name="device"]:checked'))
+        .map(cb => cb.value);
+    
+    // === VALIDATION ===
+    
+    if (rewardedApps.length === 0) {
+        messageEl.textContent = '❌ Please select at least one rewarded app option';
+        messageEl.className = 'error';
+        return;
+    }
+    
+    if (devices.length === 0) {
+        messageEl.textContent = '❌ Please select at least one device type';
+        messageEl.className = 'error';
+        return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        messageEl.textContent = '❌ Please enter a valid email address';
+        messageEl.className = 'error';
+        return;
+    }
+    
+    const sanitizedEmail = email.trim().toLowerCase();
+    
+    const disposableDomains = [
+        'tempmail.com', 'guerrillamail.com', '10minutemail.com', 
+        'throwaway.email', 'mailinator.com', 'maildrop.cc',
+        'trashmail.com', 'temp-mail.org'
+    ];
+    const emailDomain = sanitizedEmail.split('@')[1];
+    if (disposableDomains.includes(emailDomain)) {
+        messageEl.textContent = '❌ Please use a permanent email address';
+        messageEl.className = 'error';
+        return;
+    }
+    
+    if (email.length > 254) {
+        messageEl.textContent = '❌ Email address is too long';
+        messageEl.className = 'error';
+        return;
+    }
+    
+    // === GET REFERRAL CODE ===
+    
+    const referralCode = getReferralCode() || getStoredReferralCode();
+    let referrerId = null;
+    
+    if (referralCode) {
+        messageEl.textContent = 'Validating referral code...';
+        messageEl.className = '';
+        
+        referrerId = await getUserIdFromReferralCode(referralCode);
+        if (!referrerId) {
+            console.warn('Invalid referral code:', referralCode);
+            // Continue anyway - don't block signup for invalid referral
+        }
+    }
+    
+    // === COLLECT FINGERPRINT ===
+    
+    messageEl.textContent = 'Creating your account...';
+    messageEl.className = '';
+    
+    const fingerprintData = await getQuickFingerprint();
+    
+    // === CREATE SUPABASE AUTH USER ===
+    
+    const { data: authData, error: authError } = await signUpUser(sanitizedEmail);
+    
+    if (authError) {
+        console.error('Signup error:', authError);
+        
+        if (authError.message.includes('already registered')) {
+            messageEl.textContent = '❌ This email is already registered. Try logging in instead.';
+        } else {
+            messageEl.textContent = '❌ Signup failed: ' + authError.message;
+        }
+        messageEl.className = 'error';
+        return;
+    }
+    
+    const userId = authData.user.id;
+    
+    // === CREATE WAITLIST RECORD ===
+    
+    const surveyData = {
+        gameType: gameType,
+        rewardedApps: rewardedApps,
+        devices: devices
+    };
+    
+    const { success: waitlistSuccess, error: waitlistError } = await createWaitlistUser(
+        userId,
+        sanitizedEmail,
+        surveyData,
+        fingerprintData,
+        referrerId
+    );
+    
+    if (!waitlistSuccess) {
+        console.error('Waitlist creation error:', waitlistError);
+        messageEl.textContent = '⚠️ Account created but there was an issue. Please check your email to verify.';
+        messageEl.className = 'warning';
+    } else {
+        // Success!
+        messageEl.textContent = '✅ Check your email to verify your account!';
+        messageEl.className = 'success';
+        
+        // Show coin rain (no seeds awarded yet - happens on verification)
+        coinRain(30);
+        
+        // Clear form
+        form.reset();
+        
+        // Clear stored referral code
+        clearStoredReferralCode();
+    }
+});
+// ============================================================================
+// LOGIN MODAL HANDLER (index.html)
+// Replace existing login modal code with this
+// ============================================================================
+
+// Login Modal Logic
+const loginLink = document.getElementById('login-link');
+const loginModal = document.createElement('div');
+loginModal.className = 'login-modal';
+loginModal.innerHTML = `
+    <div class="login-modal-content">
+        <button class="login-close">&times;</button>
+        <h2>Welcome Back! 🌱</h2>
+        <p class="subtitle">Enter your email and we'll send you a magic link to log in</p>
+        <form class="login-form" id="login-form">
+            <div class="form-group">
+                <input type="email" id="login-email" placeholder="your@email.com" required>
+            </div>
+            <button type="submit" class="btn-login">Send Magic Link ✨</button>
+            <div class="login-message" id="login-message"></div>
+        </form>
+    </div>
+`;
+document.body.appendChild(loginModal);
+
+// Open modal
+loginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginModal.classList.add('active');
+});
+
+// Close modal
+loginModal.querySelector('.login-close').addEventListener('click', () => {
+    loginModal.classList.remove('active');
+});
+
+// Close on outside click
+loginModal.addEventListener('click', (e) => {
+    if (e.target === loginModal) {
+        loginModal.classList.remove('active');
+    }
+});
+
+// Handle login form submission
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const loginMessageEl = document.getElementById('login-message');
+    
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        loginMessageEl.textContent = '❌ Please enter a valid email address';
+        loginMessageEl.className = 'login-message error';
+        return;
+    }
+    
+    loginMessageEl.textContent = 'Sending magic link...';
+    loginMessageEl.className = 'login-message';
+    
+    // Send magic link via Supabase
+    const { data, error } = await sendMagicLink(email);
+    
+    if (error) {
+        console.error('Magic link error:', error);
+        loginMessageEl.textContent = '❌ Failed to send magic link. Please try again.';
+        loginMessageEl.className = 'login-message error';
+        return;
+    }
+    
+    // Success
+    loginMessageEl.textContent = '✅ Magic link sent! Check your email.';
+    loginMessageEl.className = 'login-message success';
+    document.getElementById('login-email').value = '';
+});
+
+// Auto-open modal if ?login=true in URL
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('login') === 'true') {
+        loginModal.classList.add('active');
+    }
+    
+    // Store referral code if present
+    const refCode = urlParams.get('ref');
+    if (refCode) {
+        storeReferralCode(refCode);
+    }
+});
+
+// Open modal
+loginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginModal.classList.add('active');
+});
+
+// Close modal
+loginModal.querySelector('.login-close').addEventListener('click', () => {
+    loginModal.classList.remove('active');
+});
+
+// Close on outside click
+loginModal.addEventListener('click', (e) => {
+    if (e.target === loginModal) {
+        loginModal.classList.remove('active');
+    }
+});
+
+// Handle login form
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const loginMessageEl = document.getElementById('login-message');
+    
+    loginMessageEl.textContent = 'Sending magic link...';
+    loginMessageEl.className = 'login-message';
+    
+    // TODO: Add Supabase magic link logic here
+    // const { data, error } = await supabase.auth.signInWithOtp({
+    //     email: email,
+    //     options: {
+    //         emailRedirectTo: 'https://farmcash.app/dashboard.html'
+    //     }
+    // });
+    
+    // Placeholder success
+    setTimeout(() => {
+        loginMessageEl.textContent = '✅ Magic link sent! Check your email.';
+        loginMessageEl.className = 'login-message success';
+        document.getElementById('login-email').value = '';
+    }, 1000);
+});
+    </script>
+<!-- Footer -->
+<div id="footer-placeholder"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/includes/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('Footer error:', error));
+    });
+</script>
+</body>
+</html>

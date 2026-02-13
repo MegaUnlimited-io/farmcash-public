@@ -5,7 +5,7 @@
 
 // Initialize Supabase client
 const SUPABASE_URL = 'https://soljnhiswixveasbjur.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_ZNm9BWAUZkAV29iYMkOlHg_gIc6NVGM'; // TODO: Replace with real key
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvbGpuaGlzd2l4dmVhc2JqdXIiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTczNjU0NTU0NywiZXhwIjoyMDUyMTIxNTQ3fQ.Ij-Ks-Yz-Ks-Yz-Ks-Yz-Ks-Yz-Ks-Yz-Ks-Yz-Ks-Yz'; // TODO: Replace with your actual anon key
 
 // Import Supabase (already done in HTML via CDN)
 const { createClient } = supabase;
@@ -313,24 +313,38 @@ async function getUserIdFromReferralCode(referralCode) {
     }
 }
 
-// Store referral code in session storage (persist during signup)
+// Store referral code in LOCAL storage (persists across sessions)
 function storeReferralCode(code) {
     if (code) {
-        sessionStorage.setItem('farmcash_referral', code);
+        localStorage.setItem('farmcash_referral', code); // ← Changed
     }
 }
 
 function getStoredReferralCode() {
-    return sessionStorage.getItem('farmcash_referral');
+    return localStorage.getItem('farmcash_referral'); // ← Changed
 }
 
 function clearStoredReferralCode() {
-    sessionStorage.removeItem('farmcash_referral');
+    localStorage.removeItem('farmcash_referral'); // ← Changed
 }
 
 // ============================================================================
-// EXPORT (for ES6 modules if needed)
+// EXPORT (for ES6 modules)
 // ============================================================================
 
-// If using ES6 modules:
-// export { supabaseClient, checkAuth, signUpUser, sendMagicLink, ... }
+export {
+    supabaseClient,
+    checkAuth,
+    signUpUser,
+    sendMagicLink,
+    signOut,
+    createWaitlistUser,
+    processEmailVerification,
+    getUserDashboardData,
+    getReferralCode,
+    getUserIdFromReferralCode,
+    storeReferralCode,
+    getStoredReferralCode,
+    clearStoredReferralCode,
+    getQuickFingerprint
+};

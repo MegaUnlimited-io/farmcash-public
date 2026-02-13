@@ -222,7 +222,7 @@
 // ============================================================================
 
 // Import Supabase client from parent directory
-import { supabaseClient, processEmailVerification } from '../js/farmcash-auth.js';
+import { supabaseClient, processEmailVerification, clearStoredReferralCode } from '../js/farmcash-auth.js';
 
 // Elements
 const statusEl = document.getElementById('status');
@@ -290,43 +290,39 @@ async function verifyEmail() {
         
         const userId = sessionData.user.id;
         
-        // Get referral code from session storage (if user came via referral link)
-        const referralCode = sessionStorage.getItem('farmcash_referral');
-        let referrerId = null;
-        
-        if (referralCode) {
-            // Look up referrer user ID
-            const { data: referrerData } = await supabaseClient
-                .from('users')
-                .select('id')
-                .eq('referral_code', referralCode)
-                .single();
-            
-            referrerId = referrerData?.id || null;
-            
-            // Clear referral code from storage
-            sessionStorage.removeItem('farmcash_referral');
-        }
+// Get referrer from user record (already stored during signup)
+const { data: userData } = await supabaseClient
+    .from('users')
+    .select('referred_by')
+    .eq('id', userId)
+    .single();
+
+const referrerId = userData?.referred_by || null;
         
         // Process email verification (awards seeds if first time)
-        statusEl.textContent = 'Awarding your seeds...';
+        statusEl.innerHTML = '<div class="spinner"></div>Awarding your seeds...';
         
-        const { success, data, error } = await processEmailVerification(userId, referrerId);
+        // Process verification
+        const { success, data, error: verifyError } = await processEmailVerification(userId, referrerId);
+
+        if (success) {
+            // Clear referral code only on success
+            clearStoredReferralCode(); 
+        }
         
         if (!success) {
-            console.error('Verification processing error:', error);
+            console.error('Verification processing error:', verifyError);
             // Continue anyway - user is verified, just seeds might not be awarded
         }
         
         console.log('Verification result:', data);
         
         // Show success state
-        loaderEl.style.display = 'none';
-        successEl.style.display = 'block';
+        statusEl.innerHTML = '<div class="success">✅ Email Verified!</div>';
         
         // Update message with seeds earned
         const totalSeeds = data?.total_seeds_awarded || 150;
-        messageEl.textContent = `You received ${totalSeeds} seeds! 🌱`;
+        messageEl.innerHTML = `<p>You received <strong>${totalSeeds} seeds</strong>! 🌱</p><p>Redirecting to your dashboard...</p>`;
         
         // Trigger coin rain!
         coinRain(50);
@@ -340,8 +336,7 @@ async function verifyEmail() {
         console.error('Verification error:', error);
         
         // Show error state
-        loaderEl.style.display = 'none';
-        errorEl.style.display = 'block';
+        statusEl.innerHTML = '<div class="error">❌ Verification Failed</div>';
         
         // Determine error message
         let errorMessage = 'Verification failed. ';
@@ -358,7 +353,7 @@ async function verifyEmail() {
             errorMessage += error.message || 'Please try again or contact support.';
         }
         
-        messageEl.textContent = errorMessage;
+        messageEl.innerHTML = `<p>${errorMessage}</p>`;
     }
 }
 

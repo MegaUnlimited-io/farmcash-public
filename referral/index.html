@@ -468,13 +468,13 @@
     </div>
 
     <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-
-        // Initialize Supabase
-        const supabase = createClient(
-            'https://soljnhiswixveasbjur.supabase.co',
-            'YOUR_SUPABASE_ANON_KEY' // TODO: Replace with actual anon key
-        )
+        // Import from shared auth module
+        import { 
+            supabaseClient, 
+            checkAuth, 
+            getUserDashboardData,
+            signOut 
+        } from '../js/farmcash-auth.js';
 
         // Coin rain function
         function createCoin() {
@@ -499,40 +499,68 @@
 
         // Load user data
         async function loadUserData() {
-            const { data: { user } } = await supabase.auth.getUser();
-            
-            if (!user) {
-                // Redirect to home if not logged in
-                window.location.href = 'index.html';
-                return;
+            try {
+                // Check authentication
+                const { session } = await checkAuth();
+                
+                if (!session) {
+                    // Redirect to home if not logged in
+                    window.location.href = '/?login=true';
+                    return;
+                }
+
+                const userId = session.user.id;
+                
+                // Fetch user dashboard data from database
+                const { success, data: userData, error } = await getUserDashboardData(userId);
+                
+                if (!success || !userData) {
+                    console.error('Failed to load user data:', error);
+                    alert('Failed to load your data. Please refresh the page.');
+                    return;
+                }
+
+                // Display user email
+                document.getElementById('user-email').textContent = userData.email;
+                
+                // Display account created date
+                const createdDate = new Date(userData.created_at);
+                document.getElementById('account-created').textContent = createdDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // Display seeds balance
+                document.getElementById('seeds-count').textContent = userData.seeds_balance || 0;
+                
+                // Build referral link using referral_code (not user ID!)
+                const referralLink = `https://farmcash.app?ref=${userData.referral_code}`;
+                document.getElementById('referral-link').textContent = referralLink;
+                
+                // Update referral progress checkboxes
+                updateReferralProgress(userData.referral_count || 0);
+                
+                // Setup share links
+                setupShareLinks(referralLink);
+                
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                alert('An error occurred. Please try again.');
             }
+        }
 
-            // Display user email
-            document.getElementById('user-email').textContent = user.email;
-            
-            // Display account created date
-            const createdDate = new Date(user.created_at);
-            document.getElementById('account-created').textContent = createdDate.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-
-            // TODO: Fetch actual user data from database
-            // For now, using defaults:
-            // - Seeds: 100 (signup) + 50 (got link) = 150
-            // - Referral link: farmcash.app?ref=USER_ID
-            
-            const userId = user.id;
-            const referralLink = `https://farmcash.app?ref=${userId}`;
-            
-            document.getElementById('referral-link').textContent = referralLink;
-            
-            // Update seeds count (default 150 = signup + got link)
-            document.getElementById('seeds-count').textContent = '150';
-            
-            // Setup share links
-            setupShareLinks(referralLink);
+        // Update referral progress checkboxes based on count
+        function updateReferralProgress(referralCount) {
+            if (referralCount >= 1) {
+                document.getElementById('ref-1').classList.add('checked');
+            }
+            if (referralCount >= 2) {
+                document.getElementById('ref-2').classList.add('checked');
+            }
+            if (referralCount >= 3) {
+                document.getElementById('ref-3').classList.add('checked');
+            }
         }
 
         // Setup social share links
