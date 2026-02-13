@@ -165,6 +165,20 @@ async function createWaitlistUser(userId, email, surveyData, fingerprintData, re
                 console.error('Error creating user record:', userError);
                 throw userError;
             }
+        } else {
+            // User exists (created by trigger), update it with waitlist flag
+            const { error: updateError } = await supabaseClient
+                .from('users')
+                .update({
+                    is_waitlist_user: true,
+                    referred_by: referredBy
+                })
+                .eq('id', userId);
+            
+            if (updateError) {
+                console.error('Error updating user record:', updateError);
+                throw updateError;
+            }
         }
         
         // 3. Create waitlist_signups record
