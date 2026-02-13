@@ -376,7 +376,10 @@
             <h1>Welcome to FarmCash! 🎉</h1>
             
             <div class="user-info">
-                <div><span class="label">Email:</span> <span id="user-email">user@example.com</span></div>
+                <div>
+                    <span class="label">Email:</span> <span id="user-email">user@example.com</span>
+                    <a href="#" id="logout-link" style="margin-left: 12px; color: #dc3545; text-decoration: none; font-size: 14px; font-weight: 600; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">[logout]</a>
+                </div>
                 <div><span class="label">Joined:</span> <span id="account-created">January 1, 2026</span></div>
             </div>
             
@@ -607,6 +610,23 @@
 
         // Initialize
         loadUserData();
+        
+        // Logout functionality
+        document.getElementById('logout-link').addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            if (confirm('Are you sure you want to log out?')) {
+                const { error } = await signOut();
+                
+                if (error) {
+                    console.error('Logout error:', error);
+                    alert('Failed to log out. Please try again.');
+                } else {
+                    // Redirect to home page
+                    window.location.href = '/';
+                }
+            }
+        });
     </script>
 <!-- Footer -->
 <div id="footer-placeholder"></div>

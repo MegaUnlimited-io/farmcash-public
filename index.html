@@ -901,6 +901,20 @@
 window.addEventListener('DOMContentLoaded', async () => {
     
     // ============================================================================
+    // AUTO-REDIRECT IF AUTHENTICATED
+    // ============================================================================
+    
+    // Check if user is already logged in
+    const { session } = await checkAuth();
+    
+    if (session) {
+        // User is authenticated, redirect to dashboard
+        console.log('User already authenticated, redirecting to dashboard...');
+        window.location.href = '/referral/';
+        return; // Stop executing the rest of the script
+    }
+    
+    // ============================================================================
     // COIN RAIN ANIMATION
     // ============================================================================
     
@@ -1073,6 +1087,23 @@ window.addEventListener('DOMContentLoaded', async () => {
     // ============================================================================
     
     const loginLink = document.getElementById('login-link');
+    
+    // Make login link smart - check if already authenticated
+    loginLink.addEventListener('click', async (e) => {
+        e.preventDefault();
+        
+        // Check if user is already logged in
+        const { session } = await checkAuth();
+        
+        if (session) {
+            // Already logged in, just redirect to dashboard
+            window.location.href = '/referral/';
+        } else {
+            // Not logged in, show magic link modal
+            loginModal.classList.add('active');
+        }
+    });
+    
     const loginModal = document.createElement('div');
     loginModal.className = 'login-modal';
     loginModal.innerHTML = `
@@ -1090,12 +1121,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         </div>
     `;
     document.body.appendChild(loginModal);
-    
-    // Open modal
-    loginLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        loginModal.classList.add('active');
-    });
     
     // Close modal
     loginModal.querySelector('.login-close').addEventListener('click', () => {
