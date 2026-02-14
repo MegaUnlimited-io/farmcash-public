@@ -11,6 +11,7 @@ AUTH-UX-IMPROVEMENTS.md
 MOBILE-DEBUG-GUIDE.md
 REFERRAL-DEBUG-GUIDE.md
 email-templates.md
+create-verification-function.sql
 start-test-server.bat
 start-test-server.ps1
 _dev-menu.html

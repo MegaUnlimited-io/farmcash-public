@@ -248,13 +248,19 @@ async function generateUniqueReferralCode(maxAttempts = 5) {
 // Process email verification and award seeds
 async function processEmailVerification(userId, referredBy = null) {
     try {
+        console.log('Calling process_email_verification RPC:', { userId, referredBy });
+        
         const { data, error } = await supabaseClient.rpc('process_email_verification', {
             p_user_id: userId,
             p_referred_by: referredBy
         });
         
-        if (error) throw error;
+        if (error) {
+            console.error('RPC error:', error);
+            throw error;
+        }
         
+        console.log('RPC returned:', data);
         return { success: true, data: data[0] };
         
     } catch (error) {

@@ -339,15 +339,16 @@ async function verifyEmail() {
 
             console.log('Verification processing result:', { success, data, error: verifyError });
 
-            if (success) {
-                // Clear referral code only on success
-                clearStoredReferralCode(); 
-            }
-            
             if (!success) {
                 console.error('Verification processing error:', verifyError);
-                // Continue anyway - user is verified, just seeds might not be awarded
+                // Show error state instead of success
+                statusEl.innerHTML = '<div class="error">❌ Verification Issue</div>';
+                messageEl.innerHTML = `<p>Email verified but seeds couldn't be awarded. Contact support.</p><p>Error: ${verifyError || 'Unknown error'}</p>`;
+                return;
             }
+            
+            // Success - clear referral code
+            clearStoredReferralCode(); 
             
             console.log('Verification result:', data);
             
