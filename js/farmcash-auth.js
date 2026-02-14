@@ -261,6 +261,8 @@ async function processEmailVerification(userId, referredBy = null) {
         }
         
         console.log('RPC returned:', data);
+        console.log('RPC result structure:', JSON.stringify(data, null, 2));
+        
         return { success: true, data: data[0] };
         
     } catch (error) {
