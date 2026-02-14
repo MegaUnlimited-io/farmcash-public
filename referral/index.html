@@ -16,11 +16,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FarmCash - Dashboard 🌱</title>
     
-    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-    <link rel="manifest" href="site.webmanifest" />
+    <link rel="icon" type="image/png" href="../favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+    <link rel="manifest" href="../site.webmanifest" />
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -538,6 +538,59 @@
                 setTimeout(() => createCoin(), i * 50);
             }
         }
+        
+        // Toast notification function
+        function showToast(message, duration = 4000) {
+            // Remove any existing toast
+            const existingToast = document.querySelector('.toast-notification');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.85);
+                color: white;
+                padding: 16px 24px;
+                border-radius: 8px;
+                font-size: 14px;
+                max-width: 90%;
+                width: 400px;
+                text-align: center;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            `;
+            
+            // Add animation keyframes
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; transform: translateX(-50%) translateY(0); }
+                    to { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(toast);
+            
+            // Auto-remove after duration
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
 
         // Load user data
         async function loadUserData() {
@@ -566,7 +619,7 @@
                 document.getElementById('user-email').textContent = userData.email;
                 
                 // Display account created date
-                const createdDate = new Date(userData.created_at);
+                const createdDate = new Date(userData.creation_date);
                 document.getElementById('account-created').textContent = createdDate.toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -633,6 +686,14 @@
             // Email
             document.getElementById('share-email').href = 
                 `mailto:?subject=${encodeURIComponent('Join FarmCash!')}&body=${shareText}%20${shareUrl}`;
+            
+            // Email fallback notification
+            document.getElementById('share-email').addEventListener('click', (e) => {
+                // Show toast notification after a short delay (in case email client didn't open)
+                setTimeout(() => {
+                    showToast('📧 If your email client didn\'t open, copy your link below and paste it into your email!');
+                }, 1000);
+            });
         }
 
         // Copy link functionality
