@@ -965,41 +965,27 @@ window.addEventListener('DOMContentLoaded', async () => {
     }, 1000);
 
 // ============================================================================
+// CLOUDFLARE TURNSTILE SETUP
+// ============================================================================
 
-    // ============================================================================
-    // CLOUDFLARE TURNSTILE SETUP
-    // ============================================================================
-    
-    let turnstileWidgetId = null;
-    
-    // Wait for Turnstile script to load, then initialize
-    const initTurnstile = () => {
-        if (typeof turnstile !== 'undefined') {
-            try {
-                turnstileWidgetId = turnstile.render('#cf-turnstile', {
-                    sitekey: '0x4AAAAAACdO5PPgE1nOO6Xa',
-                    theme: 'light',
-                    size: 'invisible',
-                    callback: function(token) {
-                        console.log('Turnstile passed:', token);
-                    },
-                    'error-callback': function() {
-                        console.error('Turnstile error');
-                    }
-                });
-                console.log('Turnstile initialized, widget ID:', turnstileWidgetId);
-            } catch (error) {
-                console.error('Turnstile initialization error:', error);
+let turnstileWidgetId = null;
+
+// Initialize Turnstile after page loads
+window.addEventListener('load', () => {
+    if (typeof turnstile !== 'undefined') {
+        turnstileWidgetId = turnstile.render('#cf-turnstile', {
+            sitekey: '0x4AAAAAACdO5PPgE1nOO6Xa', // Replace with your actual site key
+            theme: 'light',
+            size: 'invisible',
+            callback: function(token) {
+                console.log('Turnstile passed:', token);
+            },
+            'error-callback': function() {
+                console.error('Turnstile error');
             }
-        } else {
-            // Turnstile script not loaded yet, try again in 100ms
-            console.log('Turnstile not loaded yet, retrying...');
-            setTimeout(initTurnstile, 100);
-        }
-    };
-    
-    // Start initialization
-    initTurnstile();
+        });
+    }
+});    
 
     // ============================================================================
     // COIN RAIN ANIMATION
