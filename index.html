@@ -1306,6 +1306,8 @@ turnstile.execute(turnstileWidgetId, {
     const refCode = urlParams.get('ref');
     if (refCode) {
         storeReferralCode(refCode);
+        // Debug: log referral ID from localStorage after setting
+        console.log('Referral ID from localStorage:', getStoredReferralCode());
     }
     
     // ============================================================================
