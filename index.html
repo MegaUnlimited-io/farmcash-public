@@ -1046,10 +1046,13 @@ window.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
             
-            turnstile.execute(turnstileWidgetId, {
-                callback: (token) => resolve(token),
-                'error-callback': () => reject(new Error('Turnstile failed'))
-            });
+            // Reset widget before executing to get fresh token
+turnstile.reset(turnstileWidgetId);
+
+turnstile.execute(turnstileWidgetId, {
+    callback: (token) => resolve(token),
+    'error-callback': () => reject(new Error('Turnstile failed'))
+});
         });
         
         console.log('Turnstile token received:', turnstileToken);
