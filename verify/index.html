@@ -320,7 +320,7 @@ async function verifyEmail() {
             // Get user data to check if seeds already claimed
             const { data: userData, error: userFetchError } = await supabaseClient
                 .from('users')
-                .select('referred_by, email_verified_bonus_claimed')
+                .select('email_verified_bonus_claimed, waitlist_bonus_claimed')
                 .eq('id', userId)
                 .single();
 
@@ -329,18 +329,21 @@ async function verifyEmail() {
                 throw new Error('Could not verify account status. Please try again.');
             }
             
-            const alreadyClaimed = userData?.email_verified_bonus_claimed === true;
-            const referrerId = userData?.referred_by || null;
+            // Check BOTH flags
+            const emailBonusClaimed = userData?.email_verified_bonus_claimed === true;
+            const waitlistBonusClaimed = userData?.waitlist_bonus_claimed === true;
+            const allBonusesClaimed = emailBonusClaimed && waitlistBonusClaimed;
             
-            console.log('Seeds already claimed:', alreadyClaimed);
-            console.log('Referrer ID:', referrerId);
+            console.log('Email bonus claimed:', emailBonusClaimed);
+            console.log('Waitlist bonus claimed:', waitlistBonusClaimed);
+            console.log('All bonuses claimed:', allBonusesClaimed);
             
-            if (alreadyClaimed) {
+            if (allBonusesClaimed) {
                 // ============================================
-                // SEEDS ALREADY CLAIMED - JUST LOGIN
+                // ALL BONUSES CLAIMED - JUST LOGIN
                 // ============================================
                 
-                console.log('User already claimed verification bonus, treating as login');
+                console.log('User already claimed all bonuses, treating as login');
                 
                 statusEl.innerHTML = '<div class="success">✅ Welcome Back!</div>';
                 messageEl.innerHTML = `
@@ -355,22 +358,40 @@ async function verifyEmail() {
                 
             } else {
                 // ============================================
-                // FIRST-TIME SIGNUP - AWARD SEEDS
+                // FIRST-TIME SIGNUP OR PARTIAL - AWARD SEEDS
                 // ============================================
                 
-                console.log('First-time verification, awarding seeds...');
+                console.log('Awarding seeds (first-time or partial verification)...');
                 
                 statusEl.innerHTML = '<div class="spinner"></div>Awarding your seeds...';
                 
                 // Process email verification (awards seeds)
-                const { success, data, error: verifyError } = await processEmailVerification(userId, referrerId);
+                // Pass null for referrer - function will look it up from database
+                const { success, data, error: verifyError } = await processEmailVerification(userId, null);
 
                 console.log('Verification processing result:', { success, data, error: verifyError });
 
                 if (!success) {
                     console.error('Verification processing error:', verifyError);
                     
-                    // Show error but don't block - user is still verified
+                    // Check if error is "already claimed" message
+                    if (verifyError && verifyError.includes('already claimed')) {
+                        // User just logged in with old signup link
+                        console.log('Database function reported bonuses already claimed');
+                        
+                        statusEl.innerHTML = '<div class="success">✅ Welcome Back!</div>';
+                        messageEl.innerHTML = `
+                            <p>You're already verified and logged in.</p>
+                            <p>Redirecting to your dashboard...</p>
+                        `;
+                        
+                        setTimeout(() => {
+                            window.location.href = '/referral/';
+                        }, 1500);
+                        return;
+                    }
+                    
+                    // Real error
                     statusEl.innerHTML = '<div class="error">⚠️ Partial Success</div>';
                     messageEl.innerHTML = `
                         <p>Email verified successfully, but there was an issue awarding seeds.</p>
@@ -385,12 +406,6 @@ async function verifyEmail() {
                     return;
                 }
                 
-                // Mark bonus as claimed in database (backup to database function)
-                await supabaseClient
-                    .from('users')
-                    .update({ email_verified_bonus_claimed: true })
-                    .eq('id', userId);
-                
                 // Clear referral code from storage (no longer needed)
                 clearStoredReferralCode(); 
                 
@@ -399,19 +414,32 @@ async function verifyEmail() {
                 // Show success state
                 statusEl.innerHTML = '<div class="success">✅ Email Verified!</div>';
                 
-                const totalSeeds = data?.total_seeds_awarded || 150;
-                messageEl.innerHTML = `
-                    <p>🎉 You received <strong>${totalSeeds} seeds</strong>!</p>
-                    <p>Redirecting to your dashboard...</p>
-                `;
+                const totalSeeds = data?.total_seeds_awarded || 0;
                 
-                // Trigger coin rain celebration!
-                coinRain(50);
-                
-                // Redirect after 3 seconds
-                setTimeout(() => {
-                    window.location.href = '/referral/';
-                }, 3000);
+                if (totalSeeds > 0) {
+                    messageEl.innerHTML = `
+                        <p>🎉 You received <strong>${totalSeeds} seeds</strong>!</p>
+                        <p>Redirecting to your dashboard...</p>
+                    `;
+                    
+                    // Trigger coin rain celebration!
+                    coinRain(50);
+                    
+                    // Redirect after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = '/referral/';
+                    }, 3000);
+                } else {
+                    // No seeds awarded (edge case - already claimed but not caught earlier)
+                    messageEl.innerHTML = `
+                        <p>You're all set!</p>
+                        <p>Redirecting to your dashboard...</p>
+                    `;
+                    
+                    setTimeout(() => {
+                        window.location.href = '/referral/';
+                    }, 1500);
+                }
             }
             
         } else {
