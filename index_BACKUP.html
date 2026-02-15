@@ -964,28 +964,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
     }, 1000);
 
-// ============================================================================
-// CLOUDFLARE TURNSTILE SETUP
-// ============================================================================
 
-let turnstileWidgetId = null;
-
-// Initialize Turnstile after page loads
-window.addEventListener('load', () => {
-    if (typeof turnstile !== 'undefined') {
-        turnstileWidgetId = turnstile.render('#cf-turnstile', {
-            sitekey: '0x4AAAAAACdO5PPgE1nOO6Xa', // Replace with your actual site key
-            theme: 'light',
-            size: 'invisible',
-            callback: function(token) {
-                console.log('Turnstile passed:', token);
-            },
-            'error-callback': function() {
-                console.error('Turnstile error');
-            }
-        });
-    }
-});    
 
     // ============================================================================
     // COIN RAIN ANIMATION
