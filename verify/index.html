@@ -13,7 +13,7 @@
     <script src="../js/farmcash-auth.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarmCash - Email Verification 🌱</title>
+    <title>FarmCash - Email Verification</title>
     
     <link rel="icon" type="image/png" href="../favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
@@ -269,26 +269,24 @@ async function verifyEmail() {
         
         console.log('Full URL:', window.location.href);
         console.log('Hash:', window.location.hash);
+        console.log('Search params:', window.location.search);
         
         // Get hash from URL (contains tokens)
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const access_token = hashParams.get('access_token');
         const refresh_token = hashParams.get('refresh_token');
-        const type = hashParams.get('type');
         
-        console.log('Verification type:', type);
+        // Get type from query string (our custom parameter)
+        const urlParams = new URLSearchParams(window.location.search);
+        const verificationType = urlParams.get('type'); // 'signup' or 'login'
+        
+        console.log('Verification type from URL:', verificationType);
         console.log('Has access_token:', !!access_token);
         console.log('Has refresh_token:', !!refresh_token);
-        console.log('Access token length:', access_token?.length);
         
-        // Check if this is an email verification or magic link
-        if (!access_token || !type) {
-            throw new Error('Invalid verification link. Missing tokens in URL hash. Please check your email for the correct link.');
-        }
-        
-        // Handle both 'signup' and 'magiclink' types (Supabase sends 'magiclink' for email verification)
-        if (type !== 'signup' && type !== 'magiclink') {
-            throw new Error('Invalid verification type. Expected signup or magiclink.');
+        // Check if this is a valid verification link
+        if (!access_token) {
+            throw new Error('Invalid verification link. Missing tokens. Please check your email for the correct link.');
         }
         
         // Set session with tokens
@@ -301,78 +299,139 @@ async function verifyEmail() {
             throw sessionError;
         }
         
-        console.log('Session set:', sessionData);
+        console.log('Session set successfully');
+        console.log('User ID:', sessionData.user.id);
+        console.log('User email:', sessionData.user.email);
         
         const userId = sessionData.user.id;
         
-        console.log('User verified successfully:', userId);
-        console.log('User email:', sessionData.user.email);
+        // Check if this should be a new user signup
+        const isSignupLink = verificationType === 'signup';
         
-        // Check if this is first-time verification or magic link login
-        // by checking if user already has seeds
-        const { data: userData, error: userFetchError } = await supabaseClient
-            .from('users')
-            .select('referred_by, seeds_balance, email_confirmed_at')
-            .eq('id', userId)
-            .single();
-
-        if (userFetchError) {
-            console.error('Error fetching user data:', userFetchError);
-        }
-
-        const referrerId = userData?.referred_by || null;
-        // Use seeds_balance as the source of truth - if they have seeds, they've already signed up
-        const isFirstTimeVerification = userData?.seeds_balance === 0;
+        console.log('Is signup link:', isSignupLink);
         
-        console.log('Referrer ID:', referrerId);
-        console.log('Is first-time verification:', isFirstTimeVerification);
-        console.log('Current seeds balance:', userData?.seeds_balance);
-        console.log('Email confirmed at:', userData?.email_confirmed_at);
-        
-        // Only process seed awarding for first-time verification
-        if (isFirstTimeVerification) {
-            // Process email verification (awards seeds if first time)
-            statusEl.innerHTML = '<div class="spinner"></div>Awarding your seeds...';
+        if (isSignupLink) {
+            // ============================================
+            // SIGNUP LINK - CHECK IF SEEDS ALREADY AWARDED
+            // ============================================
             
-            // Process verification
-            const { success, data, error: verifyError } = await processEmailVerification(userId, referrerId);
+            statusEl.innerHTML = '<div class="spinner"></div>Checking your account...';
+            
+            // Get user data to check if seeds already claimed
+            const { data: userData, error: userFetchError } = await supabaseClient
+                .from('users')
+                .select('referred_by, email_verified_bonus_claimed')
+                .eq('id', userId)
+                .single();
 
-            console.log('Verification processing result:', { success, data, error: verifyError });
-
-            if (!success) {
-                console.error('Verification processing error:', verifyError);
-                // Show error state instead of success
-                statusEl.innerHTML = '<div class="error">❌ Verification Issue</div>';
-                messageEl.innerHTML = `<p>Email verified but seeds couldn't be awarded. Contact support.</p><p>Error: ${verifyError || 'Unknown error'}</p>`;
-                return;
+            if (userFetchError) {
+                console.error('Error fetching user data:', userFetchError);
+                throw new Error('Could not verify account status. Please try again.');
             }
             
-            // Success - clear referral code
-            clearStoredReferralCode(); 
+            const alreadyClaimed = userData?.email_verified_bonus_claimed === true;
+            const referrerId = userData?.referred_by || null;
             
-            console.log('Verification result:', data);
+            console.log('Seeds already claimed:', alreadyClaimed);
+            console.log('Referrer ID:', referrerId);
             
-            // Show success state with seed reward
-            statusEl.innerHTML = '<div class="success">✅ Email Verified!</div>';
+            if (alreadyClaimed) {
+                // ============================================
+                // SEEDS ALREADY CLAIMED - JUST LOGIN
+                // ============================================
+                
+                console.log('User already claimed verification bonus, treating as login');
+                
+                statusEl.innerHTML = '<div class="success">✅ Welcome Back!</div>';
+                messageEl.innerHTML = `
+                    <p>You're already verified and logged in.</p>
+                    <p>Redirecting to your dashboard...</p>
+                `;
+                
+                // Redirect immediately (no celebration)
+                setTimeout(() => {
+                    window.location.href = '/referral/';
+                }, 1500);
+                
+            } else {
+                // ============================================
+                // FIRST-TIME SIGNUP - AWARD SEEDS
+                // ============================================
+                
+                console.log('First-time verification, awarding seeds...');
+                
+                statusEl.innerHTML = '<div class="spinner"></div>Awarding your seeds...';
+                
+                // Process email verification (awards seeds)
+                const { success, data, error: verifyError } = await processEmailVerification(userId, referrerId);
+
+                console.log('Verification processing result:', { success, data, error: verifyError });
+
+                if (!success) {
+                    console.error('Verification processing error:', verifyError);
+                    
+                    // Show error but don't block - user is still verified
+                    statusEl.innerHTML = '<div class="error">⚠️ Partial Success</div>';
+                    messageEl.innerHTML = `
+                        <p>Email verified successfully, but there was an issue awarding seeds.</p>
+                        <p>Don't worry - contact support and we'll fix it!</p>
+                        <p>Error: ${verifyError || 'Unknown error'}</p>
+                    `;
+                    
+                    // Still redirect to dashboard after delay
+                    setTimeout(() => {
+                        window.location.href = '/referral/';
+                    }, 5000);
+                    return;
+                }
+                
+                // Mark bonus as claimed in database (backup to database function)
+                await supabaseClient
+                    .from('users')
+                    .update({ email_verified_bonus_claimed: true })
+                    .eq('id', userId);
+                
+                // Clear referral code from storage (no longer needed)
+                clearStoredReferralCode(); 
+                
+                console.log('Seeds awarded successfully:', data);
+                
+                // Show success state
+                statusEl.innerHTML = '<div class="success">✅ Email Verified!</div>';
+                
+                const totalSeeds = data?.total_seeds_awarded || 150;
+                messageEl.innerHTML = `
+                    <p>🎉 You received <strong>${totalSeeds} seeds</strong>!</p>
+                    <p>Redirecting to your dashboard...</p>
+                `;
+                
+                // Trigger coin rain celebration!
+                coinRain(50);
+                
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    window.location.href = '/referral/';
+                }, 3000);
+            }
             
-            // Update message with seeds earned
-            const totalSeeds = data?.total_seeds_awarded || 150;
-            messageEl.innerHTML = `<p>You received <strong>${totalSeeds} seeds</strong>! 🌱</p><p>Redirecting to your dashboard...</p>`;
-            
-            // Trigger coin rain!
-            coinRain(50);
         } else {
-            // Magic link login - no seed awarding
-            console.log('Magic link login detected, skipping seed award');
+            // ============================================
+            // MAGIC LINK LOGIN - NO SEED AWARD
+            // ============================================
+            
+            console.log('Magic link login - no seed award');
             
             statusEl.innerHTML = '<div class="success">✅ Welcome Back!</div>';
-            messageEl.innerHTML = `<p>You're logged in successfully.</p><p>Redirecting to your dashboard...</p>`;
+            messageEl.innerHTML = `
+                <p>You're logged in successfully.</p>
+                <p>Redirecting to your dashboard...</p>
+            `;
+            
+            // Redirect immediately
+            setTimeout(() => {
+                window.location.href = '/referral/';
+            }, 1500);
         }
-        
-        // Redirect to dashboard after 3 seconds
-        setTimeout(() => {
-            window.location.href = '/referral/';
-        }, 3000);
         
     } catch (error) {
         console.error('Verification error:', error);
@@ -381,21 +440,26 @@ async function verifyEmail() {
         statusEl.innerHTML = '<div class="error">❌ Verification Failed</div>';
         
         // Determine error message
-        let errorMessage = 'Verification failed. ';
+        let errorMessage = '';
         
         if (error.message.includes('expired')) {
-            errorMessage += 'This link has expired. Please request a new one.';
-        } else if (error.message.includes('already')) {
-            errorMessage += 'This email is already verified.';
-            // Still redirect to dashboard
-            setTimeout(() => {
-                window.location.href = '/referral/';
-            }, 2000);
+            errorMessage = 'This link has expired. Please request a new one from the login page.';
+        } else if (error.message.includes('Invalid token')) {
+            errorMessage = 'Invalid verification link. Please check your email and use the most recent link.';
         } else {
-            errorMessage += error.message || 'Please try again or contact support.';
+            errorMessage = error.message || 'An unexpected error occurred. Please try again or contact support.';
         }
         
         messageEl.innerHTML = `<p>${errorMessage}</p>`;
+        
+        // Offer action button for common errors
+        if (error.message.includes('expired') || error.message.includes('Invalid')) {
+            messageEl.innerHTML += `
+                <p style="margin-top: 20px;">
+                    <a href="/?login=true" class="btn-dashboard">Back to Login</a>
+                </p>
+            `;
+        }
     }
 }
 
