@@ -104,6 +104,7 @@ CREATE TABLE public.users (
   referral_count integer DEFAULT 0,
   is_waitlist_user boolean DEFAULT false,
   waitlist_bonus_claimed boolean DEFAULT false,
+  email_verified_bonus_claimed boolean DEFAULT false,
   
   CONSTRAINT users_pkey PRIMARY KEY (id)
 );
@@ -120,7 +121,7 @@ CREATE TABLE public.users (
 | `email` | CHARACTER VARYING | NULL | - | Email (duplicates auth.users.email) |
 | `avatar_url` | TEXT | NULL | - | Profile picture URL |
 | `onboarded` | BOOLEAN | NOT NULL | `false` | FTUE completion status |
-| `seeds_balance` | INTEGER | NULL | `100` | Virtual currency for planting |
+| `seeds_balance` | INTEGER | NULL | `0` | Virtual currency for planting |
 | `cash_balance` | NUMERIC | NULL | `0.00` | Real money earned |
 | `user_level` | INTEGER | NULL | `1` | Progression level |
 | `total_harvests` | INTEGER | NULL | `0` | Lifetime harvest count |
@@ -132,7 +133,7 @@ CREATE TABLE public.users (
 | `referral_count` | INTEGER | NULL | `0` | Number of successful referrals |
 | `is_waitlist_user` | BOOLEAN | NULL | `false` | Whether user joined via waitlist |
 | `waitlist_bonus_claimed` | BOOLEAN | NULL | `false` | Whether waitlist bonus was claimed |
-
+| `email_verified_bonus_claimed` | BOOLEAN | NULL | `false` | Whether email confirmation bonus was claimed |
 ### **Indexes**
 - `idx_users_referral_code` on `referral_code`
 - `idx_users_referred_by` on `referred_by`
@@ -148,6 +149,10 @@ CREATE TABLE public.users (
 - `credit_referrer()` - Auto-credits referrer when new user signs up
 - `claim_waitlist_bonus()` - Awards bonus to waitlist users
 - `get_user_referral_info()` - Returns complete referral information
+- `process_email_verification()` - Checks if bonuses have been claimed, kicks off new user flow
+- `award_referral_bonus()` - Checks for referral code, credits reward 1 time
+- `award_signup_bonus()` - Checks if bonus has been claimed, credits reward 1 time
+- `award_verification_bonus()` - Checks if bonus has been claimed, credits reward 1 time
 
 ---
 

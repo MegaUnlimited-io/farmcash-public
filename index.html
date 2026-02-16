@@ -705,6 +705,41 @@
                 font-size: 32px;
             }
         }
+        .terms-container {
+  margin: 1.5rem 0 1rem 0;
+  text-align: left;
+}
+
+.terms-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+.terms-label input[type="checkbox"] {
+  margin-top: 0.25rem;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.terms-label a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.terms-label a:hover {
+  text-decoration: underline;
+}
+
+#terms-error {
+  margin-top: 0.5rem;
+}
     </style>
 </head>
 <body>
@@ -738,7 +773,7 @@
             <div class="milestone-item">
                 <span class="label">
                     <div class="checkbox"></div>
-                    <span>Get link</span>
+                    <span>Verify Email</span>
                 </span>
                 <span class="reward">+50</span>
             </div>
@@ -851,7 +886,17 @@
             </div>
             <!-- Turnstile Widget (Invisible) -->
 <div id="cf-turnstile"></div>
-            <button type="submit" class="btn-submit">Join Waitlist</button>
+            
+            <div class="terms-container">
+  <label class="terms-label">
+    <input type="checkbox" id="terms-checkbox" required>
+    <span>I accept the <a href="/terms.html" target="_blank" rel="noopener noreferrer">Terms & Conditions</a> and <a href="/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a></span>
+  </label>
+</div>
+<div id="terms-error" class="error-message" style="display: none;">
+  Please accept the Terms & Conditions and Privacy Policy to continue.
+</div>
+<button type="submit" class="btn-submit">Join the Waitlist</button>
             
             <div id="message"></div>
         </form>
@@ -1034,6 +1079,20 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+// Check terms checkbox
+const termsCheckbox = document.getElementById('terms-checkbox');
+const termsError = document.getElementById('terms-error');
+
+if (!termsCheckbox.checked) {
+  e.preventDefault();
+  termsError.style.display = 'block';
+  termsCheckbox.focus();
+  return;
+}
+
+// Hide terms error if checkbox is checked
+termsError.style.display = 'none';
 
         // === TURNSTILE VERIFICATION ===
     let turnstileToken = null;

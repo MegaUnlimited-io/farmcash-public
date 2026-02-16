@@ -21,7 +21,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>FarmCash - Join the Waitlist 🌱</title>
+    <title>FarmCash - Join the Waitlist</title>
     
 <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -738,7 +738,7 @@
             <div class="milestone-item">
                 <span class="label">
                     <div class="checkbox"></div>
-                    <span>Get link</span>
+                    <span>Verify Email</span>
                 </span>
                 <span class="reward">+50</span>
             </div>
@@ -964,7 +964,42 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
     }, 1000);
 
+// ============================================================================
 
+    // ============================================================================
+    // CLOUDFLARE TURNSTILE SETUP
+    // ============================================================================
+    
+    let turnstileWidgetId = null;
+    
+    // Wait for Turnstile script to load, then initialize
+    const initTurnstile = () => {
+        if (typeof turnstile !== 'undefined') {
+            try {
+                turnstileWidgetId = turnstile.render('#cf-turnstile', {
+                    sitekey: '0x4AAAAAACdO5PPgE1nOO6Xa',
+                    theme: 'light',
+                    size: 'invisible',
+                    callback: function(token) {
+                        console.log('Turnstile passed:', token);
+                    },
+                    'error-callback': function() {
+                        console.error('Turnstile error');
+                    }
+                });
+                console.log('Turnstile initialized, widget ID:', turnstileWidgetId);
+            } catch (error) {
+                console.error('Turnstile initialization error:', error);
+            }
+        } else {
+            // Turnstile script not loaded yet, try again in 100ms
+            console.log('Turnstile not loaded yet, retrying...');
+            setTimeout(initTurnstile, 100);
+        }
+    };
+    
+    // Start initialization
+    initTurnstile();
 
     // ============================================================================
     // COIN RAIN ANIMATION
@@ -1011,10 +1046,13 @@ window.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
             
-            turnstile.execute(turnstileWidgetId, {
-                callback: (token) => resolve(token),
-                'error-callback': () => reject(new Error('Turnstile failed'))
-            });
+            // Reset widget before executing to get fresh token
+turnstile.reset(turnstileWidgetId);
+
+turnstile.execute(turnstileWidgetId, {
+    callback: (token) => resolve(token),
+    'error-callback': () => reject(new Error('Turnstile failed'))
+});
         });
         
         console.log('Turnstile token received:', turnstileToken);
@@ -1268,6 +1306,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     const refCode = urlParams.get('ref');
     if (refCode) {
         storeReferralCode(refCode);
+        // Debug: log referral ID from localStorage after setting
+        console.log('Referral ID from localStorage:', getStoredReferralCode());
     }
     
     // ============================================================================
