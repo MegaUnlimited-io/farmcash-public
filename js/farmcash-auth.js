@@ -131,118 +131,43 @@ function generateRandomPassword() {
 // Create waitlist user record
 async function createWaitlistUser(userId, email, surveyData, fingerprintData, referredBy = null) {
     try {
-        // 1. Check if user record exists (from ApparenceKit trigger or otherwise)
-        const { data: existingUser } = await supabaseClient
-            .from('users')
-            .select('id, referral_code')
-            .eq('id', userId)
-            .single();
+        // Call server-side function to handle everything
+        const { data, error } = await supabaseClient.rpc('create_waitlist_user_complete', {
+            p_user_id: userId,
+            p_email: email,
+            p_game_type: surveyData.gameType,
+            p_rewarded_apps: surveyData.rewardedApps,
+            p_devices: surveyData.devices,
+            p_ip_address: fingerprintData.ip,
+            p_timezone: fingerprintData.timezone,
+            p_browser: fingerprintData.browser,
+            p_os: fingerprintData.os,
+            p_device_type: fingerprintData.deviceType,
+            p_fingerprint_hash: fingerprintData.hash,
+            p_referrer: document.referrer || 'direct',
+            p_referred_by: referredBy
+        });
         
-        let referralCode = existingUser?.referral_code;
-        
-        // 2. If user doesn't exist, create it manually
-        if (!existingUser) {
-            // Generate unique referral code
-            referralCode = await generateUniqueReferralCode();
-            
-            const { error: userError } = await supabaseClient
-                .from('users')
-                .insert({
-                    id: userId,
-                    email: email,
-                    seeds_balance: 0,
-                    cash_balance: 0.00,
-                    user_level: 1,
-                    total_harvests: 0,
-                    experience_points: 0,
-                    water_balance: 100,
-                    referral_code: referralCode,
-                    is_waitlist_user: true,
-                    referred_by: referredBy
-                });
-            
-            if (userError) {
-                console.error('Error creating user record:', userError);
-                throw userError;
-            }
-        } else {
-            // User exists (created by trigger), update it with waitlist flag
-            const { error: updateError } = await supabaseClient
-                .from('users')
-                .update({
-                    is_waitlist_user: true,
-                    referred_by: referredBy
-                })
-                .eq('id', userId);
-            
-            if (updateError) {
-                console.error('Error updating user record:', updateError);
-                throw updateError;
-            }
+        if (error) {
+            console.error('RPC error:', error);
+            throw error;
         }
         
-        // 3. Create waitlist_signups record
-        const { data: waitlistData, error: waitlistError } = await supabaseClient
-            .from('waitlist_signups')
-            .insert({
-                user_id: userId,
-                email: email,
-                game_type: surveyData.gameType,
-                rewarded_apps: surveyData.rewardedApps,
-                devices: surveyData.devices,
-                ip_address: fingerprintData.ip,
-                timezone: fingerprintData.timezone,
-                browser: fingerprintData.browser,
-                os: fingerprintData.os,
-                device_type: fingerprintData.deviceType,
-                fingerprint_hash: fingerprintData.hash,
-                referrer: document.referrer || 'direct'
-            })
-            .select()
-            .single();
-        
-        if (waitlistError) {
-            console.error('Error creating waitlist record:', waitlistError);
-            throw waitlistError;
+        // Check if RPC returned an error in the response
+        if (!data.success) {
+            throw new Error(data.error);
         }
         
-        return { success: true, data: waitlistData, referralCode: referralCode };
+        return { 
+            success: true, 
+            data: data, 
+            referralCode: data.referral_code 
+        };
         
     } catch (error) {
         console.error('Error creating waitlist user:', error);
         return { success: false, error: error.message };
     }
-}
-
-// Generate unique referral code with database verification
-async function generateUniqueReferralCode(maxAttempts = 5) {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-        // Generate random 6-character code
-        let code = '';
-        for (let i = 0; i < 6; i++) {
-            code += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        
-        // Check if code already exists in database
-        const { data, error } = await supabaseClient
-            .from('users')
-            .select('id')
-            .eq('referral_code', code)
-            .single();
-        
-        // If no match found (error PGRST116 means no results), code is unique!
-        if (error && error.code === 'PGRST116') {
-            return code;
-        }
-        
-        // If we got data back, code already exists - try again
-        console.warn(`Referral code collision detected: ${code}, retrying... (attempt ${attempt + 1}/${maxAttempts})`);
-    }
-    
-    // If we failed after max attempts, throw error
-    throw new Error('Failed to generate unique referral code after multiple attempts');
 }
 
 // Process email verification and award seeds
