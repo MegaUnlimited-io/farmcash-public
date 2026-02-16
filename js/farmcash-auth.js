@@ -245,14 +245,16 @@ function getReferralCode() {
 // Get user ID from referral code
 async function getUserIdFromReferralCode(referralCode) {
     try {
-        const { data, error } = await supabaseClient
-            .from('users')
-            .select('id')
-            .eq('referral_code', referralCode)
-            .single();
+        const { data, error } = await supabaseClient.rpc('get_user_id_from_referral_code', {
+            p_referral_code: referralCode
+        });
         
-        if (error) return null;
-        return data?.id || null;
+        if (error) {
+            console.error('Error looking up referral code:', error);
+            return null;
+        }
+        
+        return data || null;
         
     } catch (error) {
         console.error('Error looking up referral code:', error);
