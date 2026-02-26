@@ -109,6 +109,16 @@ SQL Functions (SECURITY DEFINER)
     └── award_referral_bonus()
 ```
 
+
+### Cross-system impact (web/mobile/OCG)
+
+Any backend-facing change in this repo should be reviewed for impact on all Supabase consumers:
+- **Web app (`farmcash-public`)**: waitlist, verify, referral dashboard.
+- **Mobile app (`farmcash-app`)**: primary auth/game client consuming shared user/profile fields.
+- **OCG**: postback + transaction workflows against shared public tables/RPCs.
+
+For backend changes, include a short compatibility note in PRs: fields touched, RPC signatures changed, and expected behavior for users that exist in `auth.users` but not yet in `public.users`.
+
 ### Component Responsibilities
 
 **Frontend (`/js/farmcash-auth.js`):**
@@ -162,15 +172,15 @@ SQL Functions (SECURITY DEFINER)
 | `email` | TEXT | - | User email (denormalized for convenience) |
 | `seeds_balance` | INTEGER | `0` | Current seed balance |
 | `cash_balance` | DECIMAL(10,2) | `0.00` | Real cash balance (future) |
-| `referral_code` | TEXT | - | User's unique 6-char referral code |
+| `referral_code` | TEXT | - | User's unique 8-char referral code |
 | `referred_by` | UUID | `NULL` | ID of user who referred them |
 | `referral_count` | INTEGER | `0` | Number of successful referrals |
 | `waitlist_bonus_claimed` | BOOLEAN | `false` | Prevents double-crediting signup bonus |
 | `email_verified_bonus_claimed` | BOOLEAN | `false` | Prevents double-crediting verification bonus |
 | `is_waitlist_user` | BOOLEAN | `false` | Distinguishes web vs app signups |
-| `user_level` | INTEGER | `1` | User level (future gamification) |
+| `level` | INTEGER | `1` | User level (renamed in MIGRATION008) |
 | `total_harvests` | INTEGER | `0` | Lifetime harvests (app feature) |
-| `experience_points` | INTEGER | `0` | XP for progression (future) |
+| `xp` | INTEGER | `0` | XP for progression (renamed in MIGRATION008) |
 | `water_balance` | INTEGER | `100` | Water resource (app feature) |
 | `created_at` | TIMESTAMP | `now()` | Account creation time |
 
@@ -179,7 +189,7 @@ SQL Functions (SECURITY DEFINER)
 - Unique: `referral_code`, `email`
 - Index: `referred_by` (for referral lookups)
 
-**RLS:** Currently **DISABLED** ⚠️ (see Known Issues)
+**RLS:** See schema source-of-truth (`FarmCash_Complete_Public_Schema_v3.md`) for current policies. Verify environment drift before rollout.
 
 ---
 
@@ -212,7 +222,7 @@ SQL Functions (SECURITY DEFINER)
 - Unique: `user_id`
 - Index: `email`, `fraud_status`, `fingerprint_hash`
 
-**RLS:** Currently **DISABLED** ⚠️
+**RLS:** Refer to schema v3 policy definitions; validate deployed status in your Supabase project.
 
 ---
 
@@ -248,7 +258,7 @@ SQL Functions (SECURITY DEFINER)
 - Primary: `id`
 - Index: `user_id`, `source`, `created_at`
 
-**RLS:** Currently **DISABLED** ⚠️
+**RLS:** Refer to schema v3 policy definitions; validate deployed status in your Supabase project.
 
 ---
 
@@ -513,7 +523,7 @@ All functions use `SECURITY DEFINER` to bypass Row Level Security and execute wi
 ┌─────────────────────────────────────────────────────────────┐
 │ 7. CREATE USER PROFILE                                      │
 │    createWaitlistUser(userId, email, survey, fingerprint)   │
-│    - Generates unique 6-char referral code                  │
+│    - Generates unique 8-char referral code                  │
 │    - Creates public.users record (seeds_balance = 0)        │
 │    - Creates waitlist_signups record                        │
 │    - Links referred_by if referral code present             │
@@ -620,7 +630,7 @@ All functions use `SECURITY DEFINER` to bypass Row Level Security and execute wi
 **1. User Gets Referral Link:**
 - After email verification, user lands on `/referral/` dashboard
 - Dashboard displays: `https://farmcash.app/?ref=ABC123`
-- Referral code is unique 6-character alphanumeric (A-Z, 2-9, no ambiguous chars)
+- Referral code is unique 8-character alphanumeric (A-Z, 2-9, no ambiguous chars)
 
 **2. Referral Link Clicked:**
 - New user clicks `https://farmcash.app/?ref=ABC123`
@@ -655,7 +665,7 @@ async function generateUniqueReferralCode(maxAttempts = 5) {
     
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
         let code = '';
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 8; i++) {
             code += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         
@@ -672,8 +682,8 @@ async function generateUniqueReferralCode(maxAttempts = 5) {
 
 **Collision Probability:**
 - Character set: 32 characters (26 letters + 6 numbers, minus ambiguous)
-- Code length: 6 characters
-- Total combinations: 32^6 = **1,073,741,824** (~1 billion)
+- Code length: 8 characters
+- Total combinations: 32^8 = **1,099,511,627,776** (~1.1 trillion)
 - Expected collisions: Very rare (< 0.0001% for first 10,000 users)
 
 ---
@@ -1190,7 +1200,7 @@ HAVING u.seeds_balance != COALESCE(SUM(st.amount), 0);
 | `sendMagicLink(email)` | Send OTP login link |
 | `signOut()` | Log out user |
 | `createWaitlistUser()` | Create user profile + waitlist record |
-| `generateUniqueReferralCode()` | Generate 6-char code with DB uniqueness check |
+| `generateUniqueReferralCode()` | Generate 8-char code with DB uniqueness check |
 | `processEmailVerification()` | Call RPC to award seeds |
 | `getUserDashboardData()` | Fetch user balance + referral info |
 | `getReferralCode()` | Extract `?ref=` from URL |
@@ -1207,21 +1217,21 @@ HAVING u.seeds_balance != COALESCE(SUM(st.amount), 0);
 
 ### Current Security Posture
 
-⚠️ **CRITICAL: Row Level Security (RLS) is DISABLED** ⚠️
+⚠️ **CRITICAL: Validate deployed RLS state against schema policies** ⚠️
 
-**Tables Without RLS:**
+**Tables to validate for RLS policy coverage:**
 - `public.users`
 - `waitlist_signups`
 - `seed_transactions`
 
-**Risk:** Any authenticated user can theoretically query other users' data.
+**Risk (if drifted/disabled):** Any authenticated user could theoretically query other users' data.
 
 **Mitigation:** 
 - Client-side code only queries own data
 - JavaScript functions use `auth.uid()` to filter queries
 - Database functions use `SECURITY DEFINER` to bypass RLS
 
-**Before Public Launch:** RLS MUST be enabled (see Known Issues).
+**Before Public Launch:** confirm RLS is enabled and policy-tested in the live project (see Known Issues).
 
 ---
 
@@ -1589,9 +1599,9 @@ return {
 
 ---
 
-### 2. Row Level Security Disabled (CRITICAL)
+### 2. Row Level Security deployment drift check (CRITICAL)
 
-**Problem:** RLS is disabled on all core tables.
+**Problem:** Documentation and environment can drift; confirm actual RLS state in the live Supabase project before launch.
 
 **Risk:**
 - Any authenticated user can theoretically query other users' data
@@ -1603,7 +1613,7 @@ return {
 - `waitlist_signups`
 - `seed_transactions`
 
-**Why Disabled:** Debugging during development, never re-enabled.
+**Action:** treat RLS as a release gate and re-validate policies in production before traffic.
 
 **Required Policies (Before Public Launch):**
 
@@ -2239,7 +2249,7 @@ ORDER BY u.referral_count DESC;
 - Dashboard with referral link
 
 **Known Issues This Version:**
-- RLS disabled (MUST fix before public launch)
+- RLS deployment state must be validated against schema policies before public launch
 - Cross-app user experience broken
 - Terms acceptance not stored
 - Turnstile console warnings (cosmetic only)
