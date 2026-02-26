@@ -16,6 +16,7 @@ start-test-server.bat
 start-test-server.ps1
 _dev-menu.html
 index-working-backup.html
+config.txt
 
 # Node modules (if added later)
 node_modules/
