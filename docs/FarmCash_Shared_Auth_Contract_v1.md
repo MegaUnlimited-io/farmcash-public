@@ -34,6 +34,8 @@ For any migration/RPC change touching auth/profile/referrals:
    - mobile signup -> verify link -> web dashboard
    - web signup -> verify -> web dashboard
    - magic-link login from both origins
+   - password reset works
+   - email change works
 
 ## 5) Failure-mode expectation (important)
 If `auth.users` exists but `public.users` is missing:
