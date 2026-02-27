@@ -239,6 +239,23 @@ const statusEl = document.getElementById('status');
 const messageEl = document.getElementById('message');
 const coinContainer = document.getElementById('coin-container');
 
+// Debug helpers (temporary investigation support)
+function getDebugHoldMs(urlParams) {
+    const debugParam = urlParams.get('debug');
+    return debugParam === '1' ? 10000 : 0;
+}
+
+function redirectToDashboard(baseDelayMs, debugHoldMs) {
+    const totalDelayMs = baseDelayMs + debugHoldMs;
+    if (debugHoldMs > 0) {
+        console.log(`Debug hold enabled: +${debugHoldMs}ms before redirect`);
+    }
+    console.log('Redirect scheduled:', { baseDelayMs, debugHoldMs, totalDelayMs });
+    setTimeout(() => {
+        window.location.href = '/referral/';
+    }, totalDelayMs);
+}
+
 // Coin rain function
 function createCoin() {
     const coin = document.createElement('video');
@@ -278,7 +295,8 @@ async function verifyEmail() {
         
         // Get type from query string (our custom parameter)
         const urlParams = new URLSearchParams(window.location.search);
-        const verificationType = urlParams.get('type'); // e.g. 'signup', 'login', 'email_change'
+        const verificationType = urlParams.get('type'); // 'signup' or 'login'
+        const debugHoldMs = getDebugHoldMs(urlParams);
         
         console.log('Verification type from URL:', verificationType);
         console.log('Has access_token:', !!access_token);
@@ -354,9 +372,7 @@ async function verifyEmail() {
                 `;
                 
                 // Redirect immediately (no celebration)
-                setTimeout(() => {
-                    window.location.href = '/referral/';
-                }, 1500);
+                redirectToDashboard(1500, debugHoldMs);
                 
             } else {
                 // ============================================
@@ -387,9 +403,7 @@ async function verifyEmail() {
                             <p>Redirecting to your dashboard...</p>
                         `;
                         
-                        setTimeout(() => {
-                            window.location.href = '/referral/';
-                        }, 1500);
+                        redirectToDashboard(1500, debugHoldMs);
                         return;
                     }
                     
@@ -402,9 +416,7 @@ async function verifyEmail() {
                     `;
                     
                     // Still redirect to dashboard after delay
-                    setTimeout(() => {
-                        window.location.href = '/referral/';
-                    }, 5000);
+                    redirectToDashboard(5000, debugHoldMs);
                     return;
                 }
                 
@@ -428,9 +440,7 @@ async function verifyEmail() {
                     coinRain(50);
                     
                     // Redirect after 3 seconds
-                    setTimeout(() => {
-                        window.location.href = '/referral/';
-                    }, 3000);
+                    redirectToDashboard(3000, debugHoldMs);
                 } else {
                     // No seeds awarded (edge case - already claimed but not caught earlier)
                     messageEl.innerHTML = `
@@ -438,9 +448,7 @@ async function verifyEmail() {
                         <p>Redirecting to your dashboard...</p>
                     `;
                     
-                    setTimeout(() => {
-                        window.location.href = '/referral/';
-                    }, 1500);
+                    redirectToDashboard(1500, debugHoldMs);
                 }
             }
             
@@ -458,9 +466,7 @@ async function verifyEmail() {
             `;
             
             // Redirect immediately
-            setTimeout(() => {
-                window.location.href = '/referral/';
-            }, 1500);
+            redirectToDashboard(1500, debugHoldMs);
         }
         
     } catch (error) {
