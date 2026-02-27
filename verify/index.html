@@ -278,7 +278,7 @@ async function verifyEmail() {
         
         // Get type from query string (our custom parameter)
         const urlParams = new URLSearchParams(window.location.search);
-        const verificationType = urlParams.get('type'); // 'signup' or 'login'
+        const verificationType = urlParams.get('type'); // e.g. 'signup', 'login', 'email_change'
         
         console.log('Verification type from URL:', verificationType);
         console.log('Has access_token:', !!access_token);
@@ -305,12 +305,14 @@ async function verifyEmail() {
         
         const userId = sessionData.user.id;
         
-        // Check if this should be a new user signup
-        const isSignupLink = verificationType === 'signup';
-        
-        console.log('Is signup link:', isSignupLink);
-        
-        if (isSignupLink) {
+        // Treat everything except explicit login links as verification-eligible.
+        // This protects bonus awarding when provider links omit `type=signup`
+        // or use alternate verification types (e.g. `email_change`).
+        const isLoginLink = verificationType === 'login' || verificationType === 'magiclink';
+
+        console.log('Is login link:', isLoginLink);
+
+        if (!isLoginLink) {
             // ============================================
             // SIGNUP LINK - CHECK IF SEEDS ALREADY AWARDED
             // ============================================

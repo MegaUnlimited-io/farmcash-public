@@ -96,7 +96,7 @@ async function signUpUser(email, password = null) {
         email: email,
         password: password || generateRandomPassword(), // Required by Supabase
         options: {
-            emailRedirectTo: `${window.location.origin}/verify/`
+            emailRedirectTo: `${window.location.origin}/verify/?type=signup`
         }
     });
     return { data, error };
@@ -107,7 +107,7 @@ async function sendMagicLink(email) {
     const { data, error } = await supabaseClient.auth.signInWithOtp({
         email: email,
         options: {
-            emailRedirectTo: `${window.location.origin}/verify/`
+            emailRedirectTo: `${window.location.origin}/verify/?type=login`
         }
     });
     return { data, error };

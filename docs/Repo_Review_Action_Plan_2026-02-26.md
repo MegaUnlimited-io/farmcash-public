@@ -61,11 +61,9 @@ Operational constraints confirmed:
    - Symptom: first-time app signup emails use Supabase "confirm email change" language, which is confusing for account creation.
    - Expected: a dedicated signup verification template/message that clearly says "verify your email to complete your account".
 
-4. **Farm plot lock-state flash on initial load (new UX bug).**
-   - Symptom: newly loaded farm briefly shows locked-plot icons before rendering actual unlocked/current state.
-   - Expected: first rendered frame should reflect true lock/unlock state without transient incorrect flash.
-
 ## 3) Updated action plan
+
+Backlog tracking note: detailed web-only backlog items now live in `docs/Web_Application_Backlog.md`.
 
 ## Phase 0 — Shared auth contract (completed)
 Goal: prevent web/mobile regressions while moving fast.
