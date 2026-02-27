@@ -213,16 +213,16 @@ async function getUserDashboardData(userId) {
             .from('waitlist_signups')
             .select('email_verified, created_at')
             .eq('user_id', userId)
-            .single();
-        
+            .maybeSingle();
+
         if (waitlistError) throw waitlistError;
-        
-        return { 
-            success: true, 
+
+        return {
+            success: true,
             data: {
                 ...userData,
-                email_verified: waitlistData.email_verified,
-                created_at: waitlistData.created_at
+                email_verified: waitlistData?.email_verified ?? false,
+                created_at: waitlistData?.created_at || userData.creation_date
             }
         };
         
