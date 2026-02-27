@@ -5,6 +5,12 @@ Updated with founder feedback: 2026-02-26
 Updated with new bug-priority feedback: 2026-02-26  
 Reviewer: Codex
 
+## Status snapshot (execution tracking)
+
+- ✅ Phase 0 — Shared auth contract: **Completed**
+- ✅ Phase 1 — Documentation correction: **Completed**
+- 🚧 Phase 1.5 — Core reward/auth bug stabilization: **In progress**
+
 ## 1) Repository understanding (concise)
 
 This repo is the production web surface for:
@@ -51,9 +57,17 @@ Operational constraints confirmed:
    - Symptom: mobile-created user can follow Supabase email links to web, but referral/dashboard path fails with user-not-found behavior.
    - Suspected area: auth/profile parity (`auth.users` exists while `public.users` row missing or inaccessible).
 
+3. **Signup email template mismatch for app-created users (new UX bug).**
+   - Symptom: first-time app signup emails use Supabase "confirm email change" language, which is confusing for account creation.
+   - Expected: a dedicated signup verification template/message that clearly says "verify your email to complete your account".
+
+4. **Farm plot lock-state flash on initial load (new UX bug).**
+   - Symptom: newly loaded farm briefly shows locked-plot icons before rendering actual unlocked/current state.
+   - Expected: first rendered frame should reflect true lock/unlock state without transient incorrect flash.
+
 ## 3) Updated action plan
 
-## Phase 0 — Shared auth contract (start now, short)
+## Phase 0 — Shared auth contract (completed)
 Goal: prevent web/mobile regressions while moving fast.
 
 Deliverable (short doc to add to `/docs/`):
@@ -66,7 +80,7 @@ Deliverable (short doc to add to `/docs/`):
 Implementation note:
 - Keep this to 1 page max, checklist style.
 
-## Phase 1 — Documentation correction (start now)
+## Phase 1 — Documentation correction (completed)
 Goal: make docs trustworthy before deeper changes.
 
 Tasks:
@@ -76,7 +90,7 @@ Tasks:
 4. Standardize referral code format references (6 vs 8 chars) based on current DB truth.
 5. Add a short “Cross-system impact (web/mobile/OCG)” callout section in backend-affecting docs.
 
-## Phase 1.5 — Core reward/auth bug stabilization (move up before hardening)
+## Phase 1.5 — Core reward/auth bug stabilization (active)
 Goal: restore correctness before adding security hardening layers.
 
 Tasks:
@@ -95,6 +109,12 @@ Tasks:
 Exit criteria:
 - New web user gets expected signup + verification seeds again.
 - Mobile-created user can complete verify/login and load web dashboard without user-not-found failures.
+
+Immediate execution checklist (current pass):
+1. Reproduce and capture baseline logs for seed-credit regression paths.
+2. Diff and patch verification/signup award function behavior.
+3. Validate idempotency flags on real flows (web-created + mobile-created users).
+4. Re-run cross-platform verify/login/dashboard smoke path after fixes.
 
 ## Phase 2 — Security hardening before traffic (high priority)
 Goal: raise bot resistance without new monthly infra.
