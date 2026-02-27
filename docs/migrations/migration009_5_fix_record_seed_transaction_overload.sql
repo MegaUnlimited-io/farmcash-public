@@ -1,59 +1,49 @@
 -- ============================================================================
--- MIGRATION009 - Fix verification reward function drift + idempotency flags
+-- MIGRATION009.5 - Follow-up patch for environments that already ran MIGRATION009
 --
--- Why:
--- - Seed bonus functions drifted across migrations and no longer consistently
---   align with config-key naming and user-flag semantics.
--- - This migration hardens signup/verification reward awarding and ensures
---   public.users flags are updated atomically when bonuses are granted.
+-- Purpose:
+-- - Resolve record_seed_transaction overload ambiguity in reward functions.
+-- - Safe to run after initial migration009.
 --
--- Scope:
--- - award_signup_bonus()
--- - award_verification_bonus()
--- - process_email_verification()
---
--- Notes:
--- - Standardizes config keys to canonical names:
---     signup_bonus_seeds
---     email_verification_bonus_seeds
--- - Removes legacy key aliases in this same migration.
--- - Tolerates environments where waitlist_signups row is absent.
+-- Root issue observed in prod logs:
+--   function public.record_seed_transaction(uuid, integer, unknown, unknown, jsonb) is not unique
 -- ============================================================================
 
+-- 1) Keep exactly one canonical record_seed_transaction signature (6 args)
+DROP FUNCTION IF EXISTS public.record_seed_transaction(uuid, integer, text, text, jsonb);
 
--- ----------------------------------------------------------------------------
--- 0) Canonicalize bonus config keys (Option B: standardize now)
--- ----------------------------------------------------------------------------
--- Canonical keys:
---   - signup_bonus_seeds
---   - email_verification_bonus_seeds
---
--- Legacy aliases removed by this migration:
---   - waitlist_bonus_seeds
---   - email_bonus_seeds
+CREATE OR REPLACE FUNCTION public.record_seed_transaction(
+  p_user_id    uuid,
+  p_amount     integer,
+  p_source     text,
+  p_reference  text,
+  p_metadata   jsonb   DEFAULT '{}'::jsonb,
+  p_xp_granted integer DEFAULT 0
+)
+RETURNS integer
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+  v_new_balance integer;
+BEGIN
+  UPDATE public.users
+  SET seeds_balance = seeds_balance + p_amount
+  WHERE id = p_user_id
+  RETURNING seeds_balance INTO v_new_balance;
 
-INSERT INTO public.app_config (config_key, config_value, value_type, description)
-VALUES
-  (
-    'signup_bonus_seeds',
-    COALESCE((SELECT config_value FROM public.app_config WHERE config_key = 'waitlist_bonus_seeds'), '100'),
-    'integer',
-    'Canonical signup bonus seeds amount awarded once at verification.'
-  ),
-  (
-    'email_verification_bonus_seeds',
-    COALESCE((SELECT config_value FROM public.app_config WHERE config_key = 'email_bonus_seeds'), '50'),
-    'integer',
-    'Canonical email verification bonus seeds amount awarded once.'
-  )
-ON CONFLICT (config_key) DO UPDATE SET
-  config_value = EXCLUDED.config_value,
-  value_type = EXCLUDED.value_type,
-  description = EXCLUDED.description;
+  INSERT INTO public.seed_transactions (
+    user_id, amount, source, reference, balance_after, metadata, xp_granted
+  ) VALUES (
+    p_user_id, p_amount, p_source, p_reference,
+    v_new_balance, p_metadata, p_xp_granted
+  );
 
-DELETE FROM public.app_config
-WHERE config_key IN ('waitlist_bonus_seeds', 'email_bonus_seeds');
+  RETURN v_new_balance;
+END;
+$$;
 
+-- 2) Force reward functions to call canonical 6-arg signature explicitly
 CREATE OR REPLACE FUNCTION public.award_signup_bonus(
   p_user_id UUID
 ) RETURNS TABLE(
@@ -215,76 +205,6 @@ EXCEPTION
       false,
       0,
       COALESCE((SELECT seeds_balance FROM public.users WHERE id = p_user_id), 0),
-      SQLERRM::TEXT;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
-
-CREATE OR REPLACE FUNCTION public.process_email_verification(
-  p_user_id UUID,
-  p_referred_by UUID DEFAULT NULL
-) RETURNS TABLE(
-  success BOOLEAN,
-  total_seeds_awarded INTEGER,
-  breakdown JSONB,
-  message TEXT
-) AS $$
-DECLARE
-  v_signup_result RECORD;
-  v_verify_result RECORD;
-  v_referral_result RECORD;
-  v_total_seeds INTEGER := 0;
-  v_breakdown JSONB := '{}'::jsonb;
-BEGIN
-  UPDATE public.waitlist_signups
-  SET email_verified = true,
-      email_verified_at = COALESCE(email_verified_at, now())
-  WHERE user_id = p_user_id;
-
-  SELECT * INTO v_signup_result
-  FROM public.award_signup_bonus(p_user_id);
-
-  IF v_signup_result.success THEN
-    v_total_seeds := v_total_seeds + v_signup_result.seeds_awarded;
-    v_breakdown := v_breakdown || jsonb_build_object('signup_bonus', v_signup_result.seeds_awarded);
-  ELSE
-    v_breakdown := v_breakdown || jsonb_build_object('signup_bonus_status', v_signup_result.message);
-  END IF;
-
-  SELECT * INTO v_verify_result
-  FROM public.award_verification_bonus(p_user_id);
-
-  IF v_verify_result.success THEN
-    v_total_seeds := v_total_seeds + v_verify_result.seeds_awarded;
-    v_breakdown := v_breakdown || jsonb_build_object('verification_bonus', v_verify_result.seeds_awarded);
-  ELSE
-    v_breakdown := v_breakdown || jsonb_build_object('verification_bonus_status', v_verify_result.message);
-  END IF;
-
-  IF p_referred_by IS NOT NULL THEN
-    SELECT * INTO v_referral_result
-    FROM public.award_referral_bonus(p_referred_by, p_user_id);
-
-    IF v_referral_result.success AND v_referral_result.seeds_awarded > 0 THEN
-      v_breakdown := v_breakdown || jsonb_build_object(
-        'referral_awarded_to_referrer', v_referral_result.seeds_awarded,
-        'referrer_id', p_referred_by
-      );
-    END IF;
-  END IF;
-
-  RETURN QUERY SELECT
-    true,
-    v_total_seeds,
-    v_breakdown,
-    format('Welcome to FarmCash! You received %s seeds 🌱', v_total_seeds)::TEXT;
-
-EXCEPTION
-  WHEN OTHERS THEN
-    RETURN QUERY SELECT
-      false,
-      0,
-      '{}'::JSONB,
       SQLERRM::TEXT;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
