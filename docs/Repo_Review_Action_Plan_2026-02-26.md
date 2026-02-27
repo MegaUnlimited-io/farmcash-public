@@ -2,6 +2,7 @@
 
 Date: 2026-02-26  
 Updated with founder feedback: 2026-02-26  
+Updated with new bug-priority feedback: 2026-02-26  
 Reviewer: Codex
 
 ## 1) Repository understanding (concise)
@@ -27,7 +28,7 @@ Shared backend context:
 
 - ✅ Start immediately on **Phase 0** and keep it short.
 - ✅ Proceed immediately on **Phase 1** docs cleanup.
-- ✅ Prioritize **Phase 2 hardening** before traffic push.
+- ✅ Reprioritize: fix reward/auth correctness bugs before Phase 2 hardening.
 - ✅ Improve **Phase 3 fingerprint robustness** beyond IP-only dependence.
 - ✅ Investigate **Phase 4 bug**: mobile-created users can hit web verify/referral but fail “user not found”.
 
@@ -37,6 +38,18 @@ Operational constraints confirmed:
 - Prefer practical recommendations with low process overhead.
 
 ---
+
+
+## 2.1) New critical bug backlog (added)
+
+1. **Seed crediting regression (new users not receiving signup + verification seeds).**
+   - Symptom: first-time users complete signup/email verification but do not receive expected seed awards.
+   - Suspected area: backend migration/function drift (possible MIGRATION008 side effects).
+   - Scope impact: web onboarding economics and referral funnel reliability.
+
+2. **Mobile -> web handoff user-not-found bug (existing known bug).**
+   - Symptom: mobile-created user can follow Supabase email links to web, but referral/dashboard path fails with user-not-found behavior.
+   - Suspected area: auth/profile parity (`auth.users` exists while `public.users` row missing or inaccessible).
 
 ## 3) Updated action plan
 
@@ -62,6 +75,26 @@ Tasks:
 3. Resolve RLS status inconsistencies.
 4. Standardize referral code format references (6 vs 8 chars) based on current DB truth.
 5. Add a short “Cross-system impact (web/mobile/OCG)” callout section in backend-affecting docs.
+
+## Phase 1.5 — Core reward/auth bug stabilization (move up before hardening)
+Goal: restore correctness before adding security hardening layers.
+
+Tasks:
+1. Reproduce seed crediting regression end-to-end (signup -> verify -> expected +150 seeds).
+2. Diff bonus/reward SQL functions and triggers against last known-good behavior:
+   - `process_email_verification()`
+   - `award_signup_bonus()`
+   - `award_verification_bonus()`
+   - `record_seed_transaction()`
+3. Validate config keys/defaults used by bonus functions after migration changes.
+4. Validate guard flags and idempotency logic:
+   - `waitlist_bonus_claimed`
+   - `email_verified_bonus_claimed`
+5. Fix mobile->web user-not-found handoff bug in same stabilization pass (shared auth/profile contract).
+
+Exit criteria:
+- New web user gets expected signup + verification seeds again.
+- Mobile-created user can complete verify/login and load web dashboard without user-not-found failures.
 
 ## Phase 2 — Security hardening before traffic (high priority)
 Goal: raise bot resistance without new monthly infra.
@@ -117,13 +150,14 @@ Regression checklist (web + mobile):
 
 ## 4) Recommended execution order (updated)
 
-1. Phase 0 (short contract doc) + Phase 1 (docs fix) immediately.
-2. Phase 2 (Turnstile server validation + verify log cleanup).
-3. Phase 4 (bug investigation + cross-platform regression checklist).
-4. Phase 3 (fingerprint enhancement rollout).
+1. Phase 0 (shared contract) + Phase 1 (docs fix) [done].
+2. **Phase 1.5 (core reward/auth bug stabilization) — do next.**
+3. Phase 2 (Turnstile server validation + verify log cleanup).
+4. Phase 4 (cross-platform regression checklist; keep running as a release gate).
+5. Phase 3 (fingerprint enhancement rollout).
 
 Rationale:
-- Fastest path to safe launch traffic is docs alignment + security hardening + critical auth bug fix.
+- You are correct: hardening a non-100% working system is suboptimal. Correctness for rewards/auth should be restored first, then abuse hardening.
 
 ---
 
