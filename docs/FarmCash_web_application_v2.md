@@ -168,8 +168,13 @@ For backend changes, include a short compatibility note in PRs: fields touched, 
 
 | Column | Type | Default | Description |
 |--------|------|---------|-------------|
-| `id` | UUID | `auth.uid()` | Primary key, links to auth.users |
+| `id` | UUID | `gen_random_uuid()` | Primary key, links to auth.users.id |
+| `creation_date` | TIMESTAMPTZ | `now()` | Account creation timestamp |
+| `last_update_date` | TIMESTAMP | `NULL` | Last profile update timestamp |
+| `name` | VARCHAR | `NULL` | Display name |
 | `email` | TEXT | - | User email (denormalized for convenience) |
+| `avatar_url` | TEXT | `NULL` | User avatar URL |
+| `onboarded` | BOOLEAN | `false` | Onboarding completion flag |
 | `seeds_balance` | INTEGER | `0` | Current seed balance |
 | `cash_balance` | DECIMAL(10,2) | `0.00` | Real cash balance (future) |
 | `referral_code` | TEXT | - | User's unique 8-char referral code |
@@ -182,12 +187,16 @@ For backend changes, include a short compatibility note in PRs: fields touched, 
 | `total_harvests` | INTEGER | `0` | Lifetime harvests (app feature) |
 | `xp` | INTEGER | `0` | XP for progression (renamed in MIGRATION008) |
 | `water_balance` | INTEGER | `100` | Water resource (app feature) |
-| `created_at` | TIMESTAMP | `now()` | Account creation time |
+| `locale` | TEXT | `'en'` | Preferred locale |
+| `watering_unlocked` | BOOLEAN | `false` | Enables watering gameplay features |
+| `sprouting_seeds_balance` | INTEGER | `0` | Pending seeds from postbacks |
 
-**Indexes:**
+**Indexes (current schema):**
 - Primary: `id`
-- Unique: `referral_code`, `email`
+- Unique: `referral_code`
 - Index: `referred_by` (for referral lookups)
+
+> Canonical source of truth for exact constraints and policy text is `docs/FarmCash_Complete_Public_Schema_v3.md`.
 
 **RLS:** See schema source-of-truth (`FarmCash_Complete_Public_Schema_v3.md`) for current policies. Verify environment drift before rollout.
 
@@ -214,7 +223,12 @@ For backend changes, include a short compatibility note in PRs: fields touched, 
 | `fraud_status` | TEXT | `pending`, `approved`, `suspicious`, `flagged`, `rejected` |
 | `email_verified` | BOOLEAN | Email verification status |
 | `email_verified_at` | TIMESTAMP | When email was verified |
+| `migrated_to_app` | BOOLEAN | Whether this waitlist user has migrated to mobile app |
+| `migrated_at` | TIMESTAMP | Migration timestamp |
 | `referrer` | TEXT | HTTP referrer (where they came from) |
+| `utm_source` | TEXT | UTM source attribution |
+| `utm_medium` | TEXT | UTM medium attribution |
+| `utm_campaign` | TEXT | UTM campaign attribution |
 | `created_at` | TIMESTAMP | Signup timestamp |
 
 **Indexes:**

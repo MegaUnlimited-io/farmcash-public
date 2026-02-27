@@ -4,7 +4,7 @@ This is the concise output for immediate downstream use.
 
 ## Canonical references
 - Schema source of truth: `docs/FarmCash_Complete_Public_Schema_v3.md`
-- Web app technical doc updated: `docs/FarmCash_web_application.md`
+- Web app technical doc updated: `docs/FarmCash_web_application_v2.md`
 
 ## Corrections applied to web app documentation
 1. Column names aligned to MIGRATION008:
@@ -14,6 +14,10 @@ This is the concise output for immediate downstream use.
 3. RLS messaging changed from blanket "disabled" statements to:
    - "validate deployed state against schema policies" to avoid doc/environment drift.
 4. Added explicit **Cross-system impact (web/mobile/OCG)** section for backend change awareness.
+5. Reconciled key schema mismatches in the web doc's `public.users` / `waitlist_signups` sections:
+   - Corrected `public.users` defaults/fields (`creation_date`, `last_update_date`, `locale`, `watering_unlocked`, `sprouting_seeds_balance`).
+   - Corrected uniqueness note: `public.users.email` is not documented as UNIQUE in schema v3.
+   - Added MIGRATION008-era `waitlist_signups` attribution/migration fields (`migrated_to_app`, `migrated_at`, UTM fields).
 
 ## Remaining follow-up (not blocked)
 - Validate live Supabase project RLS deployment state and policies.
