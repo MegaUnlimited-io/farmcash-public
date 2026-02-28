@@ -9,7 +9,8 @@ Reviewer: Codex
 
 - ✅ Phase 0 — Shared auth contract: **Completed**
 - ✅ Phase 1 — Documentation correction: **Completed**
-- 🚧 Phase 1.5 — Core reward/auth bug stabilization: **In progress**
+- ✅ Phase 1.5 — Core reward/auth bug stabilization: **Completed**
+- 🚧 Phase 2 — Security hardening before traffic: **In progress**
 
 ## 1) Repository understanding (concise)
 
@@ -88,7 +89,7 @@ Tasks:
 4. Standardize referral code format references (6 vs 8 chars) based on current DB truth.
 5. Add a short “Cross-system impact (web/mobile/OCG)” callout section in backend-affecting docs.
 
-## Phase 1.5 — Core reward/auth bug stabilization (active)
+## Phase 1.5 — Core reward/auth bug stabilization (completed)
 Goal: restore correctness before adding security hardening layers.
 
 Tasks:
@@ -107,6 +108,10 @@ Tasks:
 Exit criteria:
 - New web user gets expected signup + verification seeds again.
 - Mobile-created user can complete verify/login and load web dashboard without user-not-found failures.
+
+Completion note (2026-02-27):
+- ✅ Signup + verification + referral bonuses restored via migration follow-ups (009/009.5/009.6).
+- ✅ Web/mobile handoff dashboard load no longer hard-fails on missing `waitlist_signups` row.
 
 Immediate execution checklist (current pass):
 1. Reproduce and capture baseline logs for seed-credit regression paths.
