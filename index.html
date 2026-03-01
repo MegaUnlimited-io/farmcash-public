@@ -1016,6 +1016,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     // ============================================================================
     
     let turnstileWidgetId = null;
+    let isSignupSubmitting = false;
+    let turnstileExecutionPromise = null;
     
     // Wait for Turnstile script to load, then initialize
     const initTurnstile = () => {
@@ -1025,14 +1027,12 @@ window.addEventListener('DOMContentLoaded', async () => {
                     sitekey: '0x4AAAAAACdO5PPgE1nOO6Xa',
                     theme: 'light',
                     size: 'invisible',
-                    callback: function(token) {
-                        console.log('Turnstile passed:', token);
-                    },
+                    execution: 'execute',
+                    callback: function() {},
                     'error-callback': function() {
                         console.error('Turnstile error');
                     }
                 });
-                console.log('Turnstile initialized, widget ID:', turnstileWidgetId);
             } catch (error) {
                 console.error('Turnstile initialization error:', error);
             }
@@ -1045,6 +1045,31 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     // Start initialization
     initTurnstile();
+
+    async function requestTurnstileToken() {
+        if (typeof turnstile === 'undefined' || turnstileWidgetId === null) {
+            throw new Error('Turnstile not loaded');
+        }
+
+        if (turnstileExecutionPromise) {
+            return turnstileExecutionPromise;
+        }
+
+        turnstileExecutionPromise = new Promise((resolve, reject) => {
+            try {
+                turnstile.execute(turnstileWidgetId, {
+                    callback: (token) => resolve(token),
+                    'error-callback': () => reject(new Error('Turnstile failed'))
+                });
+            } catch (error) {
+                reject(error);
+            }
+        }).finally(() => {
+            turnstileExecutionPromise = null;
+        });
+
+        return turnstileExecutionPromise;
+    }
 
     // ============================================================================
     // COIN RAIN ANIMATION
@@ -1073,190 +1098,169 @@ window.addEventListener('DOMContentLoaded', async () => {
     // ============================================================================
     // SIGNUP FORM HANDLER
     // ============================================================================
-    
+
     const form = document.getElementById('signup-form');
     const messageEl = document.getElementById('message');
-    
-    form.addEventListener('submit', async (e) => {
+
+    async function handleSignupSubmit(e) {
         e.preventDefault();
 
-// Check terms checkbox
-const termsCheckbox = document.getElementById('terms-checkbox');
-const termsError = document.getElementById('terms-error');
+        if (isSignupSubmitting) {
+            return;
+        }
 
-if (!termsCheckbox.checked) {
-  e.preventDefault();
-  termsError.style.display = 'block';
-  termsCheckbox.focus();
-  return;
-}
+        isSignupSubmitting = true;
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
 
-// Hide terms error if checkbox is checked
-termsError.style.display = 'none';
+        try {
+            const termsCheckbox = document.getElementById('terms-checkbox');
+            const termsError = document.getElementById('terms-error');
 
-        // === TURNSTILE VERIFICATION ===
-    let turnstileToken = null;
-    
-    try {
-        // Execute Turnstile challenge
-        turnstileToken = await new Promise((resolve, reject) => {
-            if (typeof turnstile === 'undefined' || turnstileWidgetId === null) {
-                reject(new Error('Turnstile not loaded'));
+            if (!termsCheckbox.checked) {
+                termsError.style.display = 'block';
+                termsCheckbox.focus();
                 return;
             }
-            
-            // Reset widget before executing to get fresh token
-turnstile.reset(turnstileWidgetId);
 
-turnstile.execute(turnstileWidgetId, {
-    callback: (token) => resolve(token),
-    'error-callback': () => reject(new Error('Turnstile failed'))
-});
-        });
-        
-        console.log('Turnstile token received:', turnstileToken);
-        
-    } catch (error) {
-        console.error('Turnstile error:', error);
-        messageEl.textContent = '❌ Verification failed. Please refresh and try again.';
-        messageEl.className = 'error';
-        return;
-    }    
+            termsError.style.display = 'none';
 
-        // === COLLECT FORM DATA ===
-        
-        const gameType = document.getElementById('game-type').value;
-        const email = document.getElementById('email').value;
-        
-        const rewardedApps = Array.from(document.querySelectorAll('input[name="rewarded-apps"]:checked'))
-            .map(cb => cb.value);
-        
-        const devices = Array.from(document.querySelectorAll('input[name="device"]:checked'))
-            .map(cb => cb.value);
-        
-        // === VALIDATION ===
-        
-        if (rewardedApps.length === 0) {
-            messageEl.textContent = '❌ Please select at least one rewarded app option';
-            messageEl.className = 'error';
-            return;
-        }
-        
-        if (devices.length === 0) {
-            messageEl.textContent = '❌ Please select at least one device type';
-            messageEl.className = 'error';
-            return;
-        }
-        
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            messageEl.textContent = '❌ Please enter a valid email address';
-            messageEl.className = 'error';
-            return;
-        }
-        
-        const sanitizedEmail = email.trim().toLowerCase();
-        
-        const disposableDomains = [
-            'tempmail.com', 'guerrillamail.com', '10minutemail.com', 
-            'throwaway.email', 'mailinator.com', 'maildrop.cc',
-            'trashmail.com', 'temp-mail.org'
-        ];
-        const emailDomain = sanitizedEmail.split('@')[1];
-        if (disposableDomains.includes(emailDomain)) {
-            messageEl.textContent = '❌ Please use a permanent email address';
-            messageEl.className = 'error';
-            return;
-        }
-        
-        if (email.length > 254) {
-            messageEl.textContent = '❌ Email address is too long';
-            messageEl.className = 'error';
-            return;
-        }
-        
-        // === GET REFERRAL CODE ===
-        
-        const referralCode = getReferralCode() || getStoredReferralCode();
-        let referrerId = null;
-        
-        if (referralCode) {
-            messageEl.textContent = 'Validating referral code...';
+            let turnstileToken = null;
+            try {
+                turnstileToken = await requestTurnstileToken();
+            } catch (error) {
+                console.error('Turnstile error:', error);
+                messageEl.textContent = '❌ Verification failed. Please refresh and try again.';
+                messageEl.className = 'error';
+                return;
+            }
+
+            const { success: isHumanVerified, error: verificationError } = await verifyTurnstileSignupToken(turnstileToken);
+            if (!isHumanVerified) {
+                messageEl.textContent = `❌ ${verificationError}`;
+                messageEl.className = 'error';
+                return;
+            }
+
+            const gameType = document.getElementById('game-type').value;
+            const email = document.getElementById('email').value;
+
+            const rewardedApps = Array.from(document.querySelectorAll('input[name="rewarded-apps"]:checked')).map((cb) => cb.value);
+            const devices = Array.from(document.querySelectorAll('input[name="device"]:checked')).map((cb) => cb.value);
+
+            if (rewardedApps.length === 0) {
+                messageEl.textContent = '❌ Please select at least one rewarded app option';
+                messageEl.className = 'error';
+                return;
+            }
+
+            if (devices.length === 0) {
+                messageEl.textContent = '❌ Please select at least one device type';
+                messageEl.className = 'error';
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                messageEl.textContent = '❌ Please enter a valid email address';
+                messageEl.className = 'error';
+                return;
+            }
+
+            const sanitizedEmail = email.trim().toLowerCase();
+            const disposableDomains = [
+                'tempmail.com', 'guerrillamail.com', '10minutemail.com',
+                'throwaway.email', 'mailinator.com', 'maildrop.cc',
+                'trashmail.com', 'temp-mail.org'
+            ];
+
+            const emailDomain = sanitizedEmail.split('@')[1];
+            if (disposableDomains.includes(emailDomain)) {
+                messageEl.textContent = '❌ Please use a permanent email address';
+                messageEl.className = 'error';
+                return;
+            }
+
+            if (email.length > 254) {
+                messageEl.textContent = '❌ Email address is too long';
+                messageEl.className = 'error';
+                return;
+            }
+
+            const referralCode = getReferralCode() || getStoredReferralCode();
+            let referrerId = null;
+
+            if (referralCode) {
+                messageEl.textContent = 'Validating referral code...';
+                messageEl.className = '';
+
+                referrerId = await getUserIdFromReferralCode(referralCode);
+                if (!referrerId) {
+                    console.warn('Invalid referral code:', referralCode);
+                }
+            }
+
+            messageEl.textContent = 'Creating your account...';
             messageEl.className = '';
-            
-            referrerId = await getUserIdFromReferralCode(referralCode);
-            if (!referrerId) {
-                console.warn('Invalid referral code:', referralCode);
-                // Continue anyway - don't block signup for invalid referral
+            const fingerprintData = await getQuickFingerprint();
+
+            const { data: authData, error: authError } = await signUpUser(sanitizedEmail);
+            if (authError) {
+                console.error('Signup error:', authError);
+
+                if (authError.message.includes('already registered')) {
+                    messageEl.textContent = '❌ This email is already registered. Try logging in instead.';
+                } else {
+                    messageEl.textContent = '❌ Signup failed: ' + authError.message;
+                }
+                messageEl.className = 'error';
+                return;
             }
-        }
-        
-        // === COLLECT FINGERPRINT ===
-        
-        messageEl.textContent = 'Creating your account...';
-        messageEl.className = '';
-        
-        const fingerprintData = await getQuickFingerprint();
-        
-        // === CREATE SUPABASE AUTH USER ===
-        
-        const { data: authData, error: authError } = await signUpUser(sanitizedEmail);
-        
-        if (authError) {
-            console.error('Signup error:', authError);
-            
-            if (authError.message.includes('already registered')) {
-                messageEl.textContent = '❌ This email is already registered. Try logging in instead.';
-            } else {
-                messageEl.textContent = '❌ Signup failed: ' + authError.message;
+
+            const userId = authData.user.id;
+            const surveyData = {
+                gameType: gameType,
+                rewardedApps: rewardedApps,
+                devices: devices
+            };
+
+            const { success: waitlistSuccess, error: waitlistError } = await createWaitlistUser(
+                userId,
+                sanitizedEmail,
+                surveyData,
+                fingerprintData,
+                referrerId
+            );
+
+            console.log('Waitlist creation result:', { success: waitlistSuccess, error: waitlistError });
+
+            if (!waitlistSuccess) {
+                console.error('Waitlist creation error:', waitlistError);
+                console.error('Survey data:', surveyData);
+                console.error('Fingerprint data:', fingerprintData);
+                console.error('Referrer ID:', referrerId);
+                messageEl.textContent = '⚠️ Account created but there was an issue. Please check your email to verify.';
+                messageEl.className = 'warning';
+                return;
             }
-            messageEl.className = 'error';
-            return;
-        }
-        
-        const userId = authData.user.id;
-        
-        // === CREATE WAITLIST RECORD ===
-        
-        const surveyData = {
-            gameType: gameType,
-            rewardedApps: rewardedApps,
-            devices: devices
-        };
-        
-        const { success: waitlistSuccess, error: waitlistError } = await createWaitlistUser(
-            userId,
-            sanitizedEmail,
-            surveyData,
-            fingerprintData,
-            referrerId
-        );
-        
-        console.log('Waitlist creation result:', { success: waitlistSuccess, error: waitlistError });
-        
-        if (!waitlistSuccess) {
-            console.error('Waitlist creation error:', waitlistError);
-            console.error('Survey data:', surveyData);
-            console.error('Fingerprint data:', fingerprintData);
-            console.error('Referrer ID:', referrerId);
-            messageEl.textContent = '⚠️ Account created but there was an issue. Please check your email to verify.';
-            messageEl.className = 'warning';
-        } else {
-            // Success!
+
             messageEl.textContent = '✅ Check your email to verify your account!';
             messageEl.className = 'success';
-            
-            // Show coin rain
             coinRain(30);
-            
-            // Clear form
             form.reset();
-            
-            // Clear stored referral code
             clearStoredReferralCode();
+        } finally {
+            isSignupSubmitting = false;
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
         }
-    });
-    
+    }
+
+    form.addEventListener('submit', handleSignupSubmit);
+
     // ============================================================================
     // LOGIN MODAL HANDLER
     // ============================================================================
