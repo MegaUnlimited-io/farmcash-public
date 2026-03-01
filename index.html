@@ -1025,14 +1025,11 @@ window.addEventListener('DOMContentLoaded', async () => {
                     sitekey: '0x4AAAAAACdO5PPgE1nOO6Xa',
                     theme: 'light',
                     size: 'invisible',
-                    callback: function(token) {
-                        console.log('Turnstile passed:', token);
-                    },
+                    callback: function() {},
                     'error-callback': function() {
                         console.error('Turnstile error');
                     }
                 });
-                console.log('Turnstile initialized, widget ID:', turnstileWidgetId);
             } catch (error) {
                 console.error('Turnstile initialization error:', error);
             }
@@ -1114,14 +1111,23 @@ turnstile.execute(turnstileWidgetId, {
 });
         });
         
-        console.log('Turnstile token received:', turnstileToken);
-        
     } catch (error) {
         console.error('Turnstile error:', error);
         messageEl.textContent = '❌ Verification failed. Please refresh and try again.';
         messageEl.className = 'error';
         return;
-    }    
+    }
+
+        const { success: isHumanVerified, error: verificationError } = await verifyTurnstileSignupToken(turnstileToken);
+
+        if (!isHumanVerified) {
+            messageEl.textContent = `❌ ${verificationError}`;
+            messageEl.className = 'error';
+            if (typeof turnstile !== 'undefined' && turnstileWidgetId !== null) {
+                turnstile.reset(turnstileWidgetId);
+            }
+            return;
+        }
 
         // === COLLECT FORM DATA ===
         

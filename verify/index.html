@@ -239,21 +239,10 @@ const statusEl = document.getElementById('status');
 const messageEl = document.getElementById('message');
 const coinContainer = document.getElementById('coin-container');
 
-// Debug helpers (temporary investigation support)
-function getDebugHoldMs(urlParams) {
-    const debugParam = urlParams.get('debug');
-    return debugParam === '1' ? 10000 : 0;
-}
-
-function redirectToDashboard(baseDelayMs, debugHoldMs) {
-    const totalDelayMs = baseDelayMs + debugHoldMs;
-    if (debugHoldMs > 0) {
-        console.log(`Debug hold enabled: +${debugHoldMs}ms before redirect`);
-    }
-    console.log('Redirect scheduled:', { baseDelayMs, debugHoldMs, totalDelayMs });
+function redirectToDashboard(delayMs) {
     setTimeout(() => {
         window.location.href = '/referral/';
-    }, totalDelayMs);
+    }, delayMs);
 }
 
 // Coin rain function
@@ -283,11 +272,6 @@ async function verifyEmail() {
         // Show loading state
         statusEl.innerHTML = '<div class="spinner"></div>Verifying your email...';
         statusEl.className = 'loading';
-        
-        console.log('Full URL:', window.location.href);
-        console.log('Hash:', window.location.hash);
-        console.log('Search params:', window.location.search);
-        
         // Get hash from URL (contains tokens)
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const access_token = hashParams.get('access_token');
@@ -296,15 +280,10 @@ async function verifyEmail() {
         // Get type from query string (our custom parameter)
         const urlParams = new URLSearchParams(window.location.search);
         const verificationType = urlParams.get('type'); // 'signup' or 'login'
-        const debugHoldMs = getDebugHoldMs(urlParams);
-        
-        console.log('Verification type from URL:', verificationType);
-        console.log('Has access_token:', !!access_token);
-        console.log('Has refresh_token:', !!refresh_token);
-        
+
         // Check if this is a valid verification link
-        if (!access_token) {
-            throw new Error('Invalid verification link. Missing tokens. Please check your email for the correct link.');
+        if (!access_token || !refresh_token) {
+            throw new Error('Invalid verification link. Missing required tokens. Please check your email for the correct link.');
         }
         
         // Set session with tokens
@@ -317,18 +296,10 @@ async function verifyEmail() {
             throw sessionError;
         }
         
-        console.log('Session set successfully');
-        console.log('User ID:', sessionData.user.id);
-        console.log('User email:', sessionData.user.email);
-        
         const userId = sessionData.user.id;
-        
-        // Treat everything except explicit login links as verification-eligible.
-        // This protects bonus awarding when provider links omit `type=signup`
-        // or use alternate verification types (e.g. `email_change`).
-        const isLoginLink = verificationType === 'login' || verificationType === 'magiclink';
 
-        console.log('Is login link:', isLoginLink);
+        // Treat only explicit auth login callback types as login links.
+        const isLoginLink = verificationType === 'login' || verificationType === 'magiclink';
 
         if (!isLoginLink) {
             // ============================================
@@ -354,16 +325,11 @@ async function verifyEmail() {
             const waitlistBonusClaimed = userData?.waitlist_bonus_claimed === true;
             const allBonusesClaimed = emailBonusClaimed && waitlistBonusClaimed;
             
-            console.log('Email bonus claimed:', emailBonusClaimed);
-            console.log('Waitlist bonus claimed:', waitlistBonusClaimed);
-            console.log('All bonuses claimed:', allBonusesClaimed);
-            
             if (allBonusesClaimed) {
                 // ============================================
                 // ALL BONUSES CLAIMED - JUST LOGIN
                 // ============================================
                 
-                console.log('User already claimed all bonuses, treating as login');
                 
                 statusEl.innerHTML = '<div class="success">✅ Welcome Back!</div>';
                 messageEl.innerHTML = `
@@ -372,14 +338,13 @@ async function verifyEmail() {
                 `;
                 
                 // Redirect immediately (no celebration)
-                redirectToDashboard(1500, debugHoldMs);
+                redirectToDashboard(1500);
                 
             } else {
                 // ============================================
                 // FIRST-TIME SIGNUP OR PARTIAL - AWARD SEEDS
                 // ============================================
                 
-                console.log('Awarding seeds (first-time or partial verification)...');
                 
                 statusEl.innerHTML = '<div class="spinner"></div>Awarding your seeds...';
                 
@@ -387,15 +352,12 @@ async function verifyEmail() {
                 // Pass null for referrer - function will look it up from database
                 const { success, data, error: verifyError } = await processEmailVerification(userId, null);
 
-                console.log('Verification processing result:', { success, data, error: verifyError });
-
                 if (!success) {
                     console.error('Verification processing error:', verifyError);
                     
                     // Check if error is "already claimed" message
                     if (verifyError && verifyError.includes('already claimed')) {
                         // User just logged in with old signup link
-                        console.log('Database function reported bonuses already claimed');
                         
                         statusEl.innerHTML = '<div class="success">✅ Welcome Back!</div>';
                         messageEl.innerHTML = `
@@ -403,7 +365,7 @@ async function verifyEmail() {
                             <p>Redirecting to your dashboard...</p>
                         `;
                         
-                        redirectToDashboard(1500, debugHoldMs);
+                        redirectToDashboard(1500);
                         return;
                     }
                     
@@ -416,14 +378,12 @@ async function verifyEmail() {
                     `;
                     
                     // Still redirect to dashboard after delay
-                    redirectToDashboard(5000, debugHoldMs);
+                    redirectToDashboard(5000);
                     return;
                 }
                 
                 // Clear referral code from storage (no longer needed)
                 clearStoredReferralCode(); 
-                
-                console.log('Seeds awarded successfully:', data);
                 
                 // Show success state
                 statusEl.innerHTML = '<div class="success">✅ Email Verified!</div>';
@@ -440,7 +400,7 @@ async function verifyEmail() {
                     coinRain(50);
                     
                     // Redirect after 3 seconds
-                    redirectToDashboard(3000, debugHoldMs);
+                    redirectToDashboard(3000);
                 } else {
                     // No seeds awarded (edge case - already claimed but not caught earlier)
                     messageEl.innerHTML = `
@@ -448,7 +408,7 @@ async function verifyEmail() {
                         <p>Redirecting to your dashboard...</p>
                     `;
                     
-                    redirectToDashboard(1500, debugHoldMs);
+                    redirectToDashboard(1500);
                 }
             }
             
@@ -457,8 +417,6 @@ async function verifyEmail() {
             // MAGIC LINK LOGIN - NO SEED AWARD
             // ============================================
             
-            console.log('Magic link login - no seed award');
-            
             statusEl.innerHTML = '<div class="success">✅ Welcome Back!</div>';
             messageEl.innerHTML = `
                 <p>You're logged in successfully.</p>
@@ -466,7 +424,7 @@ async function verifyEmail() {
             `;
             
             // Redirect immediately
-            redirectToDashboard(1500, debugHoldMs);
+            redirectToDashboard(1500);
         }
         
     } catch (error) {
@@ -503,7 +461,6 @@ async function verifyEmail() {
 window.addEventListener('DOMContentLoaded', () => {
     // Wait a moment for hash to be populated after redirect
     setTimeout(() => {
-        console.log('Starting verification...');
         verifyEmail();
     }, 100);
 });
