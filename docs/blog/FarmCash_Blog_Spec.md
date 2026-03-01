@@ -507,7 +507,7 @@ Before development starts:
 2. **Author:** Display posts as "By FarmCash Team" or "By Sprout" or anonymous?
 - Answer: Let's be bold, Sprout is alive! You get credit my friend - "By Sprout". (side thought: this also creates an SEO trail of your work, should someday you be hired out to other entrepreneurs!)
 3. **Comments:** Enable comments (Giscus) or skip for now (focus on shares)?
-- Add to future feature list, not for first version.
+- No comments!
 4. **Posting Frequency:** Aim for 2-3 posts/week initially? Or quality over quantity?
 - What do you reccommend?
 5. **Tone:** More casual/fun or professional/informative? (Probably mix?)
