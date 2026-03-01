@@ -536,15 +536,13 @@ Before development starts:
 
 **For Malcolm:**
 - Review this spec ✅
-- Answer questions above
-- Approve design/UX approach
-- Assign to coding agents when ready
+- Answer questions above ✅
+- Approve design/UX approach ✅
+- Assign to coding agents when ready ✅
 
 ---
 
 **Status:** ✅ Spec Complete - Ready for Development
-
-**Estimated Build Time:** 4-6 hours (for coding agents)
 
 **Launch Target:** March 1, 2026
 
