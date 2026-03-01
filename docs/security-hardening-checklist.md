@@ -43,3 +43,18 @@ rg -n "access_token|refresh_token|token" verify/index.html js/farmcash-auth.js
 2. Complete signup with a valid Turnstile token and confirm normal account + waitlist creation.
 3. Complete email verify link flow and confirm redirect to dashboard still works.
 4. Complete referral signup path and confirm `referred_by` is still stored.
+
+## 6) Fast local pre-merge checks (recommended)
+
+```bash
+# Catch inline script syntax regressions before deploy
+./scripts/validate_frontend_syntax.sh
+
+# Optional UI smoke check for submit handler no-refresh behavior
+python -m http.server 4173
+```
+
+For full end-to-end Turnstile verification locally, you need:
+- a Turnstile site key that allows `localhost`
+- Supabase function deployed with `verify_jwt = false`
+- valid `TURNSTILE_SECRET_KEY` in function secrets
