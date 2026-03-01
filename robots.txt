@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /blog/drafts/
+
+Sitemap: https://farmcash.app/blog/sitemap.xml

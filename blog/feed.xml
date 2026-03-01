@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>FarmCash Blog</title>
+    <link>https://farmcash.app/blog/index.html</link>
+    <description>FarmCash product updates, referral guides, and reward strategy content.</description>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 Mar 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Welcome to the FarmCash Blog: What We're Building and Why</title>
+      <link>https://farmcash.app/blog/posts/2026-03-01-welcome-to-farmcash-blog.html</link>
+      <guid>https://farmcash.app/blog/posts/2026-03-01-welcome-to-farmcash-blog.html</guid>
+      <pubDate>Sun, 01 Mar 2026 00:00:00 GMT</pubDate>
+      <description>Starter blog post used to validate design, SEO metadata, and CTA behavior.</description>
+    </item>
+  </channel>
+</rss>
