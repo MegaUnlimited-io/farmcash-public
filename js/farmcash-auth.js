@@ -113,6 +113,51 @@ async function sendMagicLink(email) {
     return { data, error };
 }
 
+// Verify Cloudflare Turnstile token server-side before signup side effects
+async function verifyTurnstileSignupToken(turnstileToken) {
+    if (!turnstileToken) {
+        return {
+            success: false,
+            error: 'Verification was not completed. Please try again.'
+        };
+    }
+
+    try {
+        const { data, error } = await supabaseClient.functions.invoke('turnstile-verify', {
+            body: {
+                token: turnstileToken,
+                action: 'waitlist_signup'
+            }
+        });
+
+        if (error) {
+            console.error('Turnstile verification invoke error:', error);
+            const isUnauthorized = error?.context?.status === 401 || error?.message?.includes('401');
+            return {
+                success: false,
+                error: isUnauthorized
+                    ? 'Verification service is not available right now. Please try again shortly.'
+                    : 'We could not complete verification. Please try again.'
+            };
+        }
+
+        if (!data?.success) {
+            return {
+                success: false,
+                error: data?.message || 'Verification failed. Please try again.'
+            };
+        }
+
+        return { success: true };
+    } catch (error) {
+        console.error('Turnstile verification failed:', error);
+        return {
+            success: false,
+            error: 'We could not complete verification. Please try again.'
+        };
+    }
+}
+
 // Sign out
 async function signOut() {
     const { error } = await supabaseClient.auth.signOut();
