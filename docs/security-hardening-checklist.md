@@ -7,6 +7,7 @@ Use this checklist before enabling production traffic for waitlist/signup flows.
 - [ ] `TURNSTILE_SECRET_KEY` is set in Supabase Edge Function secrets.
 - [ ] Optional: `TURNSTILE_EXPECTED_HOSTNAME` is set to the production hostname.
 - [ ] `turnstile-verify` function is deployed.
+- [ ] `supabase/functions/turnstile-verify/config.toml` sets `verify_jwt = false` so anonymous signup clients can call verification.
 - [ ] Signup flow calls server-side verification before creating auth/waitlist side effects.
 - [ ] Missing/invalid/expired Turnstile tokens return a non-sensitive user error.
 

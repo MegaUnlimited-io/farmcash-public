@@ -132,9 +132,12 @@ async function verifyTurnstileSignupToken(turnstileToken) {
 
         if (error) {
             console.error('Turnstile verification invoke error:', error);
+            const isUnauthorized = error?.context?.status === 401 || error?.message?.includes('401');
             return {
                 success: false,
-                error: 'We could not complete verification. Please try again.'
+                error: isUnauthorized
+                    ? 'Verification service is not available right now. Please try again shortly.'
+                    : 'We could not complete verification. Please try again.'
             };
         }
 

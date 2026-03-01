@@ -1016,6 +1016,10 @@ window.addEventListener('DOMContentLoaded', async () => {
     // ============================================================================
     
     let turnstileWidgetId = null;
+    let isSignupSubmitting = false;
+    let turnstileExecutionPromise = null;
+    let turnstileTokenResolver = null;
+    let turnstileTokenRejecter = null;
     
     // Wait for Turnstile script to load, then initialize
     const initTurnstile = () => {
@@ -1025,8 +1029,19 @@ window.addEventListener('DOMContentLoaded', async () => {
                     sitekey: '0x4AAAAAACdO5PPgE1nOO6Xa',
                     theme: 'light',
                     size: 'invisible',
-                    callback: function() {},
+                    callback: function(token) {
+                        if (turnstileTokenResolver) {
+                            turnstileTokenResolver(token);
+                            turnstileTokenResolver = null;
+                            turnstileTokenRejecter = null;
+                        }
+                    },
                     'error-callback': function() {
+                        if (turnstileTokenRejecter) {
+                            turnstileTokenRejecter(new Error('Turnstile failed'));
+                            turnstileTokenResolver = null;
+                            turnstileTokenRejecter = null;
+                        }
                         console.error('Turnstile error');
                     }
                 });
@@ -1042,6 +1057,50 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     // Start initialization
     initTurnstile();
+
+
+    async function requestTurnstileToken() {
+        if (typeof turnstile === 'undefined' || turnstileWidgetId === null) {
+            throw new Error('Turnstile not loaded');
+        }
+
+        if (turnstileExecutionPromise) {
+            return turnstileExecutionPromise;
+        }
+
+        turnstileExecutionPromise = new Promise((resolve, reject) => {
+            turnstileTokenResolver = resolve;
+            turnstileTokenRejecter = reject;
+
+            const timeoutId = setTimeout(() => {
+                if (turnstileTokenRejecter) {
+                    turnstileTokenRejecter(new Error('Turnstile timed out'));
+                    turnstileTokenResolver = null;
+                    turnstileTokenRejecter = null;
+                }
+            }, 15000);
+
+            const originalResolve = turnstileTokenResolver;
+            const originalReject = turnstileTokenRejecter;
+
+            turnstileTokenResolver = (token) => {
+                clearTimeout(timeoutId);
+                originalResolve(token);
+            };
+
+            turnstileTokenRejecter = (error) => {
+                clearTimeout(timeoutId);
+                originalReject(error);
+            };
+
+            turnstile.reset(turnstileWidgetId);
+            turnstile.execute(turnstileWidgetId);
+        }).finally(() => {
+            turnstileExecutionPromise = null;
+        });
+
+        return turnstileExecutionPromise;
+    }
 
     // ============================================================================
     // COIN RAIN ANIMATION
@@ -1077,41 +1136,35 @@ window.addEventListener('DOMContentLoaded', async () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-// Check terms checkbox
-const termsCheckbox = document.getElementById('terms-checkbox');
-const termsError = document.getElementById('terms-error');
+        if (isSignupSubmitting) {
+            return;
+        }
 
-if (!termsCheckbox.checked) {
-  e.preventDefault();
-  termsError.style.display = 'block';
-  termsCheckbox.focus();
-  return;
-}
+        isSignupSubmitting = true;
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) submitButton.disabled = true;
 
-// Hide terms error if checkbox is checked
-termsError.style.display = 'none';
+        try {
+
+        // Check terms checkbox
+        const termsCheckbox = document.getElementById('terms-checkbox');
+        const termsError = document.getElementById('terms-error');
+
+        if (!termsCheckbox.checked) {
+            termsError.style.display = 'block';
+            termsCheckbox.focus();
+            return;
+        }
+
+        // Hide terms error if checkbox is checked
+        termsError.style.display = 'none';
 
         // === TURNSTILE VERIFICATION ===
-    let turnstileToken = null;
-    
-    try {
-        // Execute Turnstile challenge
-        turnstileToken = await new Promise((resolve, reject) => {
-            if (typeof turnstile === 'undefined' || turnstileWidgetId === null) {
-                reject(new Error('Turnstile not loaded'));
-                return;
-            }
-            
-            // Reset widget before executing to get fresh token
-turnstile.reset(turnstileWidgetId);
+        let turnstileToken = null;
 
-turnstile.execute(turnstileWidgetId, {
-    callback: (token) => resolve(token),
-    'error-callback': () => reject(new Error('Turnstile failed'))
-});
-        });
-        
-    } catch (error) {
+        try {
+        turnstileToken = await requestTurnstileToken();
+        } catch (error) {
         console.error('Turnstile error:', error);
         messageEl.textContent = '❌ Verification failed. Please refresh and try again.';
         messageEl.className = 'error';
@@ -1261,6 +1314,10 @@ turnstile.execute(turnstileWidgetId, {
             // Clear stored referral code
             clearStoredReferralCode();
         }
+    } finally {
+        isSignupSubmitting = false;
+        if (submitButton) submitButton.disabled = false;
+    }
     });
     
     // ============================================================================
