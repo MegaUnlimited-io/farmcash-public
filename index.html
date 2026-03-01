@@ -1030,6 +1030,11 @@ window.addEventListener('DOMContentLoaded', async () => {
                     execution: 'execute',
                     callback: function() {},
                     'error-callback': function() {
+                        if (turnstileTokenRejecter) {
+                            turnstileTokenRejecter(new Error('Turnstile failed'));
+                            turnstileTokenResolver = null;
+                            turnstileTokenRejecter = null;
+                        }
                         console.error('Turnstile error');
                     }
                 });
@@ -1274,6 +1279,10 @@ window.addEventListener('DOMContentLoaded', async () => {
             isSignupSubmitting = false;
             if (submitButton) submitButton.disabled = false;
         }
+    } finally {
+        isSignupSubmitting = false;
+        if (submitButton) submitButton.disabled = false;
+    }
     });
     
     // ============================================================================
