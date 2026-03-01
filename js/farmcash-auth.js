@@ -123,28 +123,39 @@ async function verifyTurnstileSignupToken(turnstileToken) {
     }
 
     try {
-        const { data, error } = await supabaseClient.functions.invoke('turnstile-verify', {
-            body: {
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/turnstile-verify`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                apikey: SUPABASE_ANON_KEY
+            },
+            body: JSON.stringify({
                 token: turnstileToken,
                 action: 'waitlist_signup'
-            }
+            })
         });
 
-        if (error) {
-            console.error('Turnstile verification invoke error:', error);
-            const isUnauthorized = error?.context?.status === 401 || error?.message?.includes('401');
+        let responseData = null;
+        try {
+            responseData = await response.json();
+        } catch {
+            responseData = null;
+        }
+
+        if (!response.ok) {
+            console.error('Turnstile verification response error:', response.status, responseData);
             return {
                 success: false,
-                error: isUnauthorized
-                    ? 'Verification service is not available right now. Please try again shortly.'
-                    : 'We could not complete verification. Please try again.'
+                error: response.status === 401
+                    ? 'Verification service is unavailable right now. Please try again shortly.'
+                    : (responseData?.message || 'We could not complete verification. Please try again.')
             };
         }
 
-        if (!data?.success) {
+        if (!responseData?.success) {
             return {
                 success: false,
-                error: data?.message || 'Verification failed. Please try again.'
+                error: responseData?.message || 'Verification failed. Please try again.'
             };
         }
 
