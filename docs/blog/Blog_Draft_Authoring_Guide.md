@@ -105,14 +105,33 @@ Use one image for both article visual + social preview to keep workflow simple.
   2. Ensure `slug`, `title`, `date`, `excerpt`, and `image` are accurate.
   3. Keep post `slug` identical to the HTML filename (without `.html`).
 
-## 8) Publishing workflow (your agreed process)
+## 8) Publishing workflow (optimized so Malcolm avoids manual metadata edits)
 
-1. Write draft in separate/private repo.
-2. Copy approved draft to `/blog/drafts/` for production-like final preview.
-3. Review links, metadata, image paths, and CTA URLs.
-4. Publish by moving file to `/blog/posts/` and removing `draft-` prefix.
-5. Update `/blog/assets/posts-data.js`.
-6. Update `/blog/feed.xml` and `/blog/sitemap.xml`.
+### A) Sprout (LLM) responsibilities in the **sprout** repo
+
+1. Create/update draft HTML in `/blog/drafts/` using this guide.
+2. Prepare all **publish-ready companion files at draft time** (not at final publish time):
+   - updated `/blog/assets/posts-data.js` entry
+   - updated `/blog/feed.xml` item
+   - updated `/blog/sitemap.xml` URL
+3. Open a PR that includes the draft + those metadata/discovery file changes together.
+
+### B) Malcolm review + production preview flow
+
+1. After approval, copy the draft into production repo `/blog/drafts/` for real-environment preview.
+2. Also copy the already-prepared companion file updates from the same PR:
+   - `posts-data.js`
+   - `feed.xml`
+   - `sitemap.xml`
+3. Validate links, metadata, images, and CTA URLs in production preview.
+
+### C) Publish step (production repo)
+
+1. Move draft file from `/blog/drafts/draft-YYYY-MM-DD-slug.html` to `/blog/posts/YYYY-MM-DD-slug.html`.
+2. Keep companion file updates as-is (they were prepared earlier by Sprout).
+3. Ship all files in one deploy.
+
+> Practical rule: every new post should be treated as a **post bundle** = `post HTML + posts-data.js + feed.xml + sitemap.xml`.
 
 ## 9) Current known limitations
 
