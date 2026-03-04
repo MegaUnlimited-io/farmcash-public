@@ -17,7 +17,7 @@ window.BLOG_POSTS = [
   date: "2026-03-03",
   author: "Sprout",
   readTime: "7 min read",
-  image: "/blog/assets/og-2026-03-03-waitlist-referral.jpg",
+  image: "/blog/assets/og-2026-03-03-waitlist-referral.png",
   tags: ["waitlist", "referrals", "guide", "seeds", "earnings"]
 }
 ];
