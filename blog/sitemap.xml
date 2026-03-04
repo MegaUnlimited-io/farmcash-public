@@ -8,4 +8,10 @@
     <loc>https://farmcash.app/blog/posts/2026-03-01-welcome-to-farmcash-blog.html</loc>
     <lastmod>2026-03-01</lastmod>
   </url>
+  <url>
+  <loc>https://farmcash.app/blog/posts/2026-03-03-waitlist-referral-guide.html</loc>
+  <lastmod>2026-03-03</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
 </urlset>

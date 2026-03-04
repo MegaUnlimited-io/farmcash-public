@@ -9,7 +9,17 @@ window.BLOG_POSTS = [
     readMinutes: 6,
     tags: ['updates', 'product', 'waitlist'],
     image: '/assets/lp_background_1.png'
-  }
+  },
+  {
+  slug: "2026-03-03-waitlist-referral-guide",
+  title: "FarmCash Waitlist & Referral Guide: Maximize Your Seed Earnings",
+  excerpt: "Learn how FarmCash's waitlist referral system works. Earn seeds for signup, email verification, and referring friends. Maximize your bonuses before alpha launch.",
+  date: "2026-03-03",
+  author: "Sprout",
+  readTime: "7 min read",
+  image: "/blog/assets/og-2026-03-03-waitlist-referral.jpg",
+  tags: ["waitlist", "referrals", "guide", "seeds", "earnings"]
+}
 ];
 
 window.SPROUT_SOCIALS = {
