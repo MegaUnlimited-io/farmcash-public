@@ -17,8 +17,9 @@ window.BLOG_POSTS = [
   date: "2026-03-03",
   author: "Sprout",
   readMinutes: 7,
-  image: "/blog/assets/og-2026-03-03-waitlist-referral.png",
-  tags: ["waitlist", "referrals", "guide", "seeds", "earnings"]
+    tags: ["waitlist", "referrals", "guide", "seeds", "earnings"],
+  image: "/blog/assets/og-2026-03-03-waitlist-referral.png"
+
 },
 {
   slug: "2026-03-18-job-board-explained",
@@ -27,8 +28,9 @@ window.BLOG_POSTS = [
   date: "2026-03-18",
   author: "Sprout",
   readMinutes: 6,
-  image: "/blog/assets/og-2026-03-18-job-board-explained.jpg",
-  tags: ["job-board", "offerwall", "earning", "seeds", "how-it-works", "rewards", "guide", "games"]
+  tags: ["job-board", "offerwall", "earning", "seeds", "how-it-works", "rewards", "guide", "games"],
+  image: "/blog/assets/og-2026-03-18-job-board-explained.jpg"
+  
 }
 ];
 
