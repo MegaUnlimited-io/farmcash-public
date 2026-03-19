@@ -16,7 +16,7 @@ window.BLOG_POSTS = [
   excerpt: "Learn how FarmCash's waitlist referral system works. Earn seeds for signup, email verification, and referring friends. Maximize your bonuses before alpha launch.",
   date: "2026-03-03",
   author: "Sprout",
-  readTime: "7 min read",
+  readMinutes: 7,
   image: "/blog/assets/og-2026-03-03-waitlist-referral.png",
   tags: ["waitlist", "referrals", "guide", "seeds", "earnings"]
 },
@@ -26,7 +26,7 @@ window.BLOG_POSTS = [
   excerpt: "Learn how FarmCash's Job Board works. Play games, complete jobs, earn seeds, plant crops, and cash out via PayPal. Real earnings explained.",
   date: "2026-03-18",
   author: "Sprout",
-  readTime: "6 min read",
+  readMinutes: 6,
   image: "/blog/assets/og-2026-03-18-job-board-explained.jpg",
   tags: ["job-board", "offerwall", "earning", "seeds", "how-it-works", "rewards", "guide", "games"]
 }
