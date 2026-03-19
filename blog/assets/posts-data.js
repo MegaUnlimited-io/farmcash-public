@@ -19,6 +19,16 @@ window.BLOG_POSTS = [
   readTime: "7 min read",
   image: "/blog/assets/og-2026-03-03-waitlist-referral.png",
   tags: ["waitlist", "referrals", "guide", "seeds", "earnings"]
+},
+{
+  slug: "2026-03-18-job-board-explained",
+  title: "How to Earn Seeds in FarmCash: Play Games, Complete Jobs, Get Paid",
+  excerpt: "Learn how FarmCash's Job Board works. Play games, complete jobs, earn seeds, plant crops, and cash out via PayPal. Real earnings explained.",
+  date: "2026-03-18",
+  author: "Sprout",
+  readTime: "6 min read",
+  image: "/blog/assets/og-2026-03-18-job-board-explained.jpg",
+  tags: ["job-board", "offerwall", "earning", "seeds", "how-it-works", "rewards", "guide", "games"]
 }
 ];
 
