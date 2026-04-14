@@ -35,28 +35,42 @@ Redesign farmcash.app landing page to shift focus from form-heavy design to visu
 2. "They said money doesn't grow on trees. They were right. It grows in FarmCash." (Clever wordplay)
 3. "Play games. Manage your micro farm. Harvest real cash." (Clear, functional)
 
-**Current tagline:** "Plant seeds. Harvest cash." (Keep as supporting text)
+**Simple hook variant testing feature**
+- Randomize from the above 3 hooks on page load.
+- Store hook in browser memory (so if user closes and comes back, they see the same hook)
+- Send hook to GA4 on signup event (maybe as signup event metadata) so we can measure best hook over time
+- Allow me to easily add/remove/change hooks in the homepage file or a config file
 
 ---
 
 ## **Page Structure: Short-Form Trust-Builder**
 
-### **Layout Overview (7 Sections):**
+### **Layout Overview (8 Sections):**
 
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ SECTION 1: HERO (Above the fold)                        │
 │ • Hero image (1600x672) with cash-sprouting crops       │
-│ • Bold headline + tagline                               │
-│ • Waitlist form (streamlined, less prominent)           │
+│ • Bold headline (hook) + tagline                        │
+│ • Waitlist form (updated design to match rest of page)  │
 │ • Trust indicator (subtle)                              │
+│ • Seed rewards teaser: "Early users get up to 500       │
+│   FREE SEEDS! [Learn more ↓]"                           │
+└─────────────────────────────────────────────────────────┘
+         ↓
+┌─────────────────────────────────────────────────────────┐
+│ SECTION 1.5: SEED REWARDS EXPLAINER (NEW)               │
+│ • Detailed breakdown of seed reward tiers               │
+│ • Sign up (+100), Verify (+50), Referrals (+200/100/50) │
+│ • "Already signed up? Log in" link                      │
 └─────────────────────────────────────────────────────────┘
          ↓
 ┌─────────────────────────────────────────────────────────┐
 │ SECTION 2: HOW IT WORKS (Visual explainer)              │
-│ • 3-step graphic (to be created)                        │
+│ • 3-step graphic (to be created use table + emojis      |
+|   for now)                                              │
 │ • Jobs → Seeds → Crops → Cash (Paypal/Gift card         |
-|  examples for trust)                                    │
+|  images for trust)                                      │
 │ • Minimal text, maximum clarity                         │
 └─────────────────────────────────────────────────────────┘
          ↓
@@ -69,7 +83,7 @@ Redesign farmcash.app landing page to shift focus from form-heavy design to visu
          ↓
 ┌─────────────────────────────────────────────────────────┐
 │ SECTION 4: WHY FARMCASH? (3 Benefits)                   │
-│ • Gamified (Fun, not boring)                            │
+│ • Gamified (Fun, cozy ritual, not boring)               │
 │ • Transparent (See when you'll get paid)                │
 │ • Early Access (Earn bonus seeds)                       │
 └─────────────────────────────────────────────────────────┘
@@ -106,17 +120,28 @@ Redesign farmcash.app landing page to shift focus from form-heavy design to visu
 ┌─────────────────────────────────────────────────────────┐
 │ [HERO IMAGE: 1600x672 farm scene with $ crops]          │
 │                                                          │
-│   [Left Column - 60%]                  [Right Column - 40%]
+│   [Left Column - 55%]              [Right Column - 45%] │
 │                                                          │
-│   HEADLINE (Large, Bold)                WAITLIST FORM    │
-│   "They said money doesn't              [Streamlined]    │
-│    grow on trees.                                        │
-│    They were right.                     Email input      │
-│    It grows in FarmCash."               Checkboxes       │
-│                                         [Join Button]    │
-│   Tagline (smaller):                                     │
-│   "Plant seeds. Harvest cash 🌱💰"     Trust badge:     │
-│                                         "500+ on waitlist"│
+│   HEADLINE (Large, Bold)            WAITLIST FORM       │
+│   "They said money doesn't          ┌─────────────────┐ │
+│    grow on trees.                   │Join Waitlist 🎉│ │
+│    They were right.                 │                 │ │
+│    It grows in FarmCash."           │ Game type?      │ │
+│                                     │ [Dropdown ▼]    │ │
+│   Tagline:                          │                 │ │
+│   "Plant seeds. Harvest cash 🌱💰" │ Rewarded apps?  │ │
+│                                     │ ☐☐ ☐☐ ☐☐      │ │
+│   Early users get the most          │                 │ │
+│   FREE SEEDS (up to 500)!           │ Device?         │ │
+│   [Learn more ↓]                    │ [🤖] [🍎]      │ │
+│                                     │                 │ │
+│                                     │ Email           │ │
+│                                     │ [input]         │ │
+│                                     │                 │ │
+│                                     │ ☐ I accept...   │ │
+│                                     │                 │ │
+│                                     │ [Join Waitlist] │ │
+│                                     └─────────────────┘ │
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -187,55 +212,358 @@ Plant seeds. Harvest cash 🌱💰
 - Size (Mobile): 18px
 - Color: White or light green (#A8E6A3)
 
-### **Waitlist Form (Streamlined Redesign):**
+### **Waitlist Form (Vertical Compression Redesign):**
 
-**Current form works** - keep backend logic, validation, Supabase integration, referral tracking.
+**CRITICAL:** Keep ALL backend logic, validation, Supabase integration, referral tracking intact. Keep ALL existing form fields.
 
-**Visual Changes:**
+**Visual Changes - Compress Vertically:**
 
-**Desktop Form (Right column, ~400px width):**
+**Desktop Form (Right column, ~380px width, ~420px height):**
 ```
-┌──────────────────────────────┐
-│ Join the Waitlist 🎉         │
-│                              │
-│ 🎁 Earn up to 500 seeds      │
-│ Sign up       +100           │
-│ Verify Email  +50            │
-│ 1st referral  +200           │
-│ 2nd referral  +100           │
-│ 3rd referral  +50            │
-│                              │
-│ [Email input field]          │
-│ you@example.com              │
-│                              │
-│ ☐ I accept Terms & Privacy   │
-│                              │
-│ [Join the Waitlist - Button] │
-│                              │
-│ Trust badge:                 │
-│ "✅ 500+ farmers waiting"    │
-└──────────────────────────────┘
+┌──────────────────────────────────┐
+│ Join the Waitlist 🎉             │
+├──────────────────────────────────┤
+│                                  │
+│ Favorite mobile game type?       │
+│ [Choose one... ▼]                │ ← 40px height
+│                                  │
+│ Which rewarded apps? (2 rows)    │
+│ ☐ FreeCash    ☐ Mistplay        │ ← Row 1
+│ ☐ Swagbucks   ☐ InboxDollars    │ ← Row 2
+│ ☐ None (new!) ☐ Other           │ ← Row 3
+│                                  │
+│ What device?                     │
+│ [🤖 Android] [🍎 Apple]          │ ← Side by side, 36px height
+│                                  │
+│ Email                            │
+│ [you@example.com]                │ ← 44px height
+│                                  │
+│ ☐ I accept Terms & Privacy       │ ← 16px checkbox
+│                                  │
+│ [Join the Waitlist]              │ ← 48px height, full width
+└──────────────────────────────────┘
 ```
 
-**Changes from current:**
-- Remove "Favorite mobile game" dropdown (simplify)
-- Remove "Which rewarded apps" checkboxes (simplify)
-- Remove "What device" checkboxes (simplify)
-- **Just Email + Terms checkbox** (fastest conversion)
-- Optional fields moved to post-signup dashboard
+**Key Changes from Current:**
+- ✅ KEEP all existing fields (game type, rewarded apps, device, email, terms)
+- ✅ REMOVE "Almost there!" text (unnecessary)
+- ✅ REMOVE "Already signed up" from inside form (move below, outside card)
+- ✅ Rewarded apps: 2-column grid (3 rows instead of 6 stacked)
+- ✅ Device buttons: Side-by-side (one row instead of stacked)
+- ✅ Reduced padding: 24px (down from 32px)
+- ✅ Tighter field spacing: 12px margins (down from 20px)
+- ✅ Smaller field heights while maintaining mobile tap targets
 
-**Styling:**
-- Background: White with subtle shadow (0 4px 12px rgba(0,0,0,0.1))
-- Border radius: 12px
-- Padding: 32px
-- Email input: 48px height, border-radius 8px, focus state green accent
-- Button: Full width, 56px height, green (#4CAF50), hover darken 10%
-- Seed rewards: Compact list, 14px font, green checkmarks
+**Field Specifications:**
+
+**Dropdown (Game Type):**
+- Height: 40px (desktop), 48px (mobile)
+- Font-size: 14px
+- Border-radius: 6px
+- Margin-bottom: 12px
+
+**Checkboxes (Rewarded Apps):**
+- Layout: CSS Grid, 2 columns
+- Grid template: `grid-template-columns: 1fr 1fr`
+- Gap: 8px horizontal, 6px vertical
+- Checkbox size: 16px
+- Label font-size: 13px
+- Each row height: ~24px
+- Total section height: ~78px (3 rows)
+
+**Device Buttons:**
+- Layout: Flexbox, side-by-side, equal width
+- Height: 36px (desktop), 44px (mobile)
+- Icon size: 20px (desktop), 24px (mobile)
+- Font-size: 13px (desktop), 14px (mobile)
+- Gap: 8px between buttons
+- Border-radius: 6px
+- Padding: 8px
+- States: Default (gray border) → Selected (green border + light green bg)
+
+**Email Input:**
+- Height: 44px (desktop), 52px (mobile)
+- Font-size: 15px
+- Border-radius: 6px
+- Margin: 12px 0
+
+**Terms Checkbox:**
+- Checkbox: 16px
+- Label font-size: 12px
+- Link color: Green (#4CAF50)
+- Margin: 12px 0
+
+**Submit Button:**
+- Height: 48px (desktop), 56px (mobile)
+- Font-size: 16px
+- Font-weight: 600
+- Background: #F59E0B (orange, matching current design)
+- Hover: Darken 10%
+- Border-radius: 8px
+- Full width
+
+**Form Card Styling:**
+- Background: White
+- Box-shadow: 0 4px 12px rgba(0,0,0,0.1)
+- Border-radius: 12px
+- Padding: 24px (desktop), 20px (mobile)
+- Width: ~380px (desktop), 100% minus 16px sides (mobile)
 
 **Mobile Form:**
-- Full width below hero
-- Same simplified structure
-- Larger tap targets (56px minimum)
+- Full width below hero (padding 16px on sides)
+- Larger tap targets (all interactive elements 44px minimum)
+- Same field structure as desktop
+- Increased heights for touch-friendly interaction
+
+### **CSS Implementation for Form Compression:**
+
+**Rewarded Apps - 2 Column Grid:**
+```css
+.rewarded-apps-checkboxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 8px;
+  margin: 8px 0 12px 0;
+}
+
+.rewarded-apps-checkboxes label {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  cursor: pointer;
+  min-height: 24px; /* Touch target compliance */
+}
+
+.rewarded-apps-checkboxes input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+```
+
+**Device Buttons - Side by Side:**
+```css
+.device-buttons {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.device-button {
+  flex: 1;
+  height: 36px; /* 44px on mobile */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 2px solid #E0E0E0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+}
+
+.device-button.selected {
+  border-color: #4CAF50;
+  background: #F1F8E9;
+}
+
+.device-button:hover {
+  border-color: #A8E6A3;
+}
+
+.device-button img {
+  width: 20px; /* 24px on mobile */
+  height: 20px;
+}
+
+.device-button span {
+  font-size: 13px; /* 14px on mobile */
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .device-button {
+    height: 44px;
+  }
+  .device-button img {
+    width: 24px;
+    height: 24px;
+  }
+  .device-button span {
+    font-size: 14px;
+  }
+}
+```
+
+**Compact Form Spacing:**
+```css
+.waitlist-form {
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.form-heading {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.form-field {
+  margin-bottom: 12px; /* Reduced from 20px */
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+  color: #333;
+}
+
+/* Dropdown styling */
+select.form-select {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 14px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+
+select.form-select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* Email input */
+input[type="email"].form-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  font-size: 15px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+}
+
+input[type="email"].form-input:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* Terms checkbox */
+.terms-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.terms-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.terms-checkbox label {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.terms-checkbox a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.terms-checkbox a:hover {
+  text-decoration: underline;
+}
+
+/* Submit button */
+.submit-button {
+  width: 100%;
+  height: 48px;
+  background: #F59E0B;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submit-button:hover {
+  background: #D97706; /* 10% darker */
+}
+
+.submit-button:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .waitlist-form {
+    padding: 20px;
+  }
+  
+  select.form-select {
+    height: 48px; /* Larger for mobile */
+  }
+  
+  input[type="email"].form-input {
+    height: 52px; /* Larger for mobile */
+  }
+  
+  .submit-button {
+    height: 56px; /* Larger for mobile */
+  }
+}
+```
+
+**Accessibility & Focus States:**
+```css
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #4CAF50;
+  outline-offset: 2px;
+}
+
+/* Ensure all interactive elements are focusable */
+.device-button:focus-visible {
+  outline: 2px solid #4CAF50;
+  outline-offset: 2px;
+}
+
+.rewarded-apps-checkboxes label:focus-within {
+  outline: 2px solid #4CAF50;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+```
+
+---
+
+### **Vertical Space Savings Achieved:**
+
+**Original Form Height:** ~900px (with seed rewards inside, stacked fields)
+
+**New Form Height:** ~420px (compressed design)
+
+**Space Saved:** ~480px (53% reduction!)
+
+**Result:** Form fits comfortably on desktop without scrolling, hero section stays above the fold.
+
+---
 
 ### **Trust Indicator:**
 
@@ -251,6 +579,72 @@ Plant seeds. Harvest cash 🌱💰
 - Green checkmark icon
 - Light gray text (#666)
 - Update number dynamically from DB (if possible)
+
+---
+
+## **Section 1.5: Seed Rewards Explainer (NEW)**
+
+### **Purpose:**
+Explain the seed reward structure that was teased in the hero section ("Learn more ↓" link scrolls here). This section sits immediately below the hero, before "How It Works."
+
+###
+
+ **Layout:**
+
+**Desktop & Mobile (Full Width Section):**
+```
+┌─────────────────────────────────────────────────────────┐
+│              EARN UP TO 500 FREE SEEDS 🎁               │
+│                                                          │
+│    ☐ Sign up          +100 seeds                        │
+│    ☐ Verify Email     +50 seeds                         │
+│    ☐ 1st referral     +200 seeds                        │
+│    ☐ 2nd referral     +100 seeds                        │
+│    ☐ 3rd referral     +50 seeds                         │
+│                                                          │
+│    Already signed up? Log in to dashboard →             │
+└─────────────────────────────────────────────────────────┘
+```
+
+### **Visual Treatment:**
+
+**Background:** Light cream/beige (#FFF9E6) or light green (#F1F8E9)  
+**Container:** Max-width 800px, centered  
+**Padding:** 40px vertical, 24px horizontal  
+**Border:** 1px solid #F0E5C5 (subtle)  
+**Border-radius:** 8px  
+
+**Heading:**
+- Font-size: 24px (desktop), 20px (mobile)
+- Font-weight: 700
+- Color: #333
+- Text-align: center
+- Margin-bottom: 24px
+
+**Seed Reward Items:**
+- Layout: Vertical list, centered
+- Each item: Flexbox (checkbox + label + amount)
+- Font-size: 16px (desktop), 15px (mobile)
+- Line-height: 1.8
+- Color: #666
+- Checkbox: 16px, decorative only (not interactive), 50% opacity
+- Amount (+100, +200, etc.): Bold, orange (#F59E0B)
+- Spacing: 8px between items
+
+**"Already signed up" Link:**
+- Font-size: 14px
+- Color: #666
+- Link color: #4CAF50
+- Text-align: center
+- Margin-top: 20px
+
+### **Purpose of This Section:**
+
+✅ **Explains teaser from hero** - "Early users get up to 500 FREE SEEDS!" gets detailed breakdown  
+✅ **Provides scroll anchor** - "Learn more ↓" in hero scrolls to this section  
+✅ **Moves content out of form** - Keeps form card focused on input fields  
+✅ **Adds breathing room** - Seed rewards get proper visual space  
+✅ **Natural placement for login link** - "Already signed up" makes sense here (post-explanation)  
 
 ---
 
