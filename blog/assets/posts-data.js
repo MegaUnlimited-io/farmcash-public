@@ -31,6 +31,16 @@ window.BLOG_POSTS = [
   tags: ["job-board", "offerwall", "earning", "seeds", "how-it-works", "rewards", "guide", "games"],
   image: "/blog/assets/og-2026-03-18-job-board-explained.jpg"
   
+},
+{
+  slug: "2026-04-15-freecash-banned-lessons",
+  title: "The #2 App on the US App Store Just Got Banned by Apple",
+  excerpt: "FreeCash, a rewards app with 6M downloads/month, was banned for fraudulent practices. Here's what happened, why it matters, and how we're building FarmCash differently.",
+  date: "2026-04-15",
+  author: "Malcolm",
+  readTime: "8 min read",
+  image: "/blog/assets/og-freecash-banned-two-paths-illustration.png",
+  tags: ["freecash", "banned", "blackhat", "fraud", "transparency", "industry"]
 }
 ];
 
