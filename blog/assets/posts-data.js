@@ -37,7 +37,7 @@ window.BLOG_POSTS = [
   title: "The #2 App on the US App Store Just Got Banned by Apple",
   excerpt: "FreeCash, a rewards app with 6M downloads/month, was banned for fraudulent practices. Here's what happened, why it matters, and how we're building FarmCash differently.",
   date: "2026-04-15",
-  author: "Malcolm",
+  author: "Malcolm Lowry",
   readTime: "8 min read",
   image: "/blog/assets/og-freecash-banned-two-paths-illustration.png",
   tags: ["freecash", "banned", "blackhat", "fraud", "transparency", "industry"]
