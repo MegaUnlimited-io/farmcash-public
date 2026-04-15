@@ -28,6 +28,34 @@ body::before {
   z-index: -2;
 }
 
+/* Blog Hero Image */
+.blog-hero-image {
+  width: 100%;
+  margin: 2rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.blog-hero-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .blog-hero-image {
+    margin: 1.5rem 0;
+    border-radius: 8px;
+  }
+  
+  .blog-hero-image img {
+    border-radius: 8px;
+  }
+}
+
 .blog-shell {
   width: min(1100px, calc(100% - 2rem));
   margin: 0 auto;
