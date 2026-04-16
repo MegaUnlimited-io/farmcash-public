@@ -1117,6 +1117,30 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     const form = document.getElementById('signup-form');
     const messageEl = document.getElementById('message');
+
+    // Track form start (first interaction with any form field)
+let formStartTracked = false;
+form.addEventListener('focusin', function() {
+    if (!formStartTracked) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'form_start',
+            'form_name': 'waitlist_signup'
+        });
+        formStartTracked = true;
+        console.log('GTM: form_start event pushed');
+    }
+}, true);
+
+// Track form submit attempt (button click)
+form.addEventListener('submit', function() {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        'event': 'form_submit',
+        'form_name': 'waitlist_signup'
+    });
+    console.log('GTM: form_submit event pushed');
+});
     
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -1276,26 +1300,44 @@ turnstile.execute(turnstileWidgetId, {
         console.log('Waitlist creation result:', { success: waitlistSuccess, error: waitlistError });
         
         if (!waitlistSuccess) {
-            console.error('Waitlist creation error:', waitlistError);
-            console.error('Survey data:', surveyData);
-            console.error('Fingerprint data:', fingerprintData);
-            console.error('Referrer ID:', referrerId);
-            messageEl.textContent = '⚠️ Account created but there was an issue. Please check your email to verify.';
-            messageEl.className = 'warning';
-        } else {
-            // Success!
-            messageEl.textContent = '✅ Check your email to verify your account!';
-            messageEl.className = 'success';
-            
-            // Show coin rain
-            coinRain(30);
-            
-            // Clear form
-            form.reset();
-            
-            // Clear stored referral code
-            clearStoredReferralCode();
-        }
+    console.error('Waitlist creation error:', waitlistError);
+    messageEl.textContent = '⚠️ Account created but there was an issue.';
+    messageEl.className = 'warning';
+    
+    // GTM Event: Form Error
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        'event': 'form_error',
+        'form_name': 'waitlist_signup',
+        'error_message': waitlistError || 'Unknown error'
+    });
+    
+} else {
+    // Success!
+    messageEl.textContent = '✅ Check your email to verify your account!';
+    messageEl.className = 'success';
+    
+    // GTM Event: Form Success
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        'event': 'form_success',
+        'form_name': 'waitlist_signup',
+        'user_email': sanitizedEmail,
+        'referral_code': referralCode || 'none',
+        'game_type': gameType,
+        'devices': devices.join(','),
+        'rewarded_apps': rewardedApps.join(',')
+    });
+    
+    // Show coin rain
+    coinRain(30);
+    
+    // Clear form
+    form.reset();
+    
+    // Clear stored referral code
+    clearStoredReferralCode();
+}
     });
     
     // ============================================================================
