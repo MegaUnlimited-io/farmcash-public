@@ -2,5 +2,9 @@ User-agent: *
 Allow: /
 Disallow: /blog/drafts/
 Disallow: /alpha-install/
+Disallow: /verify/
+Disallow: /referral/
+Disallow: /archive/
 
+Sitemap: https://farmcash.app/sitemap.xml
 Sitemap: https://farmcash.app/blog/sitemap.xml
