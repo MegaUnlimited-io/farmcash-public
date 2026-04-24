@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-P7WX8DL7');</script>
+    <!-- End Google Tag Manager -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/farmcash-auth.js"></script>
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXWH94NT6C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GXWH94NT6C');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>FarmCash - Sign Up / Log In</title>
+
+    <meta name="description" content="Join FarmCash or log in to your account. Plant seeds, grow crops, harvest real cash.">
+    <meta property="og:title" content="FarmCash - Sign Up / Log In">
+    <meta property="og:description" content="Join FarmCash or log in to your account.">
+    <meta property="og:image" content="https://farmcash.app/assets/og-waitlist.png">
+
+    <link rel="icon" type="image/png" href="../favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+    <link rel="manifest" href="../site.webmanifest" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: url('../assets/lp_background_2.png') center center / cover no-repeat fixed;
+            background-color: #87CEEB;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: inherit;
+            filter: blur(12px);
+            z-index: 0;
+        }
+
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Logo */
+        .logo-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            margin-bottom: 16px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .logo-card img {
+            max-width: 240px;
+            height: auto;
+        }
+
+        .tagline {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6B4739;
+            margin-top: 10px;
+        }
+
+        /* Main card */
+        .main-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* Tab switcher */
+        .tab-switcher {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #F0F0F0;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 28px;
+        }
+
+        .tab-btn {
+            padding: 10px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            background: transparent;
+            color: #888;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #2D6B4F;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Panel visibility */
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2D6B4F;
+            margin-bottom: 8px;
+        }
+
+        select, input[type="email"], input[type="text"] {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            background: #F8F8F8;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            color: #333;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+
+        select:focus, input[type="email"]:focus, input[type="text"]:focus {
+            outline: none;
+            background: white;
+            border-color: #A3C644;
+            box-shadow: 0 0 0 3px rgba(163, 198, 68, 0.1);
+        }
+
+        /* Checkbox group */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 10px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .checkbox-label:hover { background: rgba(163, 198, 68, 0.05); }
+
+        .checkbox-label input[type="checkbox"] { display: none; }
+
+        .checkbox-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #6B4739;
+            border-radius: 4px;
+            background: white;
+            position: relative;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+            background: #A3C644;
+            border-color: #A3C644;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+            content: '✓';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .checkbox-text {
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* Device options */
+        .device-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .device-option { cursor: pointer; }
+        .device-option input[type="checkbox"] { display: none; }
+
+        .device-card {
+            background: #F8F8F8;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .device-option:hover .device-card {
+            background: white;
+            border-color: #A3C644;
+        }
+
+        .device-option input[type="checkbox"]:checked + .device-card {
+            background: linear-gradient(135deg, #FFF8F0 0%, #F5F1E8 100%);
+            border-color: #A3C644;
+            box-shadow: 0 4px 12px rgba(163, 198, 68, 0.2);
+        }
+
+        .device-icon { font-size: 36px; margin-bottom: 6px; }
+        .device-name { font-size: 15px; font-weight: 600; color: #2D6B4F; }
+
+        /* Terms */
+        .terms-container { margin: 16px 0 20px; }
+
+        .terms-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .terms-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #2D6B4F;
+        }
+
+        .terms-label a { color: #2D6B4F; text-decoration: none; font-weight: 600; }
+        .terms-label a:hover { text-decoration: underline; }
+
+        /* Green 3D button */
+        .btn-primary {
+            width: 100%;
+            padding: 17px 24px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2D6B4F 0%, #1e6b4f 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 6px 0 #145040;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            letter-spacing: 0.3px;
+            min-height: 54px;
+        }
+
+        .btn-primary:hover { background: linear-gradient(135deg, #357a5c 0%, #2D6B4F 100%); }
+
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #145040;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Messages */
+        .msg {
+            margin-top: 16px;
+            padding: 14px 16px;
+            font-size: 14px;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: 600;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .msg.show { display: block; }
+        .msg.success { background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7; }
+        .msg.error { background: #FFEBEE; color: #C62828; border: 1px solid #EF9A9A; }
+        .msg.info { background: #E3F2FD; color: #1565C0; border: 1px solid #90CAF9; }
+
+        /* Toggle link */
+        .toggle-link {
+            margin-top: 20px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #F0F0F0;
+            font-size: 14px;
+            color: #6B4739;
+        }
+
+        .toggle-link a {
+            color: #2D6B4F;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .toggle-link a:hover { text-decoration: underline; }
+
+        /* Coin animation */
+        #coin-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .coin-fall {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(720deg); }
+        }
+
+        /* Footer */
+        #footer-placeholder { position: relative; z-index: 1; width: 100%; }
+
+        @media (min-width: 600px) {
+            .logo-card, .main-card { max-width: 440px; }
+        }
+
+        @media (max-width: 400px) {
+            .device-options { grid-template-columns: 1fr; }
+            .main-card { padding: 24px 16px; }
+        }
+    </style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P7WX8DL7"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<div id="coin-container"></div>
+
+<div class="page-wrap">
+    <!-- Logo -->
+    <div class="logo-card">
+        <img src="../assets/FarmCash_Logo_v1.png" alt="FarmCash">
+        <p class="tagline">Plant seeds, harvest cash 🌱💰</p>
+    </div>
+
+    <!-- Main Card -->
+    <div class="main-card">
+        <!-- Tab Switcher -->
+        <div class="tab-switcher">
+            <button class="tab-btn active" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+            <button class="tab-btn" id="tab-login" onclick="switchTab('login')">Log In</button>
+        </div>
+
+        <!-- ===== SIGN UP PANEL ===== -->
+        <div class="panel active" id="panel-signup">
+            <form id="signup-form">
+                <!-- Game type -->
+                <div class="form-group">
+                    <label for="game-type">Favorite mobile game type?</label>
+                    <select id="game-type" required>
+                        <option value="">Choose one...</option>
+                        <option value="puzzle">🧩 Puzzle</option>
+                        <option value="strategy">⚔️ Strategy</option>
+                        <option value="casual">🚜 Casual</option>
+                        <option value="action">🎮 Action</option>
+                        <option value="rpg">🗡️ RPG</option>
+                        <option value="other">❓ Other</option>
+                    </select>
+                </div>
+
+                <!-- Rewarded apps -->
+                <div class="form-group">
+                    <label>Which rewarded apps have you used?</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="rewarded-apps" value="freecash">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">FreeCash</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="rewarded-apps" value="mistplay">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">Mistplay</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="rewarded-apps" value="swagbucks">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">Swagbucks</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="rewarded-apps" value="inboxdollars">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">InboxDollars</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="rewarded-apps" value="none">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">None (I'm new to this!)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="rewarded-apps" value="other">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-text">Other</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Device -->
+                <div class="form-group">
+                    <label>What device will you use?</label>
+                    <div class="device-options">
+                        <label class="device-option">
+                            <input type="checkbox" name="device" value="android">
+                            <div class="device-card">
+                                <div class="device-icon">🤖</div>
+                                <div class="device-name">Android</div>
+                            </div>
+                        </label>
+                        <label class="device-option">
+                            <input type="checkbox" name="device" value="ios">
+                            <div class="device-card">
+                                <div class="device-icon">🍎</div>
+                                <div class="device-name">Apple</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" placeholder="you@example.com" required>
+                </div>
+
+                <!-- Turnstile -->
+                <div id="cf-turnstile-signup"></div>
+
+                <!-- Terms -->
+                <div class="terms-container">
+                    <label class="terms-label">
+                        <input type="checkbox" id="terms-checkbox" required>
+                        <span>I accept the <a href="/terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a> and <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-primary" id="signup-btn">Join the Waitlist 🌱</button>
+                <div class="msg" id="signup-msg"></div>
+            </form>
+
+            <div class="toggle-link">
+                Already signed up? <a href="#" onclick="switchTab('login'); return false;">Log in →</a>
+            </div>
+        </div>
+
+        <!-- ===== LOGIN PANEL ===== -->
+        <div class="panel" id="panel-login">
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="you@example.com" required>
+                </div>
+
+                <button type="submit" class="btn-primary" id="login-btn">Send Magic Link ✨</button>
+                <div class="msg" id="login-msg"></div>
+            </form>
+
+            <div class="toggle-link">
+                New here? <a href="#" onclick="switchTab('signup'); return false;">Create an account →</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script>
+// ============================================================================
+// TAB SWITCHING
+// ============================================================================
+
+function switchTab(tab) {
+    document.getElementById('panel-signup').classList.toggle('active', tab === 'signup');
+    document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+}
+
+// ============================================================================
+// COIN RAIN
+// ============================================================================
+
+function createCoin() {
+    const coin = document.createElement('video');
+    coin.src = '../assets/3d-coin.webm';
+    coin.autoplay = true;
+    coin.loop = true;
+    coin.muted = true;
+    coin.className = 'coin-fall';
+    coin.style.left = Math.random() * 100 + 'vw';
+    coin.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    document.getElementById('coin-container').appendChild(coin);
+    setTimeout(() => coin.remove(), 4000);
+}
+
+function coinRain(count = 30) {
+    for (let i = 0; i < count; i++) {
+        setTimeout(() => createCoin(), i * 50);
+    }
+}
+
+// ============================================================================
+// SHOW MESSAGE HELPER
+// ============================================================================
+
+function showMsg(id, text, type) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'msg show ' + type;
+}
+
+// ============================================================================
+// MAIN INIT
+// ============================================================================
+
+window.addEventListener('DOMContentLoaded', async () => {
+
+    // Auto-redirect if already authenticated
+    try {
+        const { session } = await checkAuth();
+        if (session) {
+            window.location.replace('/referral/');
+            return;
+        }
+    } catch (e) {
+        console.error('Auth check error:', e);
+    }
+
+    // Delayed fallback check
+    setTimeout(async () => {
+        try {
+            const { session } = await checkAuth();
+            if (session) window.location.replace('/referral/');
+        } catch (e) {}
+    }, 1000);
+
+    // Open login tab if ?login=true
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('login') === 'true') switchTab('login');
+
+    // Store referral code if present
+    const refCode = urlParams.get('ref');
+    if (refCode) storeReferralCode(refCode);
+
+    // ============================================================================
+    // TURNSTILE
+    // ============================================================================
+
+    let turnstileSignupId = null;
+
+    const initTurnstile = () => {
+        if (typeof turnstile !== 'undefined') {
+            try {
+                turnstileSignupId = turnstile.render('#cf-turnstile-signup', {
+                    sitekey: '0x4AAAAAACdO5PPgE1nOO6Xa',
+                    theme: 'light',
+                    size: 'invisible',
+                    callback: (token) => console.log('Turnstile passed:', token),
+                    'error-callback': () => console.error('Turnstile error')
+                });
+            } catch (e) {
+                console.error('Turnstile init error:', e);
+            }
+        } else {
+            setTimeout(initTurnstile, 100);
+        }
+    };
+    initTurnstile();
+
+    // ============================================================================
+    // SIGN UP FORM
+    // ============================================================================
+
+    document.getElementById('signup-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const termsCheckbox = document.getElementById('terms-checkbox');
+        if (!termsCheckbox.checked) {
+            showMsg('signup-msg', '❌ Please accept the Terms & Conditions to continue.', 'error');
+            return;
+        }
+
+        // Turnstile
+        let turnstileToken = null;
+        try {
+            turnstileToken = await new Promise((resolve, reject) => {
+                if (typeof turnstile === 'undefined' || turnstileSignupId === null) {
+                    reject(new Error('Turnstile not loaded'));
+                    return;
+                }
+                turnstile.reset(turnstileSignupId);
+                turnstile.execute(turnstileSignupId, {
+                    callback: (token) => resolve(token),
+                    'error-callback': () => reject(new Error('Turnstile failed'))
+                });
+            });
+        } catch (err) {
+            showMsg('signup-msg', '❌ Verification failed. Please refresh and try again.', 'error');
+            return;
+        }
+
+        // Collect data
+        const gameType = document.getElementById('game-type').value;
+        const email = document.getElementById('signup-email').value.trim().toLowerCase();
+        const rewardedApps = Array.from(document.querySelectorAll('input[name="rewarded-apps"]:checked')).map(cb => cb.value);
+        const devices = Array.from(document.querySelectorAll('input[name="device"]:checked')).map(cb => cb.value);
+
+        // Validate
+        if (rewardedApps.length === 0) {
+            showMsg('signup-msg', '❌ Please select at least one rewarded app option.', 'error');
+            return;
+        }
+        if (devices.length === 0) {
+            showMsg('signup-msg', '❌ Please select at least one device type.', 'error');
+            return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showMsg('signup-msg', '❌ Please enter a valid email address.', 'error');
+            return;
+        }
+        if (email.length > 254) {
+            showMsg('signup-msg', '❌ Email address is too long.', 'error');
+            return;
+        }
+
+        const disposableDomains = ['tempmail.com','guerrillamail.com','10minutemail.com','throwaway.email','mailinator.com','maildrop.cc','trashmail.com','temp-mail.org'];
+        if (disposableDomains.includes(email.split('@')[1])) {
+            showMsg('signup-msg', '❌ Please use a permanent email address.', 'error');
+            return;
+        }
+
+        // Referral
+        const referralCode = getReferralCode() || getStoredReferralCode();
+        let referrerId = null;
+        if (referralCode) {
+            showMsg('signup-msg', 'Validating referral code...', 'info');
+            referrerId = await getUserIdFromReferralCode(referralCode);
+        }
+
+        const btn = document.getElementById('signup-btn');
+        btn.disabled = true;
+        showMsg('signup-msg', 'Creating your account...', 'info');
+
+        const fingerprintData = await getQuickFingerprint();
+        const { data: authData, error: authError } = await signUpUser(email);
+
+        if (authError) {
+            btn.disabled = false;
+            if (authError.message.includes('already registered')) {
+                showMsg('signup-msg', '❌ This email is already registered. Try logging in instead.', 'error');
+            } else {
+                showMsg('signup-msg', '❌ Signup failed: ' + authError.message, 'error');
+            }
+            return;
+        }
+
+        const userId = authData.user.id;
+        const surveyData = { gameType, rewardedApps, devices };
+
+        const { success, error: waitlistError } = await createWaitlistUser(userId, email, surveyData, fingerprintData, referrerId);
+
+        btn.disabled = false;
+
+        if (!success) {
+            showMsg('signup-msg', '⚠️ Account created but there was an issue saving your profile.', 'error');
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ event: 'form_error', form_name: 'signup', error_message: waitlistError || 'Unknown' });
+        } else {
+            showMsg('signup-msg', '✅ Check your email to verify your account!', 'success');
+            coinRain(30);
+            document.getElementById('signup-form').reset();
+            clearStoredReferralCode();
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ event: 'form_success', form_name: 'signup', user_email: email, referral_code: referralCode || 'none', game_type: gameType, devices: devices.join(','), rewarded_apps: rewardedApps.join(',') });
+        }
+    });
+
+    // ============================================================================
+    // LOGIN FORM
+    // ============================================================================
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('login-email').value.trim().toLowerCase();
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showMsg('login-msg', '❌ Please enter a valid email address.', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('login-btn');
+        btn.disabled = true;
+        showMsg('login-msg', 'Sending magic link...', 'info');
+
+        const { error } = await sendMagicLink(email);
+
+        btn.disabled = false;
+
+        if (error) {
+            showMsg('login-msg', '❌ Failed to send magic link. Please try again.', 'error');
+        } else {
+            showMsg('login-msg', '✅ Magic link sent! Check your email.', 'success');
+            document.getElementById('login-email').value = '';
+        }
+    });
+
+    // Footer
+    fetch('/includes/footer.html')
+        .then(r => r.text())
+        .then(html => { document.getElementById('footer-placeholder').innerHTML = html; })
+        .catch(err => console.error('Footer error:', err));
+});
+</script>
+</body>
+</html>
