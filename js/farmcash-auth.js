@@ -103,11 +103,11 @@ async function signUpUser(email, password = null) {
 }
 
 // Send magic link for login
-async function sendMagicLink(email) {
+async function sendMagicLink(email, redirectTo = null) {
     const { data, error } = await supabaseClient.auth.signInWithOtp({
         email: email,
         options: {
-            emailRedirectTo: `${window.location.origin}/verify/?type=login`
+            emailRedirectTo: redirectTo || `${window.location.origin}/verify/?type=login`
         }
     });
     return { data, error };

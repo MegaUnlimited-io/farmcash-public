@@ -615,6 +615,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     const refCode = urlParams.get('ref');
     if (refCode) storeReferralCode(refCode);
 
+    // Custom post-login redirect URL
+    const nextUrl = urlParams.get('next') || null;
+
     // ============================================================================
     // TURNSTILE
     // ============================================================================
@@ -766,7 +769,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         btn.disabled = true;
         showMsg('login-msg', 'Sending magic link...', 'info');
 
-        const { error } = await sendMagicLink(email);
+        const { error } = await sendMagicLink(email, nextUrl);
 
         btn.disabled = false;
 
