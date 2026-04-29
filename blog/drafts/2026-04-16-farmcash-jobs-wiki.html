@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Introducing FarmCash Jobs: A Community-Driven Wiki for Every Offer | FarmCash Blog</title>
+  <meta name="description" content="FarmCash Jobs is live - a community wiki where users review, rate, and share real feedback on every offer. No more blindly starting jobs that are riddled with ads or impossible to complete." />
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
+  <link rel="canonical" href="https://farmcash.app/blog/posts/2026-04-29-farmcash-jobs-wiki.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Introducing FarmCash Jobs: A Community-Driven Wiki for Every Offer" />
+  <meta property="og:description" content="FarmCash Jobs is live - a community wiki where users review, rate, and share real feedback on every offer. No more blindly starting jobs that are riddled with ads or impossible to complete." />
+  <meta property="og:url" content="https://farmcash.app/blog/posts/2026-04-29-farmcash-jobs-wiki.html" />
+  <meta property="og:image" content="https://farmcash.app/blog/assets/og-2026-04-29-farmcash-jobs-wiki.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Introducing FarmCash Jobs: A Community-Driven Wiki for Every Offer",
+      "datePublished": "2026-04-16",
+      "dateModified": "2026-04-16",
+      "author": {
+        "@type": "Person",
+        "name": "Malcolm"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "FarmCash",
+        "url": "https://farmcash.app"
+      },
+      "description": "FarmCash Jobs is live - a community wiki where users review, rate, and share real feedback on every offer."
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/blog/assets/blog.css" />
+</head>
+<body data-post-slug="2026-04-16-farmcash-jobs-wiki">
+  <div id="header-placeholder"></div>
+
+  <main class="blog-content-shell">
+    <article class="blog-post-article">
+      <header>
+        <h1>🎯 Introducing FarmCash Jobs: A Community-Driven Wiki for Every Offer</h1>
+        <p class="blog-post-meta">
+          By Malcolm
+          <span class="blog-author-links">
+            <a id="author-x" href="https://x.com/l_mlolm_l" target="_blank" rel="noopener">X</a>
+            <a id="author-bluesky" href="https://bsky.app/profile/multd.bsky.social" target="_blank" rel="noopener">Bluesky</a>
+          </span>
+          · <time datetime="2026-04-16">April 16, 2026</time> · 7 min read
+        </p>
+      </header>
+
+      <nav class="blog-toc" id="table-of-contents" aria-label="Table of contents">
+        <h2>Table of contents</h2>
+        <ol></ol>
+      </nav>
+
+      <div class="js-post-content">
+        <p><strong>FarmCash Jobs is live.</strong></p>
+
+        <p>From a user perspective, <a href="https://farmcash.app/jobs">FarmCash Jobs</a> is a community-driven wiki for every offer available inside the FarmCash app. Instead of blindly starting a job and discovering it's riddled with ads or impossible to complete, users can look it up first — read real community reviews, see how other players rated it across four dimensions, and make an informed decision before they invest their time.</p>
+
+        <div class="blog-info-box">
+          <h3>📊 Four Rating Dimensions</h3>
+          <ul>
+            <li><strong>Overall Rating</strong> - A weighted average of your ratings.</li>
+            <li><strong>Ad Aggression</strong> - How many ads will you face?</li>
+            <li><strong>Task Difficulty</strong> - How hard is it to complete?</li>
+            <li><strong>Payment Speed</strong> - How fast does it credit?</li>
+          </ul>
+        </div>
+
+        <p>Every offer gets its own permanent page with a description, screenshots, payout information in Seeds, and a comment thread. Jobs never get deleted — even if an offer disappears from FarmCash or gets flagged, the page and its community knowledge stay live so the history isn't lost. Only blacklisted offers are permanently removed from public display.</p>
+
+        <p>A curated <strong>Top Pick</strong> and <strong>Featured</strong> section on the homepage surfaces the best opportunities at a glance, all driven by human ratings.</p>
+
+        <h2>🤔 Why We Built This</h2>
+
+        <p>The core reason behind this is to allow us to get real data on which jobs are the best from a user experience perspective and serve them more prominently, and to warn users about ad aggressive jobs or long payout delays that create confusion.</p>
+
+        <p>Think about it: in most rewards apps, you're flying blind. You click an offer, spend 30 minutes (or hours) on it, and maybe it credits. Maybe it doesn't. Maybe it's so ad-heavy you quit halfway through. There's no way to know beforehand.</p>
+
+        <p><strong><a href="https://farmcash.app/jobs">FarmCash Jobs</a> changes that.</strong></p>
+
+        <p>And we are making this information available to everyone, FarmCash users or not.</p>
+
+        <p>Now you can:</p>
+        <ul>
+          <li>Read reviews from real players who've completed the job</li>
+          <li>See ratings across all three dimensions before you start</li>
+          <li>Check screenshots to to see if the app looks interesting to you</li>
+          <li>Learn from others' tips and strategies</li>
+          <li>Avoid jobs that are known time-wasters</li>
+        </ul>
+
+        <h2>⚙️ How It Works (Technical Deep Dive)</h2>
+
+        <p>From a technical perspective, the FarmCash Jobs wiki is a Next.js 16 application (App Router, React 19) deployed on Vercel and served transparently through a Cloudflare Worker proxy — users see <code>farmcash.app/jobs</code> without ever knowing there's a separate app behind it.</p>
+
+        <p>It shares a live Supabase backend with the mobile app, meaning web users and app users are the same authenticated people with the same session.</p>
+
+        <div class="blog-info-box">
+          <h3>🔄 Automated Job Sync</h3>
+          <p>Job data flows in automatically via a Supabase Edge Function (Deno runtime) that hits the AyeT partner API every six hours, upserts up to 1,000+ offers, and fires on-demand ISR revalidation so updated pages go live in seconds without a rebuild.</p>
+        </div>
+
+        <p>The caching layer uses Next.js 16's <code>use cache</code> + <code>cacheLife</code> directives — job pages are statically served at the CDN edge but can be surgically busted per-slug the moment data changes.</p>
+
+        <h3>🤖 AI-Powered Enrichment</h3>
+
+        <p>The enrichment pipeline is where it gets interesting. A Node.js pipeline crawls the Google Play Store for each app, feeds the reviews and metadata into the Claude API, and generates a structured analysis — human-readable descriptions, gameplay tips, and seeded bot ratings and comments that give new jobs a baseline of useful content before any human has reviewed them. One a verified human reviews an app, the AI review becomes fallback and is not considered in the average going forward.</p>
+
+        <p><strong>All AI-generated content is flagged <code>is_bot = true</code> and never presented as human opinion.</strong></p>
+
+        <p>The result is that even a brand-new offer arrives with context rather than a blank page.</p>
+
+        <h3>🛡️ Moderation Tools</h3>
+
+        <p>On the moderation side, a full admin panel lets the team:</p>
+        <ul>
+          <li>Approve or reject community comments</li>
+          <li>Manage which jobs appear in the Featured and Top Pick slots (with live drag-free reordering)</li>
+          <li>Change job lifecycle status (active, blacklisted, seasonal, partner removed, under review) with instant cache busting</li>
+          <li>Monitor enrichment coverage — all without touching SQL</li>
+        </ul>
+
+        <h2>🚀 The Build</h2>
+
+        <p>The whole system went from a blank Next.js scaffold to a fully enriched, ISR-cached, admin-moderated wiki with 1,000+ live job pages in a single focused build sprint.</p>
+
+        <p>I took a week off from alpha feedback to build this because I knew it was critical. Without community-driven data on job quality, we're just another rewards app guessing at what works. With it, we can actually optimize for user experience — not just advertiser payouts.</p>
+
+        <h2>🔮 What's Coming Next</h2>
+
+        <div class="blog-info-box">
+          <h3>Roadmap Features</h3>
+          <ul>
+            <li><strong>Deep links into the FarmCash app</strong> - Click any job on the web and it opens directly in your mobile app</li>
+            <li><strong>Guides system</strong> - Allow users to post detailed guides on the best way to complete tasks in an app</li>
+            <li><strong>Favorites</strong> - Favorite jobs in the web app and see them in your mobile app favorites to help you plan your weekly jobs path</li>
+            <li><strong>Rating rewards</strong> - Seed & XP rewards for rating jobs (contribute = earn & level up)</li>
+            <li><strong>Better task breakdown with rewards</strong> - More granular info on what tasks/steps are and what they pay</li>
+            <li><strong>UI &amp; Branding pass</strong> - Polish the visual design to match FarmCash brand</li>
+            <li><strong>Achievements &amp; Badges system</strong> - Gamify contributions (top reviewer, helpful comments, etc.)</li>
+          </ul>
+        </div>
+
+        <h2>🎯 Why This Matters</h2>
+
+<p>Most rewards apps treat offers as disposable. An offer appears, someone completes it (or doesn't), and it disappears. No history. No community knowledge. No accountability.</p>
+
+<p><strong>FarmCash Jobs makes offers permanent.</strong></p>
+
+<p>Every job page is a living document that gets better over time as more people contribute. Bad jobs get exposed. Good jobs get highlighted. And everyone — advertisers, players, and partners — benefits from the transparency.</p>
+
+<p>But transparency alone isn't enough.</p>
+
+<h3>Building Different from Day One</h3>
+
+<p>When I started building FarmCash, I realized there are some less-desirable patterns in the rewards industry that hurt user experience — and ultimately hurt the category's reputation.</p>
+
+<p>We covered some of this in our <a href="/blog/posts/2026-04-15-freecash-banned-lessons.html">analysis of the FreeCash situation</a>, but it goes beyond fraud. Two problems stood out:</p>
+
+<ol>
+  <li><strong>Payment delays</strong> - Some apps pay instantly. Others take 24 hours. Some take weeks. This makes the reward chain confusing, especially for new users who don't know what to expect.</li>
+  <li><strong>Ad aggressiveness</strong> - Some rewards apps monetize so hard through ads that the games become unplayable. You spend more time watching ads than actually playing.</li>
+</ol>
+
+<p><strong>FarmCash is attracting a NEW audience to rewarded apps.</strong> These aren't seasoned r/beermoney grinders who know the drill. They're casual mobile gamers discovering rewards for the first time.</p>
+
+<p>That means we need the best user experience possible:</p>
+
+<ul>
+  <li>✅ <strong>Jobs that pay immediately</strong> - No waiting, no confusion about when you'll get credited</li>
+  <li>✅ <strong>No abusive ads</strong> - Games should be playable, not ad marathons disguised as gameplay</li>
+</ul>
+
+<p>The Jobs Wiki is part of this commitment. We're not just being transparent about offer quality — we're only promoting advertisers who meet our standards in the first place.</p>
+
+<p>This is how you build trust in an industry that's <a href="/blog/posts/2026-04-15-freecash-banned-lessons.html">earned a reputation for the opposite</a>.</p>
+
+        <h2>🌱 Check It Out</h2>
+
+        <p>The wiki is live now at <strong><a href="https://farmcash.app/jobs">farmcash.app/jobs</a></strong>.</p>
+
+        <p>Browse the Top Picks, read some reviews, and if you've completed any jobs — drop a rating and let the community know what you experienced.</p>
+
+        <p>The main button "Open in FarmCash App" will become active once we go live with FarmCash.</p>
+
+        <p>Your feedback makes this better for everyone.</p>
+
+        <p class="blog-cta">
+          <strong>Not on FarmCash yet?</strong><br />
+          <a href="https://farmcash.app?utm_source=blog&utm_medium=jobs_wiki_post&utm_campaign=blog_post">Join the waitlist</a> to get early access when alpha opens.
+        </p>
+      </div>
+    </article>
+  </main>
+
+  <div id="footer-placeholder"></div>
+  <script src="/blog/assets/blog.js"></script>
+  <script src="/blog/assets/posts-data.js"></script>
+  <script src="/blog/assets/related-posts.js"></script>
+</body>
+</html>
