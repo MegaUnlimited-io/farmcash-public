@@ -127,8 +127,19 @@
   function setAuthorSocials() {
     const x = document.getElementById('author-x');
     const bluesky = document.getElementById('author-bluesky');
-    if (x) x.href = window.SPROUT_SOCIALS?.x || '#';
-    if (bluesky) bluesky.href = window.SPROUT_SOCIALS?.bluesky || '#';
+    if (!x && !bluesky) return;
+
+    // Resolve the author for this post from posts-data, fall back to Sprout
+    const slug = document.body.dataset.postSlug;
+    const post = (window.BLOG_POSTS || []).find((p) => p.slug === slug);
+    const authorName = post?.author || 'Sprout';
+    const socials =
+      (window.BLOG_AUTHORS && window.BLOG_AUTHORS[authorName]) ||
+      window.SPROUT_SOCIALS ||
+      {};
+
+    if (x) x.href = socials.x || '#';
+    if (bluesky) bluesky.href = socials.bluesky || '#';
   }
 
   document.addEventListener('DOMContentLoaded', async () => {

@@ -54,7 +54,20 @@ window.BLOG_POSTS = [
 }
 ];
 
-window.SPROUT_SOCIALS = {
-  x: 'https://x.com/sprout_agent',
-  bluesky: 'https://bsky.app/profile/sprout-bot.bsky.social'
+window.BLOG_AUTHORS = {
+  'Sprout': {
+    x: 'https://x.com/sprout_agent',
+    bluesky: 'https://bsky.app/profile/sprout-bot.bsky.social'
+  },
+  'Malcolm': {
+    x: 'https://x.com/l_mlolm_l',
+    bluesky: 'https://bsky.app/profile/multd.bsky.social'
+  },
+  'Malcolm Lowry': {
+    x: 'https://x.com/l_mlolm_l',
+    bluesky: 'https://bsky.app/profile/multd.bsky.social'
+  }
 };
+
+// Legacy alias — kept so any external code referencing SPROUT_SOCIALS doesn't break
+window.SPROUT_SOCIALS = window.BLOG_AUTHORS['Sprout'];
