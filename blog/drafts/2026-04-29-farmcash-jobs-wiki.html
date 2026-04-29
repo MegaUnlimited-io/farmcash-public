@@ -18,8 +18,8 @@
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       "headline": "Introducing FarmCash Jobs: A Community-Driven Wiki for Every Offer",
-      "datePublished": "2026-04-16",
-      "dateModified": "2026-04-16",
+      "datePublished": "2026-04-29",
+      "dateModified": "2026-04-29",
       "author": {
         "@type": "Person",
         "name": "Malcolm"
@@ -37,7 +37,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/blog/assets/blog.css" />
 </head>
-<body data-post-slug="2026-04-16-farmcash-jobs-wiki">
+<body data-post-slug="2026-04-29-farmcash-jobs-wiki">
   <div id="header-placeholder"></div>
 
   <main class="blog-content-shell">
@@ -50,7 +50,7 @@
             <a id="author-x" href="https://x.com/l_mlolm_l" target="_blank" rel="noopener">X</a>
             <a id="author-bluesky" href="https://bsky.app/profile/multd.bsky.social" target="_blank" rel="noopener">Bluesky</a>
           </span>
-          · <time datetime="2026-04-16">April 16, 2026</time> · 7 min read
+          · <time datetime="2026-04-29">April 29, 2026</time> · 7 min read
         </p>
       </header>
 
@@ -108,7 +108,7 @@
 
         <h2>⚙️ How It Works (Technical Deep Dive)</h2>
 
-        <p>From a technical perspective, the FarmCash Jobs wiki is a Next.js 16 application (App Router, React 19) deployed on Vercel and served transparently through a Cloudflare Worker proxy — users see <code>farmcash.app/jobs</code> without ever knowing there's a separate app behind it.</p>
+        <p>From a technical perspective, the FarmCash Jobs wiki is a Next.js 29 application (App Router, React 19) deployed on Vercel and served transparently through a Cloudflare Worker proxy — users see <code>farmcash.app/jobs</code> without ever knowing there's a separate app behind it.</p>
 
         <p>It shares a live Supabase backend with the mobile app, meaning web users and app users are the same authenticated people with the same session.</p>
 
@@ -117,7 +117,7 @@
           <p>Job data flows in automatically via a Supabase Edge Function (Deno runtime) that hits the AyeT partner API every six hours, upserts up to 1,000+ offers, and fires on-demand ISR revalidation so updated pages go live in seconds without a rebuild.</p>
         </div>
 
-        <p>The caching layer uses Next.js 16's <code>use cache</code> + <code>cacheLife</code> directives — job pages are statically served at the CDN edge but can be surgically busted per-slug the moment data changes.</p>
+        <p>The caching layer uses Next.js 29's <code>use cache</code> + <code>cacheLife</code> directives — job pages are statically served at the CDN edge but can be surgically busted per-slug the moment data changes.</p>
 
         <h3>🤖 AI-Powered Enrichment</h3>
 
