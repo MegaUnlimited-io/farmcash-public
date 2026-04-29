@@ -41,6 +41,16 @@ window.BLOG_POSTS = [
   readTime: "8 min read",
   image: "/blog/assets/og-freecash-banned-two-paths-illustration.png",
   tags: ["freecash", "banned", "blackhat", "fraud", "transparency", "industry"]
+},
+{
+  slug: "2026-04-29-farmcash-jobs-wiki",
+  title: "Introducing FarmCash Jobs: A Community-Driven Wiki for Every Offer",
+  excerpt: "FarmCash Jobs is live - a community wiki where users review, rate, and share real feedback on every offer. No more blindly starting jobs that are riddled with ads or impossible to complete.",
+  date: "2026-04-29",
+  author: "Malcolm",
+  readTime: "7 min read",
+  image: "/blog/assets/og-2026-04-29-farmcash-jobs-wiki.png",
+  tags: ["jobs", "wiki", "community", "reviews", "transparency", "product-launch"]
 }
 ];
 
