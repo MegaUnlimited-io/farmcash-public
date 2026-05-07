@@ -531,6 +531,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="toggle-link">
                 New here? <a href="#" onclick="switchTab('signup'); return false;">Create an account →</a>
             </div>
+
+            <div class="toggle-link" style="margin-top: 12px; padding-top: 12px; border-top: none;">
+                Forgot your password? <a href="#" id="forgot-pw-link">Reset it →</a>
+            </div>
         </div>
     </div>
 </div>
@@ -778,6 +782,45 @@ window.addEventListener('DOMContentLoaded', async () => {
         } else {
             showMsg('login-msg', '✅ Magic link sent! Check your email.', 'success');
             document.getElementById('login-email').value = '';
+        }
+    });
+
+    // ============================================================================
+    // FORGOT PASSWORD
+    // ============================================================================
+
+    document.getElementById('forgot-pw-link').addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        // Pre-fill from whatever the user typed in the login email field
+        const emailInput = document.getElementById('login-email');
+        const prefilled  = emailInput.value.trim().toLowerCase();
+
+        const email = window.prompt(
+            'Enter the email address for your FarmCash account and we\'ll send you a password reset link.',
+            prefilled
+        );
+
+        if (!email) return; // user cancelled
+
+        const trimmed = email.trim().toLowerCase();
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+            showMsg('login-msg', '❌ Please enter a valid email address.', 'error');
+            return;
+        }
+
+        showMsg('login-msg', 'Sending reset link…', 'info');
+
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(trimmed, {
+            redirectTo: 'https://farmcash.app/reset-password/'
+        });
+
+        if (error) {
+            console.error('resetPasswordForEmail error:', error);
+            showMsg('login-msg', '❌ Could not send reset email. Please try again.', 'error');
+        } else {
+            showMsg('login-msg', '✅ Password reset email sent! Check your inbox.', 'success');
         }
     });
 
