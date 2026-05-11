@@ -38,7 +38,7 @@ window.BLOG_POSTS = [
   excerpt: "FreeCash, a rewards app with 6M downloads/month, was banned for fraudulent practices. Here's what happened, why it matters, and how we're building FarmCash differently.",
   date: "2026-04-15",
   author: "Malcolm Lowry",
-  readTime: "8 min read",
+  readMinutes: 8,
   image: "/blog/assets/og-freecash-banned-two-paths-illustration.png",
   tags: ["freecash", "banned", "blackhat", "fraud", "transparency", "industry"]
 },
@@ -48,9 +48,19 @@ window.BLOG_POSTS = [
   excerpt: "FarmCash Jobs is live - a community wiki where users review, rate, and share real feedback on every offer. No more blindly starting jobs that are riddled with ads or impossible to complete.",
   date: "2026-04-29",
   author: "Malcolm",
-  readTime: "7 min read",
+  readMinutes: 7,
   image: "/blog/assets/og-2026-04-29-farmcash-jobs-wiki.png",
   tags: ["jobs", "wiki", "community", "reviews", "transparency", "product-launch"]
+},
+{
+  slug: '2026-05-11-privacy-policy-update',
+  title: 'We Updated Our Privacy Policy (And Why You Should Actually Care)',
+  excerpt: 'Privacy policies are boring—except when they protect you from data harvesting scandals. Here\'s what changed in FarmCash\'s privacy policy and why we\'re doing this BEFORE launch.',
+  author: 'Malcolm Lowry',
+  date: '2026-05-11',
+  readMinutes: 6,
+  tags: ['privacy', 'transparency', 'product', 'data'],
+  image: '/blog/assets/privacy-first-party-vs-third-party-survey-data.png'
 }
 ];
 
