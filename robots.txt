@@ -7,4 +7,5 @@ Disallow: /referral/
 Disallow: /archive/
 
 Sitemap: https://farmcash.app/sitemap.xml
+Sitemap: https://farmcash.app/jobs/sitemap.xml
 Sitemap: https://farmcash.app/blog/sitemap.xml

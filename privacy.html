@@ -167,42 +167,47 @@
         
         .contact-info {
             background: #f8f9fa;
+            border: 1px solid #dee2e6;
             padding: 24px;
-            border-radius: 12px;
+            border-radius: 8px;
             margin: 24px 0;
         }
         
-        .back-link {
-            text-align: center;
-            margin-top: 48px;
-            padding-top: 32px;
-            border-top: 2px solid #e0e0e0;
+        .toc {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 32px 0;
         }
         
-        .back-link a {
-            display: inline-block;
-            padding: 14px 28px;
-            background: linear-gradient(135deg, #E8A628 0%, #D69520 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 700;
-            box-shadow: 0 4px 0 #C87651;
-            transition: all 0.15s;
+        .toc h2 {
+            margin-top: 0;
+            font-size: 20px;
         }
         
-        .back-link a:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #C87651;
+        .toc ol {
+            margin-bottom: 0;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #E8F5F1 0%, #D4EDE5 100%);
+            border-left: 4px solid #2D6B4F;
+            padding: 20px;
+            margin: 24px 0;
+            border-radius: 8px;
         }
         
         @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+            
             .container {
                 padding: 32px 24px;
             }
             
             .document-title {
-                font-size: 26px;
+                font-size: 28px;
             }
             
             h1 {
@@ -219,279 +224,401 @@
     <div class="container">
         <div class="document-header">
             <div class="logo">
-                <img src="assets/FarmCash_Logo_v1.png" alt="FarmCash">
+                <img src="assets/FarmCash_logo.webp" alt="FarmCash Logo">
             </div>
-            <h1 class="document-title">Privacy Policy</h1>
-            <p class="document-subtitle">Last Updated: January 6, 2026 | Version 2.0</p>
+            <div class="document-title">Privacy Policy</div>
+            <div class="document-subtitle">Last Updated: May 11, 2026</div>
         </div>
- <!-- Section 1: Introduction -->
+        
+        <!-- Introduction -->
         <section>
-            <h1>1. Introduction</h1>
+            <p>Welcome to FarmCash, a mobile application and service operated by <strong>Mega Unlimited LTD</strong> ("we," "us," or "our"). FarmCash allows you to earn rewards by completing offers, including installing applications, playing games, and participating in surveys.</p>
             
-            <p>Welcome to FarmCash. This Privacy Policy explains how Mega Unlimited LTD (<strong>"Company"</strong>, <strong>"we"</strong>, <strong>"us"</strong>, or <strong>"our"</strong>) collects, uses, discloses, and protects your personal data when you use our mobile application FarmCash (the <strong>"App"</strong>) and related services (collectively, the <strong>"Services"</strong>).</p>
+            <p>This Privacy Policy explains how we collect, use, share, and protect your personal information when you use our mobile application (the "App") and related services (collectively, the "Services"). By using FarmCash, you agree to the collection and use of information in accordance with this Privacy Policy.</p>
             
-            <p>Mega Unlimited LTD is a company registered in England and Wales with its registered office in London, United Kingdom. We act as the data controller for the personal data processed through our Services.</p>
+            <div class="note-box">
+                <p><strong>Important Notice:</strong> Our Services are only available to individuals aged 18 years and older. We do not knowingly collect personal data from anyone under the age of 18.</p>
+            </div>
+        </section>
+        
+        <!-- Section 1: Who We Are -->
+        <section>
+            <h1>1. Who We Are</h1>
             
-            <p>By using our Services, you acknowledge that you have read and understood this Privacy Policy. If you do not agree with the practices described herein, please do not use our Services.</p>
+            <p><strong>Data Controller:</strong> Mega Unlimited LTD is the data controller responsible for your personal data.</p>
             
-            <p>This Privacy Policy applies to users worldwide, including users in the United States, European Economic Area (EEA), United Kingdom, and other jurisdictions. Where specific regional laws apply, we have included additional information in the relevant sections below.</p>
+            <div class="contact-info">
+                <p><strong>Mega Unlimited LTD</strong></p>
+                <p>Registered in England and Wales</p>
+                <p>Company Number: 16063242</p>
+                <p>Registered Office: 124 City Road, London, EC1V 2NX, United Kingdom</p>
+                <p><strong>Contact:</strong></p>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li>Email: <a href="mailto:privacy@megaunlimited.io">privacy@megaunlimited.io</a></li>
+                    <li>Website: <a href="https://megaunlimited.io" target="_blank" rel="noopener">megaunlimited.io</a></li>
+                </ul>
+            </div>
         </section>
         
         <!-- Section 2: Information We Collect -->
         <section>
             <h1>2. Information We Collect</h1>
             
-            <p>We collect various types of information to provide and improve our Services. The categories of data we collect include:</p>
+            <p>We collect several types of information to provide and improve our Services:</p>
             
             <h2>2.1 Account Information</h2>
             
-            <p>When you create an account with FarmCash, we collect:</p>
+            <p>When you create an account, we collect:</p>
             
             <ul>
                 <li>Email address</li>
-                <li>Phone number</li>
-                <li>Username or display name</li>
-                <li>Password (stored in encrypted form)</li>
+                <li>Username (display name)</li>
+                <li>Password (stored securely in hashed form)</li>
+                <li>Date of birth (to verify you are 18 or older)</li>
                 <li>Country of residence</li>
-                <li>Date of birth or age confirmation</li>
             </ul>
             
             <h2>2.2 Identity Verification Data (KYC)</h2>
             
-            <p>To prevent fraud and comply with applicable laws, we may require identity verification before processing withdrawals. This verification is conducted through third-party identity verification partners and may include:</p>
+            <p>Before you can withdraw funds, we are required to verify your identity. This process may involve:</p>
             
             <ul>
-                <li>Government-issued identification documents (passport, driver's license, national ID card)</li>
-                <li>Selfie photographs or video for liveness verification</li>
-                <li>Information extracted from identification documents (name, date of birth, document number, issuing country, expiry date)</li>
-                <li>Biometric data derived from facial images for identity matching purposes</li>
-                <li>Verification outcomes and risk assessment signals</li>
+                <li><strong>Government-Issued ID:</strong> Passport, driver's license, or national identity card</li>
+                <li><strong>Selfie or Live Photo:</strong> A photo of yourself, which may be compared against your ID document</li>
+                <li><strong>Proof of Address:</strong> In some cases, documents such as utility bills or bank statements</li>
+                <li><strong>Biometric Data:</strong> Facial recognition and liveness detection technologies may be used to verify your identity and prevent fraud</li>
+                <li><strong>Tax Information:</strong> For US users, we may collect your Social Security Number or Taxpayer Identification Number (TIN) for tax reporting purposes (IRS Form W-9 and 1099 requirements)</li>
             </ul>
             
-            <div class="note-box">
-                <p><strong>Important:</strong> Our identity verification partners may process biometric data (such as facial geometry) to verify your identity. This processing is necessary for fraud prevention and platform security. Where required by law, we will obtain your explicit consent before such processing.</p>
+            <p>Identity verification is performed by third-party services (such as Onfido, Veriff, Jumio, or similar providers). These service providers process your verification data on our behalf according to their own privacy policies. We receive verification results, risk signals, and associated metadata, but typically do not store raw identity documents unless required for compliance or fraud prevention.</p>
+            
+            <h2>2.3 Payment and Withdrawal Information</h2>
+            
+            <p>To process withdrawals and rewards, we collect:</p>
+            
+            <ul>
+                <li>PayPal email address or other payment account details</li>
+                <li>Gift card redemption preferences</li>
+                <li>Transaction history (dates, amounts, redemption status)</li>
+            </ul>
+            
+            <p>We do <strong>not</strong> store your full payment card details. Payment processing is handled by secure third-party payment processors.</p>
+            
+            <h2>2.4 Usage and Activity Data</h2>
+            
+            <p>We automatically collect information about how you interact with our Services, including:</p>
+            
+            <ul>
+                <li>Offer completions and progress (e.g., games installed, levels achieved, offers completed)</li>
+                <li>App interactions (screens viewed, buttons clicked, time spent in app)</li>
+                <li>Virtual currency balances, earning history, and transactions</li>
+                <li>Referral activity (if you participate in our referral program)</li>
+                <li>Support requests and communications with customer service</li>
+            </ul>
+            
+            <h2>2.5 Device and Technical Information</h2>
+            
+            <p>We collect information about the device and network you use to access FarmCash:</p>
+            
+            <ul>
+                <li>Device type, model, manufacturer, and operating system version</li>
+                <li>Unique device identifiers (e.g., Google Advertising ID, Apple IDFA, Android ID)</li>
+                <li>IP address and approximate geolocation (country, state/region, city)</li>
+                <li>Mobile network information (carrier)</li>
+                <li>App version, crash logs, and diagnostic information</li>
+            </ul>
+            
+            <h2>2.6 Survey Data</h2>
+            
+            <p>We offer two distinct types of surveys, and it is critical to understand the difference in how we handle data for each type:</p>
+            
+            <h3>First-Party Surveys (Conducted by FarmCash)</h3>
+            
+            <p>These are surveys that <strong>we create and conduct directly</strong>. When you participate in a first-party survey:</p>
+            
+            <ul>
+                <li>We are the <strong>owner and custodian</strong> of the survey data you provide</li>
+                <li>Your responses are collected, stored, and processed by us</li>
+                <li>We use this data to improve our Services, personalize your experience, and conduct market research</li>
+                <li>We will <strong>never share</strong> your first-party survey data with advertisers or third parties unless you provide explicit opt-in consent for such sharing</li>
+            </ul>
+            
+            <h3>Third-Party Surveys (Conducted by Advertising Partners)</h3>
+            
+            <p>These are surveys provided by our advertising partners and network providers (such as Prodege, RevU, and other offer wall partners). When you participate in a third-party survey:</p>
+            
+            <ul>
+                <li><strong>We do NOT receive, record, store, or control the survey responses you provide</strong></li>
+                <li>Your responses go directly to the third-party advertiser or survey provider</li>
+                <li>We only receive <strong>general completion statistics</strong> (e.g., whether you completed the survey, the timestamp, and the reward amount earned)</li>
+                <li>The third-party provider is solely responsible for how your survey data is collected, used, stored, and shared</li>
+                <li>We are <strong>not responsible</strong> for the data practices of third-party survey providers</li>
+            </ul>
+            
+            <div class="highlight-box">
+                <p><strong>Our Commitment:</strong> We will never collect, record, or retain the substantive content of third-party survey responses. Any data you provide in third-party surveys is governed by that provider's privacy policy, not ours. We only know that you completed an offer and are entitled to a reward.</p>
             </div>
             
-            <h2>2.3 Device and Technical Data</h2>
+            <p>For all third-party surveys, we strongly encourage you to review the privacy policy of the survey provider before participating. Third-party surveys will clearly identify the provider, and you have the choice whether or not to participate.</p>
             
-            <p>We automatically collect certain technical information when you use our Services:</p>
+            <h2>2.7 Cookies and Tracking Technologies</h2>
             
-            <ul>
-                <li>Device identifiers (including advertising identifiers such as Google Advertising ID)</li>
-                <li>Device type, model, and manufacturer</li>
-                <li>Operating system and version</li>
-                <li>IP address</li>
-                <li>Approximate geographic location (derived from IP address)</li>
-                <li>Time zone settings</li>
-                <li>Language preferences</li>
-                <li>Network connection type</li>
-            </ul>
+            <p>We use cookies, software development kits (SDKs), and similar technologies to collect information about your usage of our Services. See Section 13 for more details.</p>
             
-            <h2>2.4 Usage Data</h2>
+            <h2>2.8 Information from Third Parties</h2>
             
-            <p>We collect information about how you interact with our Services:</p>
+            <p>We may receive information about you from our advertising partners and offer providers to verify offer completions, prevent fraud, and attribute rewards. This typically includes:</p>
             
             <ul>
-                <li>App usage patterns and session duration</li>
-                <li>Offers viewed, started, and completed</li>
-                <li>Virtual currency (Seeds) earned and redeemed</li>
-                <li>Withdrawal history and preferences</li>
-                <li>Referral program participation</li>
-                <li>Survey responses and participation data</li>
-                <li>Customer support interactions</li>
+                <li>Offer completion timestamps and verification status</li>
+                <li>Device identifiers to match completions with your account</li>
+                <li>Fraud prevention signals and risk scores</li>
             </ul>
             
-            <h2>2.5 Offer Engagement Data</h2>
-            
-            <p>When you engage with offers provided through our advertising partners, we receive and process:</p>
-            
-            <ul>
-                <li>Offer completion status and timestamps</li>
-                <li>App installation verification data</li>
-                <li>In-app event tracking (for verifying offer completion requirements)</li>
-                <li>Attribution and conversion data</li>
-                <li>Survey response data (where applicable)</li>
-            </ul>
-            
-            <h2>2.6 Payment Information</h2>
-            
-            <p>When you request a withdrawal, we collect information necessary to process your payment:</p>
-            
-            <ul>
-                <li>PayPal email address (for PayPal withdrawals)</li>
-                <li>Gift card delivery email address</li>
-                <li>Transaction history and payment preferences</li>
-            </ul>
-            
-            <div class="note-box">
-                <p><strong>Note:</strong> We do not directly collect or store bank account details or credit/debit card numbers. All payment processing is handled by third-party payment providers.</p>
-            </div>
+            <p>We may also obtain information from public databases, identity verification services, fraud prevention services, and data aggregators to verify your identity and prevent fraudulent activity.</p>
         </section>
         
-        <!-- Section 3: How We Collect Your Data -->
+        <!-- Section 3: How We Use Your Information -->
         <section>
-            <h1>3. How We Collect Your Data</h1>
+            <h1>3. How We Use Your Information</h1>
             
-            <p>We collect information through the following methods:</p>
+            <p>We use the information we collect for the following purposes:</p>
             
-            <h2>3.1 Information You Provide Directly</h2>
-            
-            <ul>
-                <li>When you create an account and complete your profile</li>
-                <li>When you submit identity verification documents</li>
-                <li>When you contact customer support</li>
-                <li>When you respond to surveys</li>
-                <li>When you request a withdrawal</li>
-            </ul>
-            
-            <h2>3.2 Information Collected Automatically</h2>
-            
-            <ul>
-                <li>Through analytics tools integrated into our App</li>
-                <li>Through device operating system features</li>
-                <li>Through fraud detection and security tools</li>
-            </ul>
-            
-            <h2>3.3 Information from Third Parties</h2>
-            
-            <ul>
-                <li>Offer completion data from our advertising network partners</li>
-                <li>Identity verification results from our KYC partners</li>
-                <li>Fraud risk signals from security service providers</li>
-                <li>Attribution data from marketing partners</li>
-            </ul>
-        </section>
-        
-        <!-- Section 4: How We Use Your Data -->
-        <section>
-            <h1>4. How We Use Your Data</h1>
-            
-            <p>We use your personal data for the following purposes:</p>
-            
-            <h2>4.1 To Provide and Operate Our Services</h2>
+            <h2>3.1 Providing and Improving Our Services</h2>
             
             <ul>
                 <li>Creating and managing your account</li>
-                <li>Displaying available offers and tracking your engagement</li>
-                <li>Crediting virtual currency to your account when you complete offers</li>
-                <li>Processing withdrawal requests and delivering rewards</li>
-                <li>Operating our referral program</li>
-            </ul>
-            
-            <h2>4.2 To Verify Your Identity and Prevent Fraud</h2>
-            
-            <ul>
-                <li>Conducting identity verification (KYC) checks</li>
-                <li>Detecting and preventing fraudulent activity</li>
-                <li>Protecting our platform and our advertising partners from abuse</li>
-                <li>Identifying duplicate accounts and prohibited usage patterns</li>
-                <li>Blocking VPNs, proxies, and suspicious network activity</li>
-            </ul>
-            
-            <h2>4.3 To Communicate With You</h2>
-            
-            <ul>
-                <li>Sending service-related notifications (account updates, withdrawal confirmations)</li>
-                <li>Responding to customer support inquiries</li>
-                <li>Notifying you of changes to our terms or policies</li>
-                <li>Sending promotional communications (where you have opted in)</li>
-            </ul>
-            
-            <h2>4.4 To Improve Our Services</h2>
-            
-            <ul>
-                <li>Analyzing usage patterns to enhance user experience</li>
-                <li>Troubleshooting technical issues</li>
+                <li>Processing offer completions and awarding virtual currency</li>
+                <li>Processing withdrawal requests and issuing payments</li>
+                <li>Providing customer support and responding to inquiries</li>
+                <li>Improving app functionality and user experience</li>
                 <li>Developing new features and services</li>
-                <li>Conducting research and analytics</li>
+                <li>Analyzing usage patterns and trends</li>
             </ul>
             
-            <h2>4.5 For Legal and Compliance Purposes</h2>
+            <h2>3.2 Identity Verification and Compliance</h2>
             
             <ul>
-                <li>Complying with applicable laws and regulations</li>
-                <li>Responding to legal requests and court orders</li>
-                <li>Enforcing our Terms of Service</li>
-                <li>Protecting our legal rights and interests</li>
+                <li>Verifying your age (18+) and identity before allowing withdrawals</li>
+                <li>Complying with anti-money laundering (AML) and Know Your Customer (KYC) regulations</li>
+                <li>Meeting tax reporting obligations (e.g., IRS Form 1099 for US users)</li>
+                <li>Responding to legal requests and enforcing our Terms of Service</li>
             </ul>
-        </section>
-        
-        <!-- Section 5: Legal Basis for Processing -->
-        <section>
-            <h1>5. Legal Basis for Processing (EEA/UK Users)</h1>
             
-            <p>For users in the European Economic Area, United Kingdom, and Switzerland, we process your personal data based on the following legal grounds:</p>
-            
-            <p><strong>Contract Performance:</strong> Processing necessary to provide our Services, including account management, offer tracking, virtual currency crediting, and withdrawal processing.</p>
-            
-            <p><strong>Legitimate Interests:</strong> Processing necessary for our legitimate business interests, including fraud prevention, service improvement, analytics, and platform security, where these interests are not overridden by your rights and interests.</p>
-            
-            <p><strong>Legal Obligation:</strong> Processing necessary to comply with legal requirements, including anti-money laundering regulations, tax obligations, and responding to lawful requests from authorities.</p>
-            
-            <p><strong>Consent:</strong> Where required by law, we will obtain your explicit consent for certain processing activities, including: processing of biometric data for identity verification, sending marketing communications, and any processing of special category data. You may withdraw your consent at any time.</p>
-        </section>
-        
-        <!-- Section 6: How We Share Your Data -->
-        <section>
-            <h1>6. How We Share Your Data</h1>
-            
-            <p>We may share your personal data with the following categories of recipients:</p>
-            
-            <h2>6.1 Advertising Network Partners</h2>
-            
-            <p>We share data with our advertising network partners who provide the offers displayed in our App. This includes device identifiers and offer engagement data necessary for tracking offer completion and attributing rewards. These partners operate as independent data controllers for their own purposes.</p>
-            
-            <h2>6.2 Identity Verification Partners</h2>
-            
-            <p>We share identity documents and biometric data with our third-party KYC partners who verify your identity on our behalf. These partners act as data processors and are contractually bound to appropriate confidentiality, security, and data protection obligations.</p>
-            
-            <h2>6.3 Fraud Prevention Partners</h2>
-            
-            <p>We share device and technical data with fraud detection service providers to assess risk and prevent fraudulent activity on our platform.</p>
-            
-            <h2>6.4 Analytics Providers</h2>
-            
-            <p>We use analytics services including Mixpanel, Firebase Analytics, and Google Analytics to understand how users interact with our Services. These providers process usage data on our behalf to provide analytics and insights.</p>
-            
-            <h2>6.5 Payment Processors</h2>
-            
-            <p>We share payment information with PayPal and gift card fulfillment partners to process your withdrawal requests. These providers have their own privacy policies governing their use of your data.</p>
-            
-            <h2>6.6 Cloud Service Providers</h2>
-            
-            <p>We use cloud hosting and infrastructure services to store and process data. These providers act as data processors and maintain appropriate security certifications.</p>
-            
-            <h2>6.7 Legal and Regulatory Disclosure</h2>
-            
-            <p>We may disclose your personal data to law enforcement agencies, courts, regulators, or other government bodies when required by law or to protect our legal rights.</p>
-            
-            <h2>6.8 Business Transfers</h2>
-            
-            <p>In the event of a merger, acquisition, reorganization, or sale of assets, your personal data may be transferred to the acquiring entity.</p>
-        </section>
-        
-        <!-- Section 7: International Data Transfers -->
-        <section>
-            <h1>7. International Data Transfers</h1>
-            
-            <p>Your personal data may be transferred to, stored, and processed in countries outside your country of residence, including the United States and other countries where our service providers operate.</p>
-            
-            <p>For transfers from the EEA, UK, or Switzerland to countries not recognized as providing adequate data protection, we rely on appropriate safeguards including:</p>
+            <h2>3.3 Fraud Prevention and Security</h2>
             
             <ul>
-                <li>Standard Contractual Clauses approved by the European Commission and/or UK Information Commissioner's Office</li>
-                <li>Data Privacy Framework certification (where applicable)</li>
-                <li>Other legally approved transfer mechanisms</li>
+                <li>Detecting and preventing fraudulent activity, including fake accounts, offer manipulation, and unauthorized access</li>
+                <li>Identifying multiple accounts linked to the same individual</li>
+                <li>Monitoring unusual activity patterns and investigating suspected violations</li>
+                <li>Protecting the integrity of our rewards system</li>
             </ul>
             
-            <p>You may request information about the safeguards in place for international transfers by contacting us using the details provided below.</p>
+            <h2>3.4 Communications</h2>
+            
+            <ul>
+                <li>Sending you service-related notifications (e.g., account updates, offer completions, withdrawal confirmations)</li>
+                <li>Sending promotional communications about new offers, features, and rewards (you may opt out at any time)</li>
+                <li>Responding to your questions, feedback, and support requests</li>
+            </ul>
+            
+            <h2>3.5 Marketing and Personalization</h2>
+            
+            <ul>
+                <li>Personalizing the offers and content shown to you based on your interests and activity</li>
+                <li>Measuring the effectiveness of our marketing campaigns</li>
+                <li>Understanding user preferences and behavior</li>
+                <li>Using <strong>first-party survey data</strong> to improve our product, tailor marketing messages, and better understand user needs (we will never share this data with advertisers or third parties without your explicit consent)</li>
+            </ul>
+            
+            <h2>3.6 Legal Bases for Processing (GDPR/UK GDPR)</h2>
+            
+            <p>For users in the EEA, UK, or Switzerland, we process your personal data based on the following legal grounds:</p>
+            
+            <ul>
+                <li><strong>Performance of a Contract:</strong> To provide the Services you have requested (account creation, offer tracking, withdrawals)</li>
+                <li><strong>Legal Obligation:</strong> To comply with legal requirements such as KYC/AML laws, tax reporting, and law enforcement requests</li>
+                <li><strong>Legitimate Interests:</strong> To prevent fraud, improve our Services, and conduct analytics (balanced against your rights and interests)</li>
+                <li><strong>Consent:</strong> For marketing communications and certain optional data collection (you may withdraw consent at any time)</li>
+            </ul>
+        </section>
+        
+        <!-- Section 4: How We Share Your Information -->
+        <section>
+            <h1>4. How We Share Your Information</h1>
+            
+            <p>We do not sell your personal information. However, we may share your information with the following parties under specific circumstances:</p>
+            
+            <h2>4.1 Advertising Partners and Offer Providers</h2>
+            
+            <p>To facilitate offer completions and reward attribution, we share limited information with our advertising partners (including Prodege, RevU, AyeT-Studios, and other offer wall providers). This typically includes:</p>
+            
+            <ul>
+                <li>Device identifiers (e.g., Google Advertising ID, Apple IDFA)</li>
+                <li>IP address and approximate location (country/region)</li>
+                <li>Offer engagement data (clicks, installs, completions)</li>
+            </ul>
+            
+            <p><strong>Important:</strong> When you participate in <strong>third-party surveys</strong> provided by our advertising partners, your survey responses go <strong>directly to the third-party provider</strong>. We do not receive, store, or have access to the substantive content of your third-party survey responses. We only receive confirmation that you completed the survey and the associated reward amount.</p>
+            
+            <p>For <strong>first-party surveys</strong> (surveys we conduct ourselves), we retain full control over the data and will <strong>never share</strong> your responses with advertisers or third parties unless you explicitly opt in to such sharing.</p>
+            
+            <h2>4.2 Service Providers</h2>
+            
+            <p>We work with third-party service providers who perform services on our behalf, including:</p>
+            
+            <ul>
+                <li><strong>Identity Verification:</strong> Onfido, Veriff, Jumio, or similar KYC providers to verify your identity and age</li>
+                <li><strong>Payment Processors:</strong> PayPal, gift card fulfillment services, and payment gateways to process withdrawals</li>
+                <li><strong>Cloud Hosting:</strong> Amazon Web Services (AWS), Google Cloud Platform, or similar providers to host our infrastructure</li>
+                <li><strong>Analytics:</strong> Google Analytics, Firebase, Mixpanel, or similar tools to analyze app usage</li>
+                <li><strong>Customer Support:</strong> Zendesk, Intercom, or similar platforms to manage support tickets</li>
+                <li><strong>Email Services:</strong> SendGrid, Mailgun, or similar providers to send transactional and promotional emails</li>
+                <li><strong>Fraud Prevention:</strong> SEON, SHIELD, or similar fraud detection services to identify and prevent fraudulent activity</li>
+            </ul>
+            
+            <p>These service providers are contractually obligated to use your information only for the purposes we specify and to maintain appropriate security measures.</p>
+            
+            <h2>4.3 Business Transfers</h2>
+            
+            <p>If we are involved in a merger, acquisition, asset sale, bankruptcy, or similar corporate transaction, your personal information may be transferred to the acquiring entity. We will notify you via email or prominent notice in the App before your information is transferred and becomes subject to a different privacy policy.</p>
+            
+            <h2>4.4 Legal Requirements and Safety</h2>
+            
+            <p>We may disclose your information if required to do so by law or in response to:</p>
+            
+            <ul>
+                <li>Legal process (court orders, subpoenas, search warrants)</li>
+                <li>Law enforcement or government requests</li>
+                <li>Investigations of potential violations of our Terms of Service</li>
+                <li>Protecting the rights, property, or safety of Mega Unlimited LTD, our users, or others</li>
+            </ul>
+            
+            <h2>4.5 Aggregated and Anonymized Data</h2>
+            
+            <p>We may share aggregated, de-identified, or anonymized data that does not identify you personally with third parties for research, analytics, marketing, or other purposes. For example, we might share statistics about app usage trends or offer completion rates.</p>
+        </section>
+        
+        <!-- Section 5: International Data Transfers -->
+        <section>
+            <h1>5. International Data Transfers</h1>
+            
+            <p>Mega Unlimited LTD is based in the United Kingdom. If you are accessing our Services from outside the UK, your personal data may be transferred to, stored, and processed in the UK, the European Economic Area (EEA), the United States, or other countries where we or our service providers operate.</p>
+            
+            <p>These countries may have data protection laws that differ from those in your country. Where we transfer personal data from the EEA or UK to countries that do not provide an adequate level of protection (as determined by the European Commission or UK authorities), we implement appropriate safeguards, such as:</p>
+            
+            <ul>
+                <li>Standard Contractual Clauses (SCCs) approved by the European Commission or UK authorities</li>
+                <li>Data Processing Agreements with our service providers</li>
+                <li>Other mechanisms recognized under applicable data protection laws</li>
+            </ul>
+            
+            <p>By using our Services, you consent to the transfer of your information to countries outside your country of residence, including countries that may not provide the same level of data protection as your home country.</p>
+        </section>
+        
+        <!-- Section 6: Advertising and Analytics -->
+        <section>
+            <h1>6. Advertising and Analytics</h1>
+            
+            <h2>6.1 Advertising Partners</h2>
+            
+            <p>Our Services integrate with third-party advertising networks and offer providers to present you with earning opportunities. These partners may collect information through their own SDKs embedded in our App, including:</p>
+            
+            <ul>
+                <li>Device identifiers (Advertising ID, IDFA)</li>
+                <li>IP address and location data</li>
+                <li>App usage and engagement data</li>
+                <li>Information about ads viewed and offers completed</li>
+            </ul>
+            
+            <p>These advertising partners use this data to:</p>
+            
+            <ul>
+                <li>Deliver and measure the effectiveness of advertising campaigns</li>
+                <li>Attribute offer completions and prevent fraud</li>
+                <li>Personalize the offers shown to you across multiple apps and services</li>
+            </ul>
+            
+            <p>Our primary advertising partners include Prodege, RevU, and AyeT-Studios. Each partner operates under its own privacy policy. You can learn more about their data practices and your choices by visiting their websites.</p>
+            
+            <h2>6.2 Analytics Services</h2>
+            
+            <p>We use third-party analytics services such as Google Analytics, Firebase, and Mixpanel to understand how users interact with our App and Services. These services collect information such as:</p>
+            
+            <ul>
+                <li>How often you use the App</li>
+                <li>Which features you use</li>
+                <li>How long you spend in the App</li>
+                <li>Performance data (crashes, errors, load times)</li>
+            </ul>
+            
+            <p>This helps us improve the user experience, fix bugs, and develop new features.</p>
+            
+            <h2>6.3 Your Choices</h2>
+            
+            <p>You can limit tracking and personalized advertising by:</p>
+            
+            <ul>
+                <li><strong>iOS Users:</strong> Enabling "Limit Ad Tracking" or denying app tracking permission in Settings > Privacy > Tracking</li>
+                <li><strong>Android Users:</strong> Opting out of personalized ads in Settings > Google > Ads > Opt out of Ads Personalization, or resetting your Advertising ID</li>
+            </ul>
+            
+            <p><strong>Please note:</strong> Opting out of personalized advertising or limiting tracking may affect your ability to complete certain offers or earn rewards, as we may not be able to accurately attribute offer completions to your account.</p>
+        </section>
+        
+        <!-- Section 7: Data Protection for Biometric Information -->
+        <section>
+            <h1>7. Data Protection for Biometric Information</h1>
+            
+            <p>As part of our identity verification process (KYC), we may collect biometric data, such as facial recognition data derived from selfies or live photos. This data is considered highly sensitive, and we take additional precautions to protect it.</p>
+            
+            <h2>7.1 Purpose of Biometric Data Collection</h2>
+            
+            <p>We collect biometric data solely for the following purposes:</p>
+            
+            <ul>
+                <li>Verifying your identity before allowing withdrawals</li>
+                <li>Preventing fraud and ensuring that each user operates only one account</li>
+                <li>Complying with anti-money laundering (AML) and Know Your Customer (KYC) legal requirements</li>
+            </ul>
+            
+            <h2>7.2 How Biometric Data is Processed</h2>
+            
+            <ul>
+                <li>Biometric verification is performed by trusted third-party providers (such as Onfido, Veriff, Jumio, or similar services) who specialize in secure identity verification</li>
+                <li>These providers extract biometric identifiers (e.g., facial geometry) from the selfie you provide and compare them to your government-issued ID</li>
+                <li>We receive only the <strong>verification result</strong> (pass/fail), a confidence score, and associated metadata (e.g., timestamp, risk signals). We do <strong>not</strong> receive or store the raw biometric template itself unless required by law</li>
+                <li>Raw images (selfies and ID scans) are typically retained by the verification provider only as long as necessary for verification, compliance audits, and dispute resolution, then securely deleted in accordance with their retention policies</li>
+            </ul>
+            
+            <h2>7.3 Retention of Biometric Data</h2>
+            
+            <p>Biometric data and related verification records are retained only as long as necessary to fulfill the purposes for which they were collected:</p>
+            
+            <ul>
+                <li>Verification results and risk signals: Retained as long as your account is active and for up to 3 years following account closure for fraud prevention and compliance purposes</li>
+                <li>Raw images and biometric templates: Typically retained by our verification partners for a limited period (often 30-90 days) unless legal obligations require longer retention</li>
+            </ul>
+            
+            <p>You may request deletion of your biometric data by contacting us at <a href="mailto:privacy@megaunlimited.io">privacy@megaunlimited.io</a>. However, please note that deletion may prevent us from processing future withdrawal requests or complying with legal obligations.</p>
+            
+            <h2>7.4 Additional Protections for Illinois Residents</h2>
+            
+            <p>If you are a resident of Illinois, the Illinois Biometric Information Privacy Act (BIPA) provides you with additional rights. Under BIPA:</p>
+            
+            <ul>
+                <li>We will not collect, capture, or otherwise obtain your biometric data without first providing you with notice and obtaining your written consent</li>
+                <li>Biometric data will be stored, transmitted, and protected using a reasonable standard of care, at least as protective as the manner in which we store, transmit, and protect other confidential and sensitive information</li>
+                <li>We will not sell, lease, trade, or otherwise profit from your biometric data</li>
+                <li>We will permanently destroy biometric data when the initial purpose for collection has been satisfied or within 3 years of your last interaction with us, whichever occurs first, unless a valid legal obligation requires retention</li>
+            </ul>
         </section>
         
         <!-- Section 8: Data Retention -->
         <section>
             <h1>8. Data Retention</h1>
             
-            <p>We retain your personal data for as long as necessary to fulfill the purposes for which it was collected, including to satisfy legal, accounting, or reporting requirements.</p>
+            <p>We retain your personal data only for as long as necessary to fulfill the purposes for which it was collected, comply with legal obligations, resolve disputes, and enforce our agreements.</p>
             
             <p>Our standard retention periods are as follows:</p>
             
@@ -501,6 +628,7 @@
                 <li><strong>Transaction Data:</strong> Retained for at least 7 years to comply with tax and accounting requirements.</li>
                 <li><strong>Usage Data:</strong> Generally retained for up to 3 years for analytics purposes, unless anonymized earlier.</li>
                 <li><strong>Fraud Prevention Data:</strong> May be retained indefinitely for platform security and to prevent repeat offenders from creating new accounts.</li>
+                <li><strong>First-Party Survey Data:</strong> Retained for as long as necessary to fulfill the purposes for which it was collected (product improvement, marketing insights), typically up to 3 years unless you request deletion.</li>
             </ul>
             
             <div class="note-box">
@@ -594,7 +722,11 @@
             
             <p>Our Services may contain links to third-party websites, applications, and services, including offers from our advertising partners. These third parties have their own privacy policies, and we are not responsible for their privacy practices.</p>
             
-            <p>When you engage with an offer and install a third-party application, that application's own privacy policy and terms will govern your use of that application. We encourage you to review the privacy policies of any third-party services before using them.</p>
+            <p>When you engage with an offer and install a third-party application or participate in a third-party survey, that application or survey provider's own privacy policy and terms will govern your use of that service and the data you provide. We encourage you to review the privacy policies of any third-party services before using them.</p>
+            
+            <div class="warning-box">
+                <p><strong>Third-Party Survey Data:</strong> When you complete a survey provided by a third-party advertiser or survey platform, your responses go directly to that provider. We do not receive, store, or control the substantive data you provide in third-party surveys. Please review the third-party provider's privacy policy to understand how your data will be used.</p>
+            </div>
         </section>
         
         <!-- Section 13: Cookies and Tracking -->
