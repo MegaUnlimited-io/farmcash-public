@@ -40,6 +40,7 @@ Redesign farmcash.app landing page to shift focus from form-heavy design to visu
 - Store hook in browser memory (so if user closes and comes back, they see the same hook)
 - Send hook to GA4 on signup event (maybe as signup event metadata) so we can measure best hook over time
 - Allow me to easily add/remove/change hooks in the homepage file or a config file
+- Allow me to easily change hook weights/probabilities in config
 
 ---
 
@@ -684,20 +685,20 @@ Explain the seed reward structure that was teased in the hero section ("Learn mo
 
 **Step 1:**
 ```
-📱 Complete Offers
+📱 Complete Offers to earn seeds
 Play games, try apps, take surveys
 ```
 
 **Step 2:**
 ```
 🌱 Plant Seeds
-Watch your crops grow (4 hours to 30 days)
+Watch your plants grow
 ```
 
 **Step 3:**
 ```
-💰 Harvest Cash
-Convert to real money (minimum $10)
+💰 Harvest Crops
+Sell your crops for cash
 ```
 
 **Typography:**
